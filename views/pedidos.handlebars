@@ -1,0 +1,41 @@
+<div class="pedidos-container">
+
+    <h1>Meus Pedidos</h1>
+
+    {{#if pedidos.length}}
+
+        {{#each pedidos}}
+            <div class="pedido-card">
+
+                <div class="pedido-header">
+                    <h3>Pedido #{{id}}</h3>
+                    <p>Status: <strong>{{status}}</strong></p>
+                    <p>Data: {{data}}</p>
+                    <p>Endereço: {{endereco}}</p>
+                </div>
+
+                <div class="pedido-itens">
+                    {{#each itens}}
+                        <div class="pedido-item">
+                            <img src="/images/{{imagem}}" alt="{{nome}}">
+                            <div>
+                                <h4>{{nome}}</h4>
+                                <p>Quantidade: {{quantidade}}</p>
+                                <p>Preço: R$ {{preco}}</p>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+
+                <div class="pedido-total">
+                    <h3>Total: R$ {{total}}</h3>
+                </div>
+
+            </div>
+        {{/each}}
+
+    {{else}}
+        <p>Você ainda não possui pedidos.</p>
+    {{/if}}
+
+</div>

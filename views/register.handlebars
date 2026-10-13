@@ -1,0 +1,83 @@
+<div class="auth-page-wrapper">
+    <div class="register-container">
+        <!-- Logo Central Superior -->
+        <div class="logo-section">
+            <img src="/images/LOGO.transparente.png" alt="Logo Filhas da Maria" class="logo-img">
+        </div>
+
+        <h2 class="welcome-text">SEJA BEM VINDO</h2>
+
+        <!-- Exibição Dinâmica de Mensagens de Erro ou Sucesso -->
+        {{#if error}}
+            <div class="alert alert-danger">
+                <i class="fa-solid fa-circle-exclamation"></i> {{error}}
+            </div>
+        {{/if}}
+        {{#if success}}
+            <div class="alert alert-success">
+                <i class="fa-solid fa-circle-check"></i> {{success}}
+            </div>
+        {{/if}}
+
+        <!-- Formulário de Cadastro apontando para o Backend -->
+        <form action="/auth/register" method="POST" class="register-form">
+            
+            <!-- NOVO CAMPO: Nome Completo -->
+            <div class="input-group">
+                <label for="nome">NOME COMPLETO:</label>
+                <input type="text" name="nome" id="nome" placeholder="exemplo: Maria da Silva" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">E-MAIL:</label>
+                <input type="email" name="email" id="email" placeholder="exemplo: maria@gmail.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="telefone">TELEFONE:</label>
+                <input type="tel" name="telefone" id="telefone" placeholder="exemplo: (19) 99988 - 7777">
+            </div>
+
+            <div class="input-group">
+                <label for="senha">SENHA:</label>
+                <div class="password-wrapper">
+                    <input type="password" name="senha" id="senha" placeholder="exemplo: maria123" required>
+                    <i class="fa-regular fa-eye-slash toggle-password"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="confirme_senha">CONFIRME SUA SENHA:</label>
+                <div class="password-wrapper">
+                    <input type="password" name="confirme_senha" id="confirme_senha" placeholder="exemplo: maria123" required>
+                    <i class="fa-regular fa-eye-slash toggle-password"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">CADASTRAR</button>
+        </form>
+
+        <!-- Redirecionamento para a tela de Login -->
+        <div class="login-section">
+            <p>JÁ POSSUI UMA CONTA?</p>
+            <a href="/auth/login" class="btn btn-secondary btn-connect">CONECTAR</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.toggle-password').forEach(icon => {
+        icon.addEventListener('click', function () {
+            const input = this.previousElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            } else {
+                input.type = 'password';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            }
+        });
+    });
+</script>

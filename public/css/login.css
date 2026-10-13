@@ -1,0 +1,180 @@
+.auth-page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    background-color: var(--rosa-fundo);
+    min-height: calc(100vh - 90px - 250px); /* Ajusta altura descontando cabeçalho e rodapé */
+}
+
+.login-container {
+    background-color: var(--branco);
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--rosa-destaque);
+    text-align: center;
+}
+
+.logo-section {
+    margin-bottom: 25px;
+}
+
+.logo-img {
+    height: 70px;
+    object-fit: contain;
+}
+
+.welcome-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--texto-escuro);
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* CAIXAS DE ALERTAS */
+.alert {
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+.alert-danger {
+    background-color: #F8D7DA;
+    color: #721C24;
+    border: 1px solid #F5C6CB;
+}
+
+/* FORMULÁRIO E INPUTS */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: left;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--texto-escuro);
+    letter-spacing: 0.5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--laranja-principal);
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--laranja-hover);
+}
+
+/* INPUT DE SENHA E ESQUECEU A SENHA */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    color: var(--laranja-principal);
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.2s;
+}
+
+.toggle-password:hover {
+    color: var(--laranja-hover);
+}
+
+.forgot-password {
+    font-size: 11px;
+    color: var(--texto-escuro);
+    text-decoration: underline;
+    font-weight: 500;
+    margin-top: 5px;
+    align-self: flex-start;
+}
+
+/* BOTÕES */
+.btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background-color 0.2s, transform 0.1s;
+    display: inline-block;
+    text-align: center;
+    border: none;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background-color: var(--laranja-principal);
+    color: var(--branco);
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background-color: var(--laranja-hover);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 2px solid var(--laranja-principal);
+    color: var(--laranja-principal);
+}
+
+.btn-secondary:hover {
+    background-color: var(--rosa-fundo);
+    color: var(--laranja-hover);
+    border-color: var(--laranja-hover);
+}
+
+/* SEÇÃO DE CADASTRO NA PARTE INFERIOR */
+.register-section {
+    margin-top: 35px;
+    border-top: 1px solid var(--rosa-destaque);
+    padding-top: 25px;
+}
+
+.register-section p {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--texto-escuro);
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+.btn-register {
+    text-decoration: none;
+}

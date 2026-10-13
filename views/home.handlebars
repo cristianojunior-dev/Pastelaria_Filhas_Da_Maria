@@ -1,0 +1,156 @@
+<main class="home-container">
+
+    <!-- Se for resultado de busca, exibe o bloco de resultados -->
+    {{#if termoPesquisado}}
+    <section class="categoria-section">
+        <div class="categoria-header">
+            <h2 class="categoria-title">Resultados para: "{{termoPesquisado}}"</h2>
+            <a href="/" class="ver-mais-link"> Voltar ao Cardápio Completo</a>
+        </div>
+
+        <div class="produtos-grid">
+            {{#if resultadoBusca}}
+            {{#each resultadoBusca}}
+            <div class="product-card">
+                <div class="product-img-wrapper">
+                    <img src="/images/{{this.imagem}}" alt="{{this.nome}}">
+                </div>
+                <div class="product-body">
+                    <h3 class="product-name">{{this.nome}}</h3>
+                    <p class="product-price">R$ {{this.preco}}</p>
+
+                    {{#if this.disponivel}}
+                    <form action="/cart/add/{{this.id}}" method="POST" class="add-to-cart-form">
+                        <button type="submit" class="btn-buy-product">Comprar</button>
+                    </form>
+                    {{else}}
+                    <div class="status-indisponivel">Indisponível no momento</div>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+            {{else}}
+            <p style="padding: 20px 0; color: var(--texto-mutado); font-weight: 600;">Nenhum pastel ou bebida encontrado
+                com esse nome.</p>
+            {{/if}}
+        </div>
+    </section>
+    {{else}}
+    <!-- CARDÁPIO TRADICIONAL COMPLETO (Seu código antigo que já tínhamos feito) -->
+    <section class="banner-section">
+        <div class="banner-img-wrapper">
+            <img src="/images/ALoja.png" alt="Fachada Pastelaria Filhas da Maria" class="banner-img">
+        </div>
+        <div class="banner-text-card">
+            <p>Bem-vindo à Pastelaria Filhas da Maria! Oferecemos uma experiência gastronômica única com pastéis feitos
+                com ingredientes frescos e uma variedade de recheios. Venha nos visitar e saborear um pastel quentinho,
+                preparado com dedicação. Estamos prontos para atendê-lo!</p>
+        </div>
+    </section>
+
+    {{#if maisPedidos}}
+    <section class="destaque-section" style="position: relative; overflow: hidden; width: 100%;">
+        <h2 class="section-title">Mais Pedidos</h2>
+
+        <div class="carrossel-container" style="display: flex; transition: transform 0.4s ease-in-out; width: 100%;">
+            {{#each maisPedidos}}
+            <div class="destaque-card"
+                style="min-width: 100%; box-sizing: border-box; display: grid; grid-template-columns: 1fr 1fr; background-color: #FFFDF9; border-radius: 12px; border: 2px solid var(--laranja-suave); overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+                <div class="destaque-img-area">
+                    <img src="/images/{{this.imagem}}" alt="{{this.nome}}"
+                        style="width: 100%; height: 280px; object-fit: cover;">
+                </div>
+                <div class="destaque-info-area"
+                    style="padding: 30px; display: flex; flex-direction: column; justify-content: center; text-align: left; position: relative;">
+                    <h3 class="destaque-produto-titulo"
+                        style="font-size: 24px; font-weight: 700; color: var(--texto-escuro); margin-bottom: 15px; text-transform: uppercase;">
+                        {{this.nome}}</h3>
+                    <p class="destaque-label-desc"
+                        style="font-size: 13px; font-weight: 700; color: var(--texto-mutado); margin-bottom: 5px;">
+                        Descrição do produto:</p>
+                    <p class="destaque-desc-texto"
+                        style="font-size: 14px; line-height: 1.6; color: var(--texto-escuro);">{{this.descricao}}</p>
+                    <p class="destaque-preco"
+                        style="font-size: 20px; font-weight: 700; color: var(--laranja-principal); margin-top: 15px;">R$
+                        {{this.preco}}</p>
+
+                    <a href="/products/{{this.id}}" class="destaque-seta-nav"
+                        style="position: absolute; right: 25px; bottom: 25px; width: 45px; height: 45px; border-radius: 50%; background-color: var(--laranja-principal); color: var(--branco); display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 8px rgba(255, 136, 56, 0.4);">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        <!-- Setas Físicas de Navegação Esquerda e Direita -->
+        <button type="button" onclick="navegarCarrossel(-1)"
+            style="position: absolute; left: 15px; top: 55%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: 1px solid var(--laranja-suave); width: 40px; height: 40px; border-radius: 50%; color: var(--laranja-principal); font-size: 16px; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"><i
+                class="fa-solid fa-chevron-left"></i></button>
+        <button type="button" onclick="navegarCarrossel(1)"
+            style="position: absolute; right: 15px; top: 55%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: 1px solid var(--laranja-suave); width: 40px; height: 40px; border-radius: 50%; color: var(--laranja-principal); font-size: 16px; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"><i
+                class="fa-solid fa-chevron-right"></i></button>
+    </section>
+    {{/if}}
+
+    <script>
+        let slideIndex = 0;
+        function navegarCarrossel(direcao) {
+            const container = document.querySelector('.carrossel-container');
+            const cards = document.querySelectorAll('.destaque-card');
+            if (!container || cards.length === 0) return;
+
+            slideIndex += direcao;
+
+            // Efeito infinito: vai para o fim ou volta pro começo se estourar os limites
+            if (slideIndex >= cards.length) slideIndex = 0;
+            if (slideIndex < 0) slideIndex = cards.length - 1;
+
+            // Move o bloco horizontalmente aplicando o deslocamento em porcentagem
+            container.style.transform = `translateX(-${slideIndex * 100}%)`;
+        }
+    </script>
+
+
+    {{#each cardapio}}
+    <section class="categoria-section">
+        <div class="categoria-header">
+            <h2 class="categoria-title">{{this.categoria}}</h2>
+        </div>
+
+        <div class="produtos-grid">
+            {{#each this.produtos}}
+            <div class="product-card">
+                <div class="product-img-wrapper">
+                    <a href="/products/{{this.id}}">
+                        <img src="/images/{{this.imagem}}" alt="{{this.nome}}">
+                    </a>
+                </div>
+                <div class="product-body">
+                    <!-- NOVO: Ícone de Favoritar Rápido -->
+                    <form action="/favorites/add/{{this.id}}" method="POST"
+                        style="margin-bottom: 5px; align-self: flex-end;">
+                        <button type="submit" style="color: #E06E1F; font-size: 16px;" title="Adicionar aos Favoritos">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    </form>
+
+                    <h3 class="product-name"><a href="/products/{{this.id}}">{{this.nome}}</a></h3>
+                    <p class="product-price">R$ {{this.preco}}</p>
+
+                    {{#if this.disponivel}}
+                    <form action="/cart/add/{{this.id}}" method="POST" class="add-to-cart-form">
+                        <button type="submit" class="btn-buy-product">Comprar</button>
+                    </form>
+                    {{else}}
+                    <div class="status-indisponivel">Indisponível no momento</div>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </section>
+    {{/each}}
+    {{/if}}
+
+</main>

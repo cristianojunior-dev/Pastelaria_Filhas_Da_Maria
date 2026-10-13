@@ -1,0 +1,265 @@
+/* PAINEL ADMIN E ESTRUTURA DE ABAS */
+.admin-dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.admin-main-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--texto-escuro);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-main-title i {
+    color: var(--laranja-principal);
+}
+
+/* MENU DE NAVEGAÇÃO ENTRE OS TRÊS PAINÉIS */
+.admin-nav-tabs {
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid var(--rosa-destaque);
+    margin-bottom: 25px;
+}
+
+.admin-tab-btn {
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--texto-mutado);
+    background-color: var(--rosa-destaque);
+    border: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.admin-tab-btn:hover {
+    background-color: var(--laranja-suave);
+    color: var(--laranja-principal);
+}
+
+.admin-tab-btn.active {
+    background-color: var(--laranja-principal);
+    color: var(--branco);
+}
+
+/* CARDS E FORMULÁRIOS */
+.admin-section-card {
+    background-color: var(--branco);
+    border: 1px solid var(--rosa-destaque);
+    border-radius: 12px;
+    padding: 35px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.admin-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--texto-escuro);
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--rosa-fundo);
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+}
+
+.admin-section-title i {
+    color: var(--laranja-principal);
+}
+
+.admin-product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: left;
+}
+
+.admin-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-form-group-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.admin-product-form label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--texto-escuro);
+    text-transform: uppercase;
+}
+
+.admin-product-form input,
+.admin-product-form select,
+.admin-product-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #E2E3E5;
+    border-radius: 6px;
+    outline: none;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.admin-product-form input:focus,
+.admin-product-form select:focus,
+.admin-product-form textarea:focus {
+    border-color: var(--laranja-principal);
+}
+
+.btn-admin-save-product {
+    width: 100%;
+    padding: 14px 0;
+    background-color: var(--laranja-principal);
+    color: var(--branco);
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 6px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-admin-save-product:hover {
+    background-color: var(--laranja-hover);
+}
+
+/* TABELA DE PEDIDOS */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.orders-admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 13px;
+}
+
+.orders-admin-table th {
+    background-color: var(--rosa-fundo);
+    color: var(--texto-escuro);
+    font-weight: 700;
+    padding: 12px;
+    border-bottom: 2px solid var(--rosa-destaque);
+    text-transform: uppercase;
+}
+
+.orders-admin-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #ECECEC;
+    color: var(--texto-escuro);
+    font-weight: 500;
+}
+
+.order-code-td {
+    font-weight: 700 !important;
+    color: var(--laranja-principal) !important;
+}
+
+.select-status-admin {
+    padding: 6px 10px;
+    border: 1px solid var(--laranja-principal);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: var(--branco);
+    cursor: pointer;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+.status-recebido { background-color: #CCE5FF; color: #004085; }
+.status-em\ preparação { background-color: #FFF3CD; color: #856404; }
+.status-enviado { background-color: #D4EDDA; color: #155724; }
+.status-entregue { background-color: #E2E3E5; color: #383D41; }
+
+/* ==========================================================================
+   O ERRO ESTAVA AQUI - CORREÇÃO DO MODAL (PADRÃO SISTEMA DE JOGOS)
+   ========================================================================== */
+.modal-admin-overlay {
+    position: fixed; /* Trava em relação à janela do navegador */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6); /* Escurece o fundo atrás */
+    display: none; /* Controlado via JS ('flex' quando ativo) */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+    z-index: 99999; /* Força ficar por cima de qualquer elemento fixo */
+}
+
+.modal-admin-card {
+    background-color: var(--branco);
+    width: 100%;
+    max-width: 520px; /* Largura idêntica à do cadastro de jogos */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--rosa-destaque);
+    box-sizing: border-box;
+    animation: surgimentoSuave 0.2s ease-out; /* Efeito de entrada */
+}
+
+.modal-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--rosa-fundo);
+    padding-bottom: 12px;
+}
+
+.modal-admin-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--texto-escuro);
+    margin: 0;
+}
+
+.btn-close-modal {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--texto-mutado);
+    line-height: 1;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.btn-close-modal:hover {
+    color: var(--laranja-principal);
+}
+
+/* Animação suave para surgir flutuando */
+@keyframes surgimentoSuave {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

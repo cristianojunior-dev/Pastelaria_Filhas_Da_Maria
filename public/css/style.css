@@ -1,0 +1,470 @@
+/* RESET E CONFIGURAÇÕES GERAIS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+:root {
+    --rosa-fundo: #FFF0F2;
+    --rosa-destaque: #FFE1E5;
+    --laranja-principal: #FF8838;
+    --laranja-hover: #E06E1F;
+    --laranja-suave: #FFD2B2;
+    --texto-escuro: #2D2D2D;
+    --texto-mutado: #777777;
+    --branco: #FFFFFF;
+}
+
+body {
+    background-color: #fff8f9;
+    color: var(--texto-escuro);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+/* ESTILIZAÇÃO DO HEADER FIXO (Páginas 3 e 4 do PDF) */
+.main-header {
+    background-color: var(--branco);
+    border-bottom: 2px solid var(--rosa-destaque);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+
+.header-logo {
+    height: 60px;
+    object-fit: contain;
+}
+
+.search-area {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 40px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 45px 12px 20px;
+    border: 2px solid var(--laranja-principal);
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-btn {
+    position: absolute;
+    right: 15px;
+    color: var(--laranja-principal);
+    font-size: 18px;
+}
+
+.header-nav {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--laranja-principal);
+    font-size: 12px;
+    font-weight: 600;
+    gap: 4px;
+    transition: transform 0.2s;
+}
+
+.nav-link-item:hover {
+    transform: scale(1.05);
+}
+
+.nav-link-item i {
+    font-size: 22px;
+}
+
+/* ESTILIZAÇÃO DO RODAPÉ FIXO */
+.main-footer {
+    background-color: #0E1630; /* Azul escuro do rodapé do Figma */
+    color: var(--branco);
+    padding: 40px 20px;
+    margin-top: auto;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 40px;
+}
+
+.footer-brand-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.footer-brand-title span {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--laranja-principal);
+}
+
+.footer-address {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #CDD3CE;
+}
+
+.footer-socials {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icon {
+    font-size: 24px;
+    color: var(--branco);
+    transition: color 0.2s;
+}
+
+.social-icon:hover {
+    color: var(--laranja-principal);
+}
+
+.footer-block-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--laranja-principal);
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.footer-links-list {
+    list-style: none;
+}
+
+.footer-links-list li {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.footer-links-list a:hover {
+    color: var(--laranja-principal);
+}
+
+.hours-days {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--laranja-principal);
+    margin-bottom: 5px;
+}
+
+.hours-time {
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .search-area {
+        margin: 0;
+        width: 100%;
+    }
+}
+
+/* ==========================================================================
+   ESTILIZAÇÃO DO HEADER FIXO (Páginas 3 e 4 do PDF)
+   ========================================================================== */
+.main-header {
+    background-color: var(--rosa-fundo);
+    border-bottom: 2px solid var(--rosa-destaque);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    gap: 20px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    height: 55px;
+    object-fit: contain;
+    transition: transform 0.2s;
+}
+
+.header-logo:hover {
+    transform: scale(1.05);
+}
+
+.search-area {
+    flex: 1;
+    max-width: 550px;
+    margin: 0 20px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 50px 12px 20px;
+    border: 2px solid var(--laranja-principal);
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--texto-escuro);
+    background-color: var(--rosa-fundo);
+}
+
+.search-input::placeholder {
+    color: #A0A0A0;
+}
+
+.search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    color: var(--laranja-principal);
+    font-size: 16px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: color 0.2s;
+}
+
+.search-btn:hover {
+    color: var(--laranja-hover);
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--laranja-principal);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    gap: 6px;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.nav-link-item i {
+    font-size: 24px;
+}
+
+.nav-link-item:hover {
+    color: var(--laranja-hover);
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================================================
+   ESTILIZAÇÃO DO RODAPÉ FIXO (Páginas 3 e 4 do PDF)
+   ========================================================================== */
+.main-footer {
+    background-color: #0E1630; /* Azul escuro idêntico ao rodapé do Figma */
+    color: var(--branco);
+    padding: 45px 20px;
+    margin-top: auto;
+    border-top: 3px solid var(--laranja-principal);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 50px;
+}
+
+.footer-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-brand-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--branco);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.footer-brand-title span {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--laranja-principal);
+    text-transform: lowercase;
+    margin-top: -2px;
+}
+
+.footer-address {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    color: #CDD3CE;
+    font-weight: 400;
+}
+
+.footer-socials {
+    display: flex;
+    gap: 20px;
+}
+
+.social-icon {
+    font-size: 26px;
+    color: var(--branco);
+    transition: color 0.2s, transform 0.2s;
+}
+
+.social-icon:hover {
+    color: var(--laranja-principal);
+    transform: scale(1.1);
+}
+
+.footer-block-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--branco);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footer-block-title i {
+    color: var(--laranja-principal);
+    font-size: 18px;
+}
+
+.footer-links-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-links-list li {
+    font-size: 14px;
+}
+
+.footer-links-list a {
+    color: #CDD3CE;
+    transition: color 0.2s, padding-left 0.2s;
+    display: inline-block;
+}
+
+.footer-links-list a:hover {
+    color: var(--laranja-principal);
+    padding-left: 5px;
+}
+
+.hours-days {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--laranja-principal);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.hours-time {
+    font-size: 14px;
+    color: #CDD3CE;
+    line-height: 1.5;
+}
+
+/* RESPONSIVIDADE DO CORPO */
+@media (max-width: 900px) {
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 10px;
+    }
+    .search-area {
+        margin: 0;
+        width: 100%;
+        order: 3;
+    }
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+}

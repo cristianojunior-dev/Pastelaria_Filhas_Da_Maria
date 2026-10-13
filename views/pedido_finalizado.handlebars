@@ -1,0 +1,13 @@
+<main style="max-width: 600px; margin: 80px auto; text-align: center; padding: 40px 20px; background: #fff; border-radius: 12px; border: 1px solid var(--rosa-destaque); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+    <i class="fa-solid fa-circle-check" style="font-size: 55px; color: #155724; margin-bottom: 20px;"></i>
+    <h2 style="font-size: 24px; font-weight: 700; color: var(--texto-escuro); margin-bottom: 10px;">PEDIDO ENVIADO COM SUCESSO!</h2>
+    <p style="color: var(--texto-mutado); font-size: 15px; margin-bottom: 30px;">Seu pedido já está na fila de produção da nossa cozinha.</p>
+    
+    <div style="background-color: var(--rosa-fundo); padding: 20px; border-radius: 8px; text-align: left; margin-bottom: 30px; font-size: 14px; font-weight: 600; display: flex; flex-direction: column; gap: 10px;">
+        <p><strong>Código do Pedido:</strong> <span style="color: var(--laranja-principal);">{{codigoPedido}}</span></p>
+        <p><strong>Total a Pagar na Entrega:</strong> R$ {{totalGeral}}</p>
+        <p><strong>Forma de Escolhida:</strong> {{formaPagamento}}</p>
+    </div>
+
+    <a href="/" style="display: inline-block; padding: 12px 30px; background-color: var(--laranja-principal); color: #fff; font-weight: 700; border-radius: 25px; text-transform: uppercase; font-size: 13px;">Voltar para o Cardápio</a>
+</main>

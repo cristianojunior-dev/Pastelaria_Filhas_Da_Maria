@@ -1,0 +1,34 @@
+<main class="favoritos-page-container">
+    <h2 class="favoritos-main-title">FAVORITOS</h2>
+
+    {{#if produtos}}
+        <div class="favoritos-grid">
+            {{#each produtos}}
+                <div class="favorito-card">
+                    <div class="fav-img-box">
+                        <img src="/images/{{this.imagem}}" alt="{{this.nome}}">
+                    </div>
+                    <div class="fav-body-box">
+                        <h3 class="fav-item-title">{{this.nome}}</h3>
+                        <p class="fav-item-price">R$ {{this.preco}}</p>
+                        
+                        <div class="fav-actions">
+                            <form action="/cart/add/{{this.id}}" method="POST">
+                                <button type="submit" class="btn-fav-add-cart">ADICIONAR AO CARRINHO</button>
+                            </form>
+                            <form action="/favorites/remove/{{this.id}}" method="POST">
+                                <button type="submit" class="btn-fav-remove">REMOVER DOS FAVORITOS</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="favoritos-empty-state">
+            <i class="fa-regular fa-heart"></i>
+            <p>Você ainda não favoritou nenhum pastel ou bebida.</p>
+            <a href="/" class="btn-back-menu">Ver o Cardápio</a>
+        </div>
+    {{/if}}
+</main>

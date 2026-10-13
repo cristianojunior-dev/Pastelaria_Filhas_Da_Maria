@@ -1,0 +1,60 @@
+<div class="auth-page-wrapper">
+    <div class="login-container">
+        <!-- Logo Central Superior -->
+        <div class="logo-section">
+            <img src="/images/LOGO.transparente.png" alt="Logo Filhas da Maria" class="logo-img">
+        </div>
+
+        <h2 class="welcome-text">BEM VINDO DE VOLTA</h2>
+
+        <!-- Exibição Dinâmica de Mensagens de Erro ou Sucesso -->
+        {{#if error}}
+            <div class="alert alert-danger">
+                <i class="fa-solid fa-circle-exclamation"></i> {{error}}
+            </div>
+        {{/if}}
+
+        <!-- Formulário de Login apontando para o Backend -->
+        <form action="/auth/login" method="POST" class="login-form">
+            <div class="input-group">
+                <label for="email">USUÁRIO:</label>
+                <input type="email" name="email" id="email" placeholder="exemplo: maria@gmail.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="senha">SENHA:</label>
+                <div class="password-wrapper">
+                    <input type="password" name="senha" id="senha" placeholder="exemplo: maria123" required>
+                    <i class="fa-regular fa-eye-slash toggle-password"></i>
+                </div>
+                <a href="#" class="forgot-password">esqueceu a senha ?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary">CONECTAR</button>
+        </form>
+
+        <!-- Redirecionamento para a tela de Cadastro -->
+        <div class="register-section">
+            <p>NÃO POSSUI UMA CONTA?</p>
+            <a href="/auth/register" class="btn btn-secondary btn-register">CADASTRAR</a>
+        </div>
+    </div>
+</div>
+
+<!-- Script isolado para ocultar/mostrar a senha -->
+<script>
+    document.querySelectorAll('.toggle-password').forEach(icon => {
+        icon.addEventListener('click', function () {
+            const input = this.previousElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            } else {
+                input.type = 'password';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            }
+        });
+    });
+</script>

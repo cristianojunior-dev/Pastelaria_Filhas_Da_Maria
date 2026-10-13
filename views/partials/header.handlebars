@@ -1,0 +1,58 @@
+<header class="main-header">
+    <div class="header-container">
+        <!-- Logo Esquerda -->
+        <div class="logo-area">
+            <a href="/">
+                <img src="/images/LOGO.transparente.png" alt="Pastelaria Filhas da Maria" class="header-logo">
+            </a>
+        </div>
+
+        <!-- Barra de Pesquisa Central -->
+        <div class="search-area">
+            <form action="/products/search" method="GET" class="search-form">
+                <div class="search-input-wrapper">
+                    <input type="text" name="q" placeholder="O que você procura hoje?" class="search-input">
+                    <button type="submit" class="search-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Menu de Ícones Direita -->
+        <nav class="header-nav">
+            {{#if usuarioLogado}}
+                {{#if userAdmin}}
+                    <a href="/admin/dashboard" class="nav-link-item" title="Painel Admin">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span>Admin</span>
+                    </a>
+                {{else}}
+                    <a href="/orders" class="nav-link-item" title="Meus Pedidos">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Meus Pedidos</span>
+                    </a>
+                {{/if}}
+                <a href="/auth/logout" class="nav-link-item" title="Sair">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Sair</span>
+                </a>
+            {{else}}
+                <a href="/auth/login" class="nav-link-item">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Login</span>
+                </a>
+            {{/if}}
+
+            <a href="/favorites" class="nav-link-item">
+                <i class="fa-regular fa-heart"></i>
+                <span>Favoritos</span>
+            </a>
+
+            <a href="/cart" class="nav-link-item">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Carrinho</span>
+            </a>
+        </nav>
+    </div>
+</header>

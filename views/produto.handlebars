@@ -1,0 +1,93 @@
+<main class="produto-detalhe-container">
+
+    <!-- Bloco Superior: Detalhes do Produto Selecionado -->
+    <section class="produto-principal-card">
+        <!-- Lado Esquerdo: Imagem e Descrição -->
+        <div class="produto-visual-area">
+            <div class="breadcrumbs">
+                <a href="/">Cardápio</a> &gt; <span>{{produto.nome}}</span>
+            </div>
+
+            <div class="main-product-image-wrapper">
+                <img src="/images/{{produto.imagem}}" alt="{{produto.nome}}" class="main-product-img">
+            </div>
+
+            <div class="product-ingredients-box">
+                <h3>Ingredientes:</h3>
+                <p>{{produto.ingredientes_lista}}</p>
+            </div>
+        </div>
+
+        <!-- Lado Direito: Preço, Quantidade e Ação -->
+        <div class="produto-compra-area">
+            <h1 class="main-product-title">{{produto.nome}}</h1>
+
+            <div class="main-product-price">R$ {{produto.preco}}</div>
+
+            {{#if produto.disponivel}}
+            <!-- Formulário Principal de Adição ao Carrinho -->
+            <form action="/cart/add/{{produto.id}}" method="POST" class="purchase-form">
+                <div class="quantity-selector-wrapper">
+                    <label for="quantidade">Quantidade:</label>
+                    <div class="quantity-controls">
+                        <button type="button" class="btn-qty-minus" onclick="alterarQtd(-1)">-</button>
+                        <input type="number" name="quantidade" id="quantidade" value="1" min="1" readonly>
+                        <button type="button" class="btn-qty-plus" onclick="alterarQtd(1)">+</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-main-buy">COMPRAR</button>
+            </form>
+
+            <!-- NOVO: Formulário Secundário Exclusivo para Adicionar aos Favoritos (Figma Página 3) -->
+            <form action="/favorites/add/{{produto.id}}" method="POST" style="margin-top: 15px;">
+                <button type="submit" class="btn-main-buy"
+                    style="background-color: transparent; border: 2px solid var(--laranja-principal); color: var(--laranja-principal); box-shadow: none;">
+                    <i class="fa-regular fa-heart"></i> ADICIONAR AOS FAVORITOS
+                </button>
+            </form>
+            {{else}}
+            <div class="product-status-indisponivel">
+                <i class="fa-solid fa-triangle-exclamation"></i> Indisponível no momento
+            </div>
+            {{/if}}
+        </div>
+    </section>
+
+    <!-- Bloco Inferior: Fileira de Recomendações -->
+    <section class="recomendacoes-section">
+        <h2 class="recomendacoes-title">Recomendações</h2>
+        <div class="recomendacoes-grid">
+            {{#each recomendacoes}}
+            <div class="recomendacao-card">
+                <div class="rec-img-wrapper">
+                    <img src="/images/{{this.imagem}}" alt="{{this.nome}}">
+                </div>
+                <div class="rec-body">
+                    <h3>{{this.nome}}</h3>
+                    <p class="rec-price">R$ {{this.preco}}</p>
+
+                    {{#if this.disponivel}}
+                    <a href="/products/{{this.id}}" class="btn-rec-view">Comprar</a>
+                    {{else}}
+                    <span class="rec-indisponivel">Indisponível</span>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </section>
+
+</main>
+
+<!-- Script para controle do input de quantidade -->
+<script>
+    function alterarQtd(valor) {
+        const input = document.getElementById('quantidade');
+        if (!input) return;
+        let atual = parseInt(input.value) || 1;
+        atual += valor;
+        if (atual < 1) atual = 1;
+        input.value = atual;
+    }
+</script>

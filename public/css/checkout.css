@@ -1,0 +1,210 @@
+.checkout-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.checkout-main-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--texto-escuro);
+}
+
+/* LAYOUT GRID DUAS COLUNAS */
+.checkout-layout-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* CARD ESQUERDO: RESUMO */
+.checkout-summary-card {
+    background-color: var(--branco);
+    border: 1px solid var(--rosa-destaque);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.summary-box-items {
+    border-bottom: 2px solid var(--rosa-fundo);
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.summary-item-line {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--texto-escuro);
+    text-transform: uppercase;
+}
+
+.summary-box-values {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.value-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--texto-escuro);
+}
+
+.value-row span {
+    font-weight: 500;
+}
+
+.value-row-final {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid var(--rosa-fundo);
+    padding-top: 15px;
+    margin-top: 5px;
+    font-size: 18px;
+    color: var(--texto-escuro);
+}
+
+.value-row-final strong {
+    font-size: 22px;
+    color: var(--texto-escuro);
+}
+
+/* CARD DIREITO: FORMULÁRIO */
+.checkout-form-card {
+    background-color: var(--branco);
+    border: 1px solid var(--rosa-destaque);
+    border-radius: 12px;
+    padding: 35px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.main-checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.checkout-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--texto-escuro);
+    text-transform: uppercase;
+}
+
+.checkout-form-group input, 
+.checkout-form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--laranja-principal);
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: var(--branco);
+}
+
+.checkout-form-group input:focus, 
+.checkout-form-group select:focus {
+    border-color: var(--laranja-hover);
+}
+
+.cep-help-link {
+    font-size: 12px;
+    text-decoration: underline;
+    color: var(--texto-mutado);
+    align-self: flex-start;
+    font-weight: 500;
+}
+
+/* CUSTOM SELECT ARROW */
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 40px;
+}
+
+.select-wrapper::after {
+    content: '\f0d7';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--laranja-principal);
+    pointer-events: none;
+}
+
+/* NOTA INFORMATIVA */
+.checkout-info-payment-notice {
+    background-color: #FFFDF9;
+    border: 1px solid var(--laranja-suave);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.checkout-info-payment-notice i {
+    font-size: 20px;
+    color: var(--laranja-principal);
+}
+
+.checkout-info-payment-notice p {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texto-escuro);
+    line-height: 1.4;
+}
+
+/* BOTÃO FINALIZAR */
+.btn-finalize-order {
+    width: 100%;
+    padding: 16px 0;
+    background-color: var(--laranja-principal);
+    color: var(--branco);
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background-color 0.2s, transform 0.1s;
+    border: none;
+}
+
+.btn-finalize-order:hover {
+    background-color: var(--laranja-hover);
+}
+
+.btn-finalize-order:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 850px) {
+    .checkout-layout-grid {
+        grid-template-columns: 1fr;
+    }
+}

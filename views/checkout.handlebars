@@ -1,0 +1,72 @@
+<main class="checkout-page-container">
+    <h2 class="checkout-main-title">Resumo do pedido:</h2>
+
+    <div class="checkout-layout-grid">
+        <!-- Lado Esquerdo: Resumo dos Itens e Valores -->
+        <section class="checkout-summary-card">
+            <div class="summary-box-items">
+                {{#each itens}}
+                    <p class="summary-item-line">{{this.nome}} {{this.quantidade}}X</p>
+                {{/each}}
+            </div>
+
+            <div class="summary-box-values">
+                <p class="value-row"><span>Total do pedido:</span> <strong>R$ {{totalPedido}}</strong></p>
+                <p class="value-row"><span>Taxa de entrega:</span> <strong>R$ {{taxaEntrega}}</strong></p>
+                <div class="value-row-final"><span>Total a pagar:</span> <strong>R$ {{totalGeral}}</strong></div>
+            </div>
+        </section>
+
+        <!-- Lado Direito: Formulário de Entrega e Pagamento -->
+        <section class="checkout-form-card">
+            <form action="/checkout/finalizar" method="POST" class="main-checkout-form">
+                
+                <!-- Bloco CEP -->
+                <div class="checkout-form-group">
+                    <label for="cep" class="form-label-title">CEP:</label>
+                    <input type="text" name="cep" id="cep" placeholder="Exemplo: 13880-000" required>
+                    <a href="https://correios.com.br" target="_blank" class="cep-help-link">não sei meu cep</a>
+                </div>
+
+                <!-- Bloco Seleção de Pagamento (Conforme sua Diretriz) -->
+                <div class="checkout-form-group">
+                    <label for="forma_pagamento" class="form-label-title">Formas de Pagamento:</label>
+                    <div class="select-wrapper">
+                        <select name="forma_pagamento" id="forma_pagamento" required onchange="verificarDinheiro(this.value)">
+                            <option value="" disabled selected>Selecione como deseja pagar na entrega...</option>
+                            <option value="PIX">PIX (na entrega)</option>
+                            <option value="Dinheiro">Dinheiro (na entrega)</option>
+                            <option value="Cartão de Crédito">Cartão de Crédito (na entrega)</option>
+                            <option value="Cartão de Débito">Cartão de Débito (na entrega)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Campo Dinâmico de Troco (Aparece apenas se selecionar Dinheiro) -->
+                <div class="checkout-form-group id-troco-box" id="troco_container" style="display: none;">
+                    <label for="troco" class="form-label-title">Troco para quanto?</label>
+                    <input type="text" name="troco" id="troco" placeholder="Exemplo: Troco para R$ 50,00">
+                </div>
+
+                <div class="checkout-info-payment-notice">
+                    <i class="fa-solid fa-truck-delivery"></i>
+                    <p>O pagamento será realizado de forma segura diretamente ao entregador no ato da entrega.</p>
+                </div>
+
+                <button type="submit" class="btn-finalize-order">FINALIZAR PEDIDO</button>
+            </form>
+        </section>
+    </div>
+</main>
+
+<script>
+    function verificarDinheiro(valor) {
+        const trocoBox = document.getElementById('troco_container');
+        if (valor === 'Dinheiro') {
+            trocoBox.style.display = 'flex';
+        } else {
+            trocoBox.style.display = 'none';
+            document.getElementById('troco').value = '';
+        }
+    }
+</script>

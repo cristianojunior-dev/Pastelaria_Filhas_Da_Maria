@@ -1,41 +1,45 @@
 ```markdown
 # 🥟 Pastelaria Filhas da Maria
 
-Sistema web completo de delivery e gestão para a **Pastelaria Filhas da Maria**, desenvolvido com Node.js, Express, Handlebars e MySQL. O projeto conta com cardápio dinâmico, controle de estoque de ingredientes por receita, carrinho de compras, múltiplos endereços com busca automática de CEP (ViaCEP)[cite: 2], painel administrativo e notificações por e-mail (Nodemailer)[cite: 1].
+Sistema web completo de delivery e gestão para a **Pastelaria Filhas da Maria**,
+desenvolvido com Node.js, Express, Handlebars e MySQL. O projeto conta com cardápio dinâmico, controle de estoque de ingredientes por receita,
+carrinho de compras, múltiplos endereços com busca automática de CEP (ViaCEP), painel administrativo e notificações por e-mail (Nodemailer)
 
 ---
 
 ## 🚀 Funcionalidades do Sistema
 
 ### 👤 Para o Cliente:
-* **Catálogo Completo e Interativo:** Visualização de pastéis salgados, doces, panquecas, salgados, porções, caldos e bebidas[cite: 1].
-* **Controle de Estoque Inteligente:** Se um ingrediente essencial de um pastel esgotar na cozinha, o produto fica automaticamente com o selo *"Indisponível no momento"*[cite: 1].
-* **Busca de Produtos:** Barra de pesquisa em tempo real[cite: 1].
-* **Favoritos:** Adicione e remova pastéis e bebidas favoritas[cite: 1].
-* **Carrinho de Compras:** Gestão completa de quantidades e itens[cite: 1].
+* **Catálogo Completo e Interativo:** Visualização de pastéis salgados, doces, panquecas, salgados, porções, caldos e bebidas
+* **Controle de Estoque Inteligente:** Se um ingrediente essencial de um pastel esgotar na cozinha, o produto fica automaticamente com o selo
+*"Indisponível no momento"*.
+* **Busca de Produtos:** Barra de pesquisa em tempo real.
+* **Favoritos:** Adicione e remova pastéis e bebidas favoritas.
+* **Carrinho de Compras:** Gestão completa de quantidades e itens.
 * **Checkout Avançado com ViaCEP:** 
-  * Busca automática de endereço pelo CEP integrado à API dos Correios (ViaCEP)[cite: 2].
+  * Busca automática de endereço pelo CEP integrado à API dos Correios (ViaCEP).
   * Opção de escolher entre endereços já salvos na conta ou cadastrar um novo endereço que fica guardado automaticamente.
   * Possibilidade de remover endereços antigos diretamente na finalização.
-* **Acompanhamento de Pedidos:** Histórico completo de pedidos realizados na aba "Meus Pedidos"[cite: 1].
+* **Acompanhamento de Pedidos:** Histórico completo de pedidos realizados na aba "Meus Pedidos".
 
 ### ⚙️ Para o Administrador (Painel Admin):
-* **Fila de Pedidos em Tempo Real:** Monitoramento de novos pedidos recebidos, com alteração de status (`recebido` -> `em preparação` -> `enviado` -> `entregue`)[cite: 1].
-* **Notificações por E-mail:** Envio automático de atualizações da entrega para o cliente via Nodemailer[cite: 1].
-* **Gestão de Cardápio:** Cadastro de novos produtos com upload de fotos (Multer)[cite: 1], edição via Modal[cite: 1] e exclusão de itens[cite: 1].
-* **Controle de Estoque Manual:** Ativação e desativação rápida de ingredientes (ex: esgotou o queijo ou a goiabada)[cite: 1].
+* **Fila de Pedidos em Tempo Real:** Monitoramento de novos pedidos recebidos, com alteração de status
+(`recebido` -> `em preparação` -> `enviado` -> `entregue`).
+* **Notificações por E-mail:** Envio automático de atualizações da entrega para o cliente via Nodemailer.
+* **Gestão de Cardápio:** Cadastro de novos produtos com upload de fotos (Multer)[cite: 1], edição via Modal e exclusão de itens.
+* **Controle de Estoque Manual:** Ativação e desativação rápida de ingredientes (ex: esgotou o queijo ou a goiabada).
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Backend:** Node.js, Express[cite: 1]
-* **Sessões e Segurança:** Express-session, Cookie-parser, Bcrypt (Criptografia de senhas)[cite: 1]
-* **Banco de Dados:** MySQL (MySQL2 com Pool de Conexões)[cite: 1]
-* **Template Engine:** Handlebars (`express-handlebars`)[cite: 1]
-* **Upload de Imagens:** Multer[cite: 1]
-* **Envio de E-mails:** Nodemailer[cite: 1]
-* **Frontend & Estilização:** HTML5, CSS3 (Responsivo), JavaScript Vanilla, jQuery (para a API de CEP)[cite: 2], Font Awesome[cite: 1]
+* **Backend:** Node.js, Express
+* **Sessões e Segurança:** Express-session, Cookie-parser, Bcrypt (Criptografia de senhas)
+* **Banco de Dados:** MySQL (MySQL2 com Pool de Conexões)
+* **Template Engine:** Handlebars (`express-handlebars`)
+* **Upload de Imagens:** Multer
+* **Envio de E-mails:** Nodemailer
+* **Frontend & Estilização:** HTML5, CSS3 (Responsivo), JavaScript Vanilla, jQuery (para a API de CEP), Font Awesome
 
 ---
 

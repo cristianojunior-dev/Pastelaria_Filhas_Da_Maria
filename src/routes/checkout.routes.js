@@ -7,4 +7,8 @@ const authMiddleware = require('../middlewares/auth.middleware');
 router.get('/', authMiddleware, checkoutController.renderCheckout);
 router.post('/finalizar', authMiddleware, checkoutController.finalizarPedido);
 
+// NOVA ROTA: Remover um endereço salvo do usuário
+router.post('/endereco/remover/:id', authMiddleware, checkoutController.removerEndereco);
+
+
 module.exports = router;

@@ -52,7 +52,7 @@ Certifique-se de ter instalado em sua máquina:
 
 ### 1. Clonar o repositório
 ```bash
-git clone https://github.com/PanetoMatheus/Pastelaria_Filhas_Maria.git
+git clone https://github.com/cristianojunior-dev/Pastelaria_Filhas_Da_Maria.git
 cd pastelaria-filhas-da-maria
 
 ```

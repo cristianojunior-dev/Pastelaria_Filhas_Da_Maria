@@ -1,33 +1,22 @@
 <main class="admin-dashboard-container">
     <h1 class="admin-main-title"><i class="fa-solid fa-user-gear"></i> Painel de Controle - Admin</h1>
 
-    <!-- Alertas Globais do Servidor -->
-    {{#if success}}
-        <div class="admin-alert alert-success" style="padding: 14px; background: #D4EDDA; color: #155724; border-radius: 8px; margin-bottom: 20px; font-weight: 600; border: 1px solid #C3E6CB;">
-            <i class="fa-solid fa-circle-check"></i> {{success}}
-        </div>
-    {{/if}}
-    {{#if error}}
-        <div class="admin-alert alert-danger" style="padding: 14px; background: #F8D7DA; color: #721C24; border-radius: 8px; margin-bottom: 20px; font-weight: 600; border: 1px solid #F5C6CB;">
-            <i class="fa-solid fa-circle-exclamation"></i> {{error}}
-        </div>
-    {{/if}}
-
-    <!-- MENU DE NAVEGAÇÃO EXPANDIDO (AGORA COM 5 PAINÉIS) -->
-    <nav class="admin-nav-tabs" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid var(--rosa-destaque); padding-bottom: 1px;">
-        <button type="button" class="admin-tab-btn active" onclick="mudarPainel(1)" id="btn-tab-1">Fila de Pedidos</button>
-        <button type="button" class="admin-tab-btn" onclick="mudarPainel(2)" id="btn-tab-2">Cadastrar Novo Produto</button>
+    <nav class="admin-nav-tabs"
+        style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid var(--rosa-destaque); padding-bottom: 1px;">
+        <button type="button" class="admin-tab-btn active" onclick="mudarPainel(1)" id="btn-tab-1">Fila de
+            Pedidos</button>
+        <button type="button" class="admin-tab-btn" onclick="mudarPainel(2)" id="btn-tab-2">Cadastrar Novo
+            Produto</button>
         <button type="button" class="admin-tab-btn" onclick="mudarPainel(3)" id="btn-tab-3">Gerenciar Cardápio</button>
-        <button type="button" class="admin-tab-btn" onclick="mudarPainel(4)" id="btn-tab-4"><i class="fa-solid fa-layer-group"></i> Estoque (Ingredientes)</button>
-        <button type="button" class="admin-tab-btn" onclick="mudarPainel(5)" id="btn-tab-5"><i class="fa-solid fa-tags"></i> Categorias</button>
+        <button type="button" class="admin-tab-btn" onclick="mudarPainel(4)" id="btn-tab-4"><i
+                class="fa-solid fa-layer-group"></i> Estoque</button>
+        <button type="button" class="admin-tab-btn" onclick="mudarPainel(5)" id="btn-tab-5"><i
+                class="fa-solid fa-tags"></i> Categorias</button>
     </nav>
 
-    <!-- ==========================================
-         PAINEL 1: FILA DE PEDIDOS 
-         ========================================== -->
+    <!-- PAINEL 1: PEDIDOS -->
     <section id="painel-admin-1" class="admin-section-card admin-panel-box">
         <h2 class="admin-section-title"><i class="fa-solid fa-utensils"></i> Monitoramento de Pedidos</h2>
-
         <div class="table-wrapper">
             <table class="orders-admin-table">
                 <thead>
@@ -37,272 +26,233 @@
                         <th>Total Geral</th>
                         <th>Pagamento</th>
                         <th>Status Atual</th>
-                        <th>Alterar Fila (E-mail)</th>
+                        <th>Alterar Fila</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{#if pedidos}}
-                        {{#each pedidos}}
-                            <tr>
-                                <td class="order-code-td">{{this.codigo}}</td>
-                                <td>{{this.data_formatada}}</td>
-                                <td>R$ {{this.total_geral}}</td>
-                                <td>{{this.forma_pagamento}}</td>
-                                <td>
-                                    <span class="status-badge status-{{this.status}}">{{this.status}}</span>
-                                </td>
-                                <td>
-                                    <form action="/admin/orders/update-status/{{this.id}}" method="POST">
-                                        <select name="status" required onchange="this.form.submit()" class="select-status-admin">
-                                            <option value="" disabled selected>Alterar...</option>
-                                            <option value="recebido">Recebido</option>
-                                            <option value="em preparação">Em preparação</option>
-                                            <option value="enviado">Enviado</option>
-                                            <option value="entregue">Entregue</option>
-                                        </select>
-                                    </form>
-                                </td>
-                            </tr>
-                        {{/each}}
-                    {{else}}
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 40px; color: var(--texto-mutado); font-weight: 600;">
-                                Nenhum pedido aguardando na fila.
-                            </td>
-                        </tr>
-                    {{/if}}
+                    {{#each pedidos}}
+                    <tr>
+                        <td class="order-code-td">{{this.codigo}}</td>
+                        <td>{{this.data_formatada}}</td>
+                        <td>R$ {{this.total_geral}}</td>
+                        <td>{{this.forma_pagamento}}</td>
+                        <td><span class="status-badge status-{{this.status}}">{{this.status}}</span></td>
+                        <td>
+                            <form action="/admin/orders/update-status/{{this.id}}" method="POST">
+                                <select name="status" required onchange="this.form.submit()"
+                                    class="select-status-admin">
+                                    <option value="" disabled selected>Alterar...</option>
+                                    <option value="recebido">Recebido</option>
+                                    <option value="em preparação">Em preparação</option>
+                                    <option value="enviado">Enviado</option>
+                                    <option value="entregue">Entregue</option>
+                                </select>
+                            </form>
+                        </td>
+                    </tr>
+                    {{/each}}
                 </tbody>
             </table>
         </div>
     </section>
 
-    <!-- ==========================================
-         PAINEL 2: FORMULÁRIO DE CADASTRO DE PRODUTO
-         ========================================== -->
+    <!-- PAINEL 2: CADASTRO COM CHECKBOXES -->
     <section id="painel-admin-2" class="admin-section-card admin-panel-box" style="display: none;">
         <h2 class="admin-section-title"><i class="fa-solid fa-circle-plus"></i> Inserir Novo Item no Cardápio</h2>
-
         <form action="/admin/products/add" method="POST" enctype="multipart/form-data" class="admin-product-form">
-            <div class="admin-form-group">
-                <label for="nome">Nome do Produto:</label>
-                <input type="text" name="nome" id="nome" placeholder="Exemplo: Pastel de Carne Moída" required>
-            </div>
-
+            <div class="admin-form-group"><label for="nome">Nome do Produto:</label><input type="text" name="nome"
+                    id="nome" required></div>
             <div class="admin-form-group-row">
-                <div class="admin-form-group">
-                    <label for="preco">Preço Unitário (R$):</label>
-                    <input type="number" name="preco" id="preco" step="0.01" placeholder="9.00" required>
-                </div>
-
+                <div class="admin-form-group"><label for="preco">Preço Unitário (R$):</label><input type="number"
+                        name="preco" id="preco" step="0.01" required></div>
                 <div class="admin-form-group">
                     <label for="id_categoria">Categoria:</label>
                     <select name="id_categoria" id="id_categoria" required>
                         <option value="" disabled selected>Escolha a categoria...</option>
-                        {{#each categorias}}
-                            <option value="{{this.id}}">{{this.nome}}</option>
-                        {{/each}}
+                        {{#each categorias}}<option value="{{this.id}}">{{this.nome}}</option>{{/each}}
                     </select>
                 </div>
             </div>
 
             <div class="admin-form-group">
-                <label for="descricao">Descrição / Ingredientes:</label>
-                <textarea name="descricao" id="descricao" rows="4" placeholder="Farinha de trigo, água, sal, carne moída selecionada, temperos..." required></textarea>
+                <label>Ingredientes Utilizados (Marque as opções):</label>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; background: var(--rosa-fundo); padding: 15px; border-radius: 8px; border: 1px solid var(--rosa-destaque); max-height: 200px; overflow-y: auto;">
+                    {{#each todosIngredientes}}
+                    <label
+                        style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                        <input type="checkbox" name="ingredientes" value="{{this.id}}"
+                            style="width: 16px; height: 16px; accent-color: var(--laranja-principal);">
+                        <span>{{this.nome}}</span>
+                    </label>
+                    {{/each}}
+                </div>
             </div>
 
-            <div class="admin-form-group">
-                <label for="imagem">Foto Ilustrativa:</label>
-                <input type="file" name="imagem" id="imagem" accept="image/*" required>
-            </div>
-
+            <div class="admin-form-group"><label for="imagem">Foto Ilustrativa:</label><input type="file" name="imagem"
+                    id="imagem" accept="image/*" required></div>
             <button type="submit" class="btn-admin-save-product">Cadastrar Produto</button>
         </form>
     </section>
-        
-    <!-- ==========================================
-         PAINEL 3: GERENCIADOR E EDIÇÃO DE PRODUTOS
-         ========================================== -->
+
+    <!-- PAINEL 3: LISTA DE PRODUTOS -->
     <section id="painel-admin-3" class="admin-section-card admin-panel-box" style="display: none;">
         <h2 class="admin-section-title"><i class="fa-solid fa-boxes-stacked"></i> Lista de Itens Cadastrados</h2>
-        
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
             {{#each todosProdutos}}
-                <div style="display: flex; flex-direction: column; justify-content: space-between; gap: 15px; background: var(--rosa-fundo); padding: 15px; border-radius: 8px; border: 1px solid var(--rosa-destaque); box-sizing: border-box;">
-                    
-                    <!-- Parte de cima: Imagem + Nome e Preço -->
-                    <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
-                        <img src="/images/{{this.imagem}}" style="width: 65px; height: 50px; object-fit: cover; border-radius: 6px; flex-shrink: 0;">
-                        <div style="overflow: hidden;">
-                            <h4 style="font-size: 13px; font-weight: 700; color: var(--texto-escuro); text-transform: uppercase; margin: 0; word-break: break-word;">{{this.nome}}</h4>
-                            <p style="font-size: 13px; font-weight: 700; color: var(--laranja-principal); margin: 4px 0 0 0;">R$ {{this.preco}}</p>
-                        </div>
+            <div
+                style="display: flex; flex-direction: column; justify-content: space-between; gap: 15px; background: var(--rosa-fundo); padding: 15px; border-radius: 8px; border: 1px solid var(--rosa-destaque);">
+                <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
+                    <img src="/images/{{this.imagem}}"
+                        style="width: 65px; height: 50px; object-fit: cover; border-radius: 6px; flex-shrink: 0;">
+                    <div>
+                        <h4 style="font-size: 13px; font-weight: 700; color: var(--texto-escuro); margin: 0;">
+                            {{this.nome}}</h4>
+                        <p
+                            style="font-size: 13px; font-weight: 700; color: var(--laranja-principal); margin: 4px 0 0 0;">
+                            R$ {{this.preco}}</p>
                     </div>
-                    
-                    <!-- Parte de baixo: Botões alinhados à direita -->
-                    <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--rosa-destaque); padding-top: 10px;">
-                        <button type="button" class="select-status-admin" style="background: var(--branco); padding: 6px 14px; font-weight: 700;"
-                                onclick="abrirModalEdicao('{{this.id}}', '{{this.nome}}', '{{this.preco}}', '{{this.id_categoria}}', '{{this.descricao}}', '{{this.imagem}}')">
-                            EDITAR
-                        </button>
-                        
-                        <form action="/admin/products/delete/{{this.id}}" method="POST" style="display: inline; margin: 0;" onsubmit="return confirm('Tem certeza absoluta que deseja excluir o produto {{this.nome}} do cardápio?')">
-                            <button type="submit" class="select-status-admin" style="background: #F8D7DA; color: #721C24; border-color: #F5C6CB; padding: 6px 14px; font-weight: 700;">
-                                EXCLUIR
-                            </button>
-                        </form>
-                    </div>
-
                 </div>
-            {{else}}
-                <p style="grid-column: 1/-1; text-align: center; color: var(--texto-mutado); font-weight: 600; padding: 20px;">Nenhum produto cadastrado no sistema.</p>
-            {{/each}}
-        </div>
-    </section>
-
-    <!-- ==========================================
-         PAINEL 4: CONTROLE MANUAL DE ESTOQUE (INGREDIENTES)
-         ========================================== -->
-    <section id="painel-admin-4" class="admin-section-card admin-panel-box" style="display: none;">
-        <h2 class="admin-section-title"><i class="fa-solid fa-layer-group"></i> Ativar / Desativar Ingredientes</h2>
-        <p style="font-size: 13px; color: var(--texto-mutado); margin-bottom: 25px; text-align: left; font-weight: 500;">
-            Desative um ingrediente quando ele acabar na cozinha. Todos os pastéis ou salgados que utilizarem este ingrediente exibirão automaticamente o aviso <strong>"Indisponível no momento"</strong> no cardápio e travarão o botão de compra.
-        </p>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
-            {{#each todosIngredientes}}
-                <div style="display: flex; align-items: center; justify-content: space-between; background: var(--branco); padding: 15px; border-radius: 10px; border: 2px solid var(--rosa-destaque);">
-                    <div style="text-align: left;">
-                        <h4 style="font-size: 14px; font-weight: 700; color: var(--texto-escuro); margin: 0; text-transform: uppercase;">{{this.nome}}</h4>
-                        <p style="margin: 4px 0 0 0; font-size: 11px; font-weight: 700;">
-                            {{#if this.em_estoque}}
-                                <span style="color: #155724; background: #D4EDDA; padding: 2px 8px; border-radius: 10px;">DISPONÍVEL</span>
-                            {{else}}
-                                <span style="color: #721C24; background: #F8D7DA; padding: 2px 8px; border-radius: 10px;">ESGOTADO</span>
-                            {{/if}}
-                        </p>
-                    </div>
-                    
-                    <form action="/admin/ingredients/toggle/{{this.id}}" method="POST">
-                        {{#if this.em_estoque}}
-                            <button type="submit" class="select-status-admin" style="background: #F8D7DA; color: #721C24; border-color: #F5C6CB; font-weight: 700; padding: 6px 12px;">DESATIVAR</button>
-                        {{else}}
-                            <button type="submit" class="select-status-admin" style="background: #D4EDDA; color: #155724; border-color: #C3E6CB; font-weight: 700; padding: 6px 12px;">ATIVAR</button>
-                        {{/if}}
+                <div
+                    style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--rosa-destaque); padding-top: 10px;">
+                    <button type="button" class="select-status-admin"
+                        style="background: var(--branco); padding: 6px 14px; font-weight: 700;"
+                        onclick="abrirModalEdicao('{{this.id}}', '{{this.nome}}', '{{this.preco}}', '{{this.id_categoria}}', '{{this.imagem}}')">EDITAR</button>
+                    <form action="/admin/products/delete/{{this.id}}" method="POST" style="margin: 0;"
+                        onsubmit="return confirm('Excluir {{this.nome}}?')">
+                        <button type="submit" class="select-status-admin"
+                            style="background: #F8D7DA; color: #721C24; border-color: #F5C6CB; padding: 6px 14px; font-weight: 700;">EXCLUIR</button>
                     </form>
                 </div>
-            {{else}}
-                <p style="grid-column: 1/-1; text-align: center; color: var(--texto-mutado); font-weight: 600; padding: 20px;">Nenhum ingrediente cadastrado no banco de dados.</p>
+            </div>
             {{/each}}
         </div>
     </section>
 
-    <!-- ==========================================
-         PAINEL 5: GERENCIAR E ADICIONAR CATEGORIAS
-         ========================================== -->
-    <section id="painel-admin-5" class="admin-section-card admin-panel-box" style="display: none;">
-        <h2 class="admin-section-title"><i class="fa-solid fa-tags"></i> Adicionar Nova Categoria</h2>
-
-        <form action="/admin/categories/add" method="POST" class="admin-product-form" style="margin-bottom: 35px; border-bottom: 2px solid var(--rosa-fundo); padding-bottom: 25px;">
-            <div style="display: flex; gap: 15px; align-items: flex-end;">
-                <div class="admin-form-group" style="flex: 1;">
-                    <label for="nome_categoria">Nome da Categoria:</label>
-                    <input type="text" name="nome" id="nome_categoria" placeholder="Exemplo: Sobremesas, Combos, Acompanhamentos..." required>
+    <!-- PAINEL 4: ESTOQUE INGREDIENTES -->
+    <section id="painel-admin-4" class="admin-section-card admin-panel-box" style="display: none;">
+        <h2 class="admin-section-title"><i class="fa-solid fa-layer-group"></i> Ativar / Desativar Ingredientes</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+            {{#each todosIngredientes}}
+            <div
+                style="display: flex; align-items: center; justify-content: space-between; background: var(--branco); padding: 15px; border-radius: 10px; border: 2px solid var(--rosa-destaque);">
+                <div style="text-align: left;">
+                    <h4 style="font-size: 14px; font-weight: 700; color: var(--texto-escuro); margin: 0;">{{this.nome}}
+                    </h4>
+                    <p style="margin: 4px 0 0 0; font-size: 11px; font-weight: 700;">
+                        {{#if this.em_estoque}}<span
+                            style="color: #155724; background: #D4EDDA; padding: 2px 8px; border-radius: 10px;">DISPONÍVEL</span>{{else}}<span
+                            style="color: #721C24; background: #F8D7DA; padding: 2px 8px; border-radius: 10px;">ESGOTADO</span>{{/if}}
+                    </p>
                 </div>
-                <button type="submit" class="btn-admin-save-product" style="width: auto; padding: 13px 30px; white-space: nowrap;">
-                    <i class="fa-solid fa-plus"></i> Adicionar Categoria
-                </button>
+                <form action="/admin/ingredients/toggle/{{this.id}}" method="POST">
+                    {{#if this.em_estoque}}<button type="submit" class="select-status-admin"
+                        style="background: #F8D7DA; color: #721C24; border-color: #F5C6CB; font-weight: 700; padding: 6px 12px;">DESATIVAR</button>{{else}}<button
+                        type="submit" class="select-status-admin"
+                        style="background: #D4EDDA; color: #155724; border-color: #C3E6CB; font-weight: 700; padding: 6px 12px;">ATIVAR</button>{{/if}}
+                </form>
+            </div>
+            {{/each}}
+        </div>
+    </section>
+
+    <!-- PAINEL 5: CATEGORIAS -->
+    <section id="painel-admin-5" class="admin-section-card admin-panel-box" style="display: none;">
+        <h2 class="admin-section-title"><i class="fa-solid fa-tags"></i> Gerenciar Categorias</h2>
+        <form action="/admin/categories/add" method="POST" class="admin-product-form"
+            style="margin-bottom: 25px; border-bottom: 2px solid var(--rosa-fundo); padding-bottom: 25px;">
+            <div style="display: flex; gap: 15px; align-items: flex-end;">
+                <div class="admin-form-group" style="flex: 1;"><label>Nome da Nova Categoria:</label><input type="text"
+                        name="nome" required></div>
+                <button type="submit" class="btn-admin-save-product" style="width: auto; padding: 13px 30px;"><i
+                        class="fa-solid fa-plus"></i> Adicionar</button>
             </div>
         </form>
-
-        <h2 class="admin-section-title"><i class="fa-solid fa-list"></i> Categorias Cadastradas</h2>
-
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
             {{#each categorias}}
-                <div style="display: flex; align-items: center; justify-content: space-between; background: var(--rosa-fundo); padding: 15px 18px; border-radius: 8px; border: 1px solid var(--rosa-destaque);">
-                    <div style="text-align: left;">
-                        <span style="font-size: 11px; font-weight: 700; color: var(--laranja-principal);">ID #{{this.id}}</span>
-                        <h4 style="font-size: 14px; font-weight: 700; color: var(--texto-escuro); text-transform: uppercase; margin: 2px 0 0 0;">{{this.nome}}</h4>
-                    </div>
-
-                    <div style="display: flex; gap: 8px;">
-                        <button type="button" class="select-status-admin" style="background: var(--branco); padding: 6px 12px; font-weight: 700;"
-                                onclick="abrirModalCategoria('{{this.id}}', '{{this.nome}}')">
-                            EDITAR
-                        </button>
-
-                        <form action="/admin/categories/delete/{{this.id}}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir a categoria {{this.nome}}? Os produtos desta categoria ficarão sem categoria associada.')">
-                            <button type="submit" class="select-status-admin" style="background: #F8D7DA; color: #721C24; border-color: #F5C6CB; padding: 6px 12px; font-weight: 700;">
-                                EXCLUIR
-                            </button>
-                        </form>
-                    </div>
+            <div
+                style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px; background: var(--rosa-fundo); padding: 15px; border-radius: 8px; border: 1px solid var(--rosa-destaque);">
+                <div style="text-align: left;">
+                    <h4 style="font-size: 14px; font-weight: 700; color: var(--texto-escuro); margin: 0;">#{{this.id}} -
+                        {{this.nome}}</h4>
                 </div>
-            {{else}}
-                <p style="grid-column: 1/-1; text-align: center; color: var(--texto-mutado); font-weight: 600; padding: 20px;">Nenhuma categoria cadastrada.</p>
+                <div
+                    style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--rosa-destaque); padding-top: 10px;">
+                    <button type="button" class="select-status-admin"
+                        style="background: var(--branco); padding: 6px 14px; font-weight: 700;"
+                        onclick="abrirModalCategoria('{{this.id}}', '{{this.nome}}')">EDITAR</button>
+                    <form action="/admin/categories/delete/{{this.id}}" method="POST" style="margin: 0;"
+                        onsubmit="return confirm('Excluir categoria?')">
+                        <button type="submit" class="select-status-admin"
+                            style="background: #F8D7DA; color: #721C24; border-color: #F5C6CB; padding: 6px 14px; font-weight: 700;">EXCLUIR</button>
+                    </form>
+                </div>
+            </div>
             {{/each}}
         </div>
     </section>
 </main>
 
+<!-- MODAL DE EDIÇÃO DO PRODUTO (COM CHECKBOXES) -->
 <div id="modalEditar" class="modal-admin-overlay" style="display: none;">
-    <div class="modal-admin-card">
+    <div class="modal-admin-card" style="max-width: 600px;">
         <div class="modal-admin-header">
-            <h3><i class="fa-solid fa-pen-to-square"></i> Modificar Dados do Produto</h3>
+            <h3><i class="fa-solid fa-pen-to-square"></i> Editar Produto</h3>
             <button type="button" class="btn-close-modal" onclick="fecharModalEdicao()">&times;</button>
         </div>
-        
-        <form id="formEditarProduto" action="" method="POST" enctype="multipart/form-data" class="admin-product-form" style="margin-top: 25px;">
-            <div class="admin-form-group">
-                <label for="edit_nome">Nome do Produto:</label>
-                <input type="text" name="nome" id="edit_nome" required>
-            </div>
-
+        <form id="formEditarProduto" action="" method="POST" enctype="multipart/form-data" class="admin-product-form"
+            style="margin-top: 20px;">
+            <div class="admin-form-group"><label for="edit_nome">Nome do Produto:</label><input type="text" name="nome"
+                    id="edit_nome" required></div>
             <div class="admin-form-group-row">
-                <div class="admin-form-group">
-                    <label for="edit_preco">Preço (R$):</label>
-                    <input type="number" name="preco" id="edit_preco" step="0.01" required>
-                </div>
-
+                <div class="admin-form-group"><label for="edit_preco">Preço (R$):</label><input type="number"
+                        name="preco" id="edit_preco" step="0.01" required></div>
                 <div class="admin-form-group">
                     <label for="edit_id_categoria">Categoria:</label>
                     <select name="id_categoria" id="edit_id_categoria" required>
-                        {{#each categorias}}
-                            <option value="{{this.id}}">{{this.nome}}</option>
-                        {{/each}}
+                        {{#each categorias}}<option value="{{this.id}}">{{this.nome}}</option>{{/each}}
                     </select>
+                </div>
+            </div>
+            <div class="admin-form-group"><label for="edit_descricao">Descrição curta:</label><input type="text"
+                    name="descricao" id="edit_descricao" required></div>
+
+            <div class="admin-form-group">
+                <label>Ingredientes Utilizados:</label>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; background: var(--rosa-fundo); padding: 15px; border-radius: 8px; border: 1px solid var(--rosa-destaque); max-height: 180px; overflow-y: auto;">
+                    {{#each todosIngredientes}}
+                    <label
+                        style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                        <input type="checkbox" name="ingredientes" value="{{this.id}}" class="edit-ingrediente-checkbox"
+                            style="width: 16px; height: 16px; accent-color: var(--laranja-principal);">
+                        <span>{{this.nome}}</span>
+                    </label>
+                    {{/each}}
                 </div>
             </div>
 
             <div class="admin-form-group">
-                <label for="edit_descricao">Descrição / Ingredientes:</label>
-                <textarea name="descricao" id="edit_descricao" rows="4" required></textarea>
-            </div>
-
-            <div class="admin-form-group">
-                <label>Foto Cadastrada:</label>
-                <img id="edit_preview_imagem" src="" style="width: 100px; height: 75px; object-fit: cover; border-radius: 6px; margin-bottom: 5px; border: 1px solid var(--rosa-destaque);">
-                <label for="edit_imagem" style="font-size: 11px; color: var(--texto-mutado);">Substituir Imagem (Opcional):</label>
+                <img id="edit_preview_imagem" src=""
+                    style="width: 100px; height: 75px; object-fit: cover; border-radius: 6px; margin-bottom: 5px;">
+                <label for="edit_imagem">Substituir Imagem (Opcional):</label>
                 <input type="file" name="imagem" id="edit_imagem" accept="image/*">
             </div>
-
             <button type="submit" class="btn-admin-save-product">Salvar Alterações</button>
         </form>
     </div>
 </div>
 
+<!-- MODAL DE EDIÇÃO DE CATEGORIA -->
 <div id="modalEditarCategoria" class="modal-admin-overlay" style="display: none;">
     <div class="modal-admin-card" style="max-width: 420px;">
         <div class="modal-admin-header">
             <h3><i class="fa-solid fa-tags"></i> Editar Categoria</h3>
             <button type="button" class="btn-close-modal" onclick="fecharModalCategoria()">&times;</button>
         </div>
-
         <form id="formEditarCategoria" action="" method="POST" class="admin-product-form" style="margin-top: 25px;">
-            <div class="admin-form-group">
-                <label for="edit_nome_categoria">Nome da Categoria:</label>
-                <input type="text" name="nome" id="edit_nome_categoria" required>
-            </div>
-
+            <div class="admin-form-group"><label for="edit_nome_categoria">Nome da Categoria:</label><input type="text"
+                    name="nome" id="edit_nome_categoria" required></div>
             <button type="submit" class="btn-admin-save-product">Salvar Categoria</button>
         </form>
     </div>
@@ -316,44 +266,42 @@
             if (painel) painel.style.display = 'none';
             if (botao) botao.classList.remove('active');
         }
-
         document.getElementById(`painel-admin-${numeroPainel}`).style.display = 'block';
         document.getElementById(`btn-tab-${numeroPainel}`).classList.add('active');
     }
 
-    function abrirModalEdicao(id, nome, preco, idCategoria, descricao, imagem) {
+    async function abrirModalEdicao(id, nome, preco, idCategoria, imagem) {
         document.getElementById('formEditarProduto').action = `/admin/products/edit/${id}`;
         document.getElementById('edit_nome').value = nome;
         document.getElementById('edit_preco').value = preco;
         document.getElementById('edit_id_categoria').value = idCategoria;
-        document.getElementById('edit_descricao').value = descricao;
         document.getElementById('edit_preview_imagem').src = `/images/${imagem}`;
-        
+
+        document.querySelectorAll('.edit-ingrediente-checkbox').forEach(cb => cb.checked = false);
+
+        try {
+            const response = await fetch(`/admin/products/ingredients/${id}`);
+            const idsIngredientes = await response.json();
+            document.querySelectorAll('.edit-ingrediente-checkbox').forEach(cb => {
+                if (idsIngredientes.includes(parseInt(cb.value))) cb.checked = true;
+            });
+        } catch (error) {
+            console.error('Erro ao carregar ingredientes:', error);
+        }
+
         document.getElementById('modalEditar').style.display = 'flex';
     }
 
-    function fecharModalEdicao() {
-        document.getElementById('modalEditar').style.display = 'none';
-    }
-
+    function fecharModalEdicao() { document.getElementById('modalEditar').style.display = 'none'; }
     function abrirModalCategoria(id, nome) {
         document.getElementById('formEditarCategoria').action = `/admin/categories/edit/${id}`;
         document.getElementById('edit_nome_categoria').value = nome;
         document.getElementById('modalEditarCategoria').style.display = 'flex';
     }
+    function fecharModalCategoria() { document.getElementById('modalEditarCategoria').style.display = 'none'; }
 
-    function fecharModalCategoria() {
-        document.getElementById('modalEditarCategoria').style.display = 'none';
-    }
-
-    window.onclick = function(event) {
-        const modalProduto = document.getElementById('modalEditar');
-        const modalCategoria = document.getElementById('modalEditarCategoria');
-        if (event.target === modalProduto) {
-            fecharModalEdicao();
-        }
-        if (event.target === modalCategoria) {
-            fecharModalCategoria();
-        }
+    window.onclick = function (event) {
+        if (event.target === document.getElementById('modalEditar')) fecharModalEdicao();
+        if (event.target === document.getElementById('modalEditarCategoria')) fecharModalCategoria();
     }
 </script>

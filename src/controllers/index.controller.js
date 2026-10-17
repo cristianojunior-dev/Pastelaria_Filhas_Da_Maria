@@ -12,7 +12,7 @@ const indexController = {
             for (const categoria of categorias) {
                 // Busca os produtos pertencentes a esta categoria
                 const [produtos] = await db.query(
-                    'SELECT * FROM produtos WHERE id_categoria = ?', 
+                    'SELECT * FROM produtos WHERE id_categoria = ?',
                     [categoria.id]
                 );
 
@@ -51,7 +51,12 @@ const indexController = {
             // 3. Busca os produtos de destaque para o Carrossel (Mais Pedidos)
             // Traz até 4 itens cadastrados no cardápio para rodar nos slides
             const [produtosDestaqueRows] = await db.query(
-                "SELECT * FROM produtos LIMIT 4"
+                `SELECT p.*, GROUP_CONCAT(i.nome SEPARATOR ', ') AS descricao 
+                FROM produtos p 
+                LEFT JOIN produto_ingredientes pi ON p.id = pi.id_produto 
+                LEFT JOIN ingredientes i ON pi.id_ingrediente = i.id 
+                GROUP BY p.id 
+                LIMIT 4`
             );
             const maisPedidos = produtosDestaqueRows.length > 0 ? produtosDestaqueRows : null;
 

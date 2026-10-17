@@ -6,9 +6,7 @@ const adminController = {
         try {
             const [pedidosRows] = await db.query(
                 `SELECT id, codigo, status, total_pedido, taxa_entrega, forma_pagamento, data 
-                 FROM pedidos 
-                 WHERE status != 'entregue' 
-                 ORDER BY data DESC`
+                 FROM pedidos WHERE status != 'entregue' ORDER BY data DESC`
             );
 
             const pedidos = pedidosRows.map(p => {
@@ -21,9 +19,7 @@ const adminController = {
             });
 
             const [categorias] = await db.query('SELECT * FROM categorias ORDER BY id ASC');
-            
             const [produtosRows] = await db.query('SELECT * FROM produtos ORDER BY nome ASC');
-
             const [ingredientesRows] = await db.query('SELECT * FROM ingredientes ORDER BY nome ASC');
 
             res.render('admin/dashboard', {
@@ -44,141 +40,60 @@ const adminController = {
     },
 
     addProduct: async (req, res) => {
-        const { nome, preco, id_categoria, descricao } = req.body;
+        const { nome, preco, id_categoria, ingredientes } = req.body; // descricao removida
         
         try {
-            if (!req.file) {
-                return res.status(400).send('Por favor, envie uma foto do produto.');
-            }
-
+            if (!req.file) return res.status(400).send('Envie uma foto.');
             const nomeImagem = req.file.filename;
 
+            // INSERT sem a coluna descricao
             const [result] = await db.query(
-                `INSERT INTO produtos (nome, preco, id_categoria, descricao, imagem) 
-                 VALUES (?, ?, ?, ?, ?)`,
-                [nome, preco, id_categoria, descricao, nomeImagem]
+                `INSERT INTO produtos (nome, preco, id_categoria, imagem) VALUES (?, ?, ?, ?)`,
+                [nome, preco, id_categoria, nomeImagem]
             );
 
             const novoProdutoId = result.insertId;
 
-            const [ingredientes] = await db.query('SELECT id, nome FROM ingredientes');
-            const descricaoMinuscula = descricao.toLowerCase();
-
-            for (const ingrediente of ingredientes) {
-                const nomeIngredienteMinusculo = ingrediente.nome.toLowerCase();
-                const palavrasChave = nomeIngredienteMinusculo.split(' ').filter(p => p.length > 3);
-
-                const contemIngrediente = descricaoMinuscula.includes(nomeIngredienteMinusculo) || 
-                                          palavrasChave.some(palavra => descricaoMinuscula.includes(palavra));
-
-                if (contemIngrediente) {
-                    await db.query(
-                        'INSERT INTO produto_ingredientes (id_produto, id_ingrediente) VALUES (?, ?)',
-                        [novoProdutoId, ingrediente.id]
-                    );
+            if (ingredientes) {
+                const listaIngredientes = Array.isArray(ingredientes) ? ingredientes : [ingredientes];
+                for (const idIngrediente of listaIngredientes) {
+                    await db.query('INSERT INTO produto_ingredientes (id_produto, id_ingrediente) VALUES (?, ?)', [novoProdutoId, idIngrediente]);
                 }
             }
 
             res.redirect('/admin/dashboard');
-
         } catch (error) {
             console.error('Erro ao cadastrar produto:', error);
             res.status(500).send('Erro interno do servidor.');
         }
     },
 
-    updateOrderStatus: async (req, res) => {
-        const { id } = req.params;
-        const { status } = req.body;
-
-        try {
-            await db.query('UPDATE pedidos SET status = ? WHERE id = ?', [status, id]);
-
-            const [pedidoRows] = await db.query(
-                `SELECT p.codigo, u.nome, u.email 
-                 FROM pedidos p
-                 INNER JOIN usuario u ON p.id_usuario = u.id
-                 WHERE p.id = ?`, 
-                [id]
-            );
-
-            if (pedidoRows.length > 0) {
-                const dadosPedido = pedidoRows[0];
-
-                if (dadosPedido.email) {
-                    let textoMensagem = `Olá, ${dadosPedido.nome}!\nSeu pedido ${dadosPedido.codigo} teve uma atualização: `;
-
-                    if (status === 'recebido') {
-                        textoMensagem += `Ele foi RECEBIDO e já está na nossa fila de entrada.`;
-                    } else if (status === 'em preparação') {
-                        textoMensagem += `Ele já está EM PREPARAÇÃO na cozinha! Seus pastéis estão sendo fritos na hora.`;
-                    } else if (status === 'enviado') {
-                        textoMensagem += `Ele foi ENVIADO! O motoboy já está a caminho da sua residência.`;
-                    } else if (status === 'entregue') {
-                        textoMensagem += `Ele foi ENTREGUE! Muito obrigado pela preferência e bom apetite!`;
-                    }
-
-                    await notificacaoService.enviarEmail(
-                        dadosPedido.email,
-                        `Atualização do seu pedido: ${dadosPedido.codigo}`,
-                        textoMensagem
-                    );
-                }
-            }
-
-            res.redirect('/admin/dashboard');
-
-        } catch (error) {
-            console.error('Erro ao atualizar status ou enviar E-mail:', error);
-            res.redirect('/admin/dashboard');
-        }
-    },
-
-    toggleIngredientStatus: async (req, res) => {
-        const { id } = req.params;
-
-        try {
-            const [rows] = await db.query('SELECT em_estoque FROM ingredientes WHERE id = ?', [id]);
-            if (rows.length === 0) return res.status(404).send('Ingrediente não encontrado.');
-
-            const novoStatus = rows[0].em_estoque === 1 ? 0 : 1;
-            await db.query('UPDATE ingredientes SET em_estoque = ? WHERE id = ?', [novoStatus, id]);
-
-            res.redirect('/admin/dashboard');
-        } catch (error) {
-            console.error('Erro ao alterar estoque do ingrediente:', error);
-            res.status(500).send('Erro interno ao atualizar estoque.');
-        }
-    },
-
-    deleteProduct: async (req, res) => {
-        const { id } = req.params;
-
-        try {
-            await db.query('DELETE FROM produtos WHERE id = ?', [id]);
-            res.redirect('/admin/dashboard');
-        } catch (error) {
-            console.error('Erro ao excluir produto:', error);
-            res.status(500).send('Erro interno ao excluir o item do cardápio.');
-        }
-    },
-
     updateProduct: async (req, res) => {
         const { id } = req.params;
-        const { nome, preco, id_categoria, descricao } = req.body;
+        const { nome, preco, id_categoria, ingredientes } = req.body; // descricao removida
 
         try {
+            // UPDATE sem a coluna descricao
             if (req.file) {
                 const novaImagem = req.file.filename;
                 await db.query(
-                    `UPDATE produtos SET nome = ?, preco = ?, id_categoria = ?, descricao = ?, imagem = ? WHERE id = ?`,
-                    [nome, preco, id_categoria, descricao, novaImagem, id]
+                    `UPDATE produtos SET nome = ?, preco = ?, id_categoria = ?, imagem = ? WHERE id = ?`,
+                    [nome, preco, id_categoria, novaImagem, id]
                 );
             } else {
                 await db.query(
-                    `UPDATE produtos SET nome = ?, preco = ?, id_categoria = ?, descricao = ? WHERE id = ?`,
-                    [nome, preco, id_categoria, descricao, id]
+                    `UPDATE produtos SET nome = ?, preco = ?, id_categoria = ? WHERE id = ?`,
+                    [nome, preco, id_categoria, id]
                 );
+            }
+
+            await db.query('DELETE FROM produto_ingredientes WHERE id_produto = ?', [id]);
+
+            if (ingredientes) {
+                const listaIngredientes = Array.isArray(ingredientes) ? ingredientes : [ingredientes];
+                for (const idIngrediente of listaIngredientes) {
+                    await db.query('INSERT INTO produto_ingredientes (id_produto, id_ingrediente) VALUES (?, ?)', [id, idIngrediente]);
+                }
             }
 
             res.redirect('/admin/dashboard');
@@ -187,51 +102,80 @@ const adminController = {
             res.status(500).send('Erro ao salvar modificações.');
         }
     },
- 
-    addCategory: async (req, res) => {
-        const { nome } = req.body;
 
-        if (!nome || !nome.trim()) {
-            return res.redirect('/admin/dashboard');
-        }
-
+    getProductIngredients: async (req, res) => {
+        const { id } = req.params;
         try {
-            await db.query('INSERT INTO categorias (nome) VALUES (?)', [nome.trim()]);
+            const [rows] = await db.query('SELECT id_ingrediente FROM produto_ingredientes WHERE id_produto = ?', [id]);
+            res.json(rows.map(r => r.id_ingrediente));
+        } catch (error) {
+            console.error('Erro ao buscar ingredientes:', error);
+            res.status(500).json([]);
+        }
+    },
+
+    deleteProduct: async (req, res) => {
+        const { id } = req.params;
+        try {
+            await db.query('DELETE FROM produtos WHERE id = ?', [id]);
             res.redirect('/admin/dashboard');
         } catch (error) {
-            console.error('Erro ao cadastrar categoria:', error);
-            res.status(500).send('Erro interno ao cadastrar categoria.');
+            console.error('Erro ao excluir produto:', error);
+            res.status(500).send('Erro interno.');
         }
+    },
+
+    updateOrderStatus: async (req, res) => {
+        const { id } = req.params;
+        const { status } = req.body;
+        try {
+            await db.query('UPDATE pedidos SET status = ? WHERE id = ?', [status, id]);
+            const [pedidoRows] = await db.query(`SELECT p.codigo, u.nome, u.email FROM pedidos p INNER JOIN usuario u ON p.id_usuario = u.id WHERE p.id = ?`, [id]);
+            if (pedidoRows.length > 0 && pedidoRows[0].email) {
+                let txt = `Olá, ${pedidoRows[0].nome}!\nSeu pedido ${pedidoRows[0].codigo} mudou para: ${status.toUpperCase()}`;
+                await notificacaoService.enviarEmail(pedidoRows[0].email, `Atualização: ${pedidoRows[0].codigo}`, txt);
+            }
+            res.redirect('/admin/dashboard');
+        } catch (error) {
+            res.redirect('/admin/dashboard');
+        }
+    },
+
+    toggleIngredientStatus: async (req, res) => {
+        const { id } = req.params;
+        try {
+            const [rows] = await db.query('SELECT em_estoque FROM ingredientes WHERE id = ?', [id]);
+            if (rows.length > 0) {
+                await db.query('UPDATE ingredientes SET em_estoque = ? WHERE id = ?', [rows[0].em_estoque === 1 ? 0 : 1, id]);
+            }
+            res.redirect('/admin/dashboard');
+        } catch (error) {
+            res.status(500).send('Erro.');
+        }
+    },
+
+    addCategory: async (req, res) => {
+        const { nome } = req.body;
+        if (nome && nome.trim()) {
+            await db.query('INSERT INTO categorias (nome) VALUES (?)', [nome.trim()]);
+        }
+        res.redirect('/admin/dashboard');
     },
 
     updateCategory: async (req, res) => {
         const { id } = req.params;
         const { nome } = req.body;
-
-        if (!nome || !nome.trim()) {
-            return res.redirect('/admin/dashboard');
-        }
-
-        try {
+        if (nome && nome.trim()) {
             await db.query('UPDATE categorias SET nome = ? WHERE id = ?', [nome.trim(), id]);
-            res.redirect('/admin/dashboard');
-        } catch (error) {
-            console.error('Erro ao atualizar categoria:', error);
-            res.status(500).send('Erro interno ao atualizar categoria.');
         }
+        res.redirect('/admin/dashboard');
     },
 
     deleteCategory: async (req, res) => {
         const { id } = req.params;
-
-        try {
-            await db.query('UPDATE produtos SET id_categoria = NULL WHERE id_categoria = ?', [id]);
-            await db.query('DELETE FROM categorias WHERE id = ?', [id]);
-            res.redirect('/admin/dashboard');
-        } catch (error) {
-            console.error('Erro ao excluir categoria:', error);
-            res.status(500).send('Erro interno ao excluir categoria.');
-        }
+        await db.query('UPDATE produtos SET id_categoria = NULL WHERE id_categoria = ?', [id]);
+        await db.query('DELETE FROM categorias WHERE id = ?', [id]);
+        res.redirect('/admin/dashboard');
     }
 };
 

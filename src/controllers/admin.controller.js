@@ -21,80 +21,144 @@ const adminController = {
             const [categorias] = await db.query('SELECT * FROM categorias ORDER BY id ASC');
             const [produtosRows] = await db.query('SELECT * FROM produtos ORDER BY nome ASC');
             const [ingredientesRows] = await db.query('SELECT * FROM ingredientes ORDER BY nome ASC');
-
-                      
-            // LÓGICA DOS RELATÓRIOS GERENCIAIS COM FILTROS AVANÇADOS (ABA 6)
-
+            
+            // LÓGICA DOS RELATÓRIOS GERENCIAIS
             const { tipoRelatorio, data_inicio, data_fim, id_categoria } = req.query;
+            
+            if (tipoRelatorio) {
+                console.log('[DEBUG RELATÓRIO] Parâmetros recebidos:', req.query);
+            }
 
             let relatorioFaturamento = null;
             let relatorioPedidos = null;
-            
-            // Mantém as datas preenchidas nos inputs após clicar em filtrar
             const filtrosSalvos = { data_inicio, data_fim };
 
-            // Mapeia as categorias criadas pelo operador para o select do relatório
             const categoriasModificadas = categorias.map(cat => ({
                 ...cat,
-                selectedRelatorio: cat.id == id_categoria
+                selectedRelatorio: String(cat.id) === String(id_categoria)
             }));
 
-            // CARD 1: Filtro de Faturamento Bruto por período e categoria
+            // CARD 1: Filtro de Faturamento Bruto + Lista Detalhada de Produtos Vendidos
             if (tipoRelatorio === 'faturamento' && data_inicio && data_fim) {
-                let queryFaturamento = `
-                    SELECT SUM(pi.quantidade * pi.preco_unitario) AS total_bruto, SUM(pi.quantidade) AS total_itens
+                let filtroCategoriaSQL = '';
+                let queryParams = [`${data_inicio} 00:00:00`, `${data_fim} 23:59:59`];
+
+                if (id_categoria && id_categoria !== 'todas') {
+                    filtroCategoriaSQL = ` AND pr.id_categoria = ?`;
+                    queryParams.push(id_categoria);
+                }
+
+                // 1.1 Busca o total geral do período
+                const queryFaturamento = `
+                    SELECT 
+                        COALESCE(SUM(pi.quantidade * pi.preco_unitario), 0) AS total_bruto, 
+                        COALESCE(SUM(pi.quantidade), 0) AS total_itens
                     FROM pedido_itens pi
                     INNER JOIN pedidos pe ON pi.id_pedido = pe.id
                     INNER JOIN produtos pr ON pi.id_produto = pr.id
                     WHERE pe.status = 'entregue' 
-                    AND pe.data BETWEEN ? AND ?`;
-                
-                let queryParams = [`${data_inicio} 00:00:00`, `${data_fim} 23:59:59`];
-
-                if (id_categoria && id_categoria !== 'todas') {
-                    queryFaturamento += ` AND pr.id_categoria = ?`;
-                    queryParams.push(id_categoria);
-                }
+                    AND pe.data BETWEEN ? AND ?` + filtroCategoriaSQL;
 
                 const [fatResult] = await db.query(queryFaturamento, queryParams);
+                const dadosFat = fatResult[0] || { total_bruto: 0, total_itens: 0 };
+
+                // 1.2 Busca o detalhamento agrupado por produto
+                const queryProdutosDetalhados = `
+                    SELECT 
+                        pr.nome,
+                        SUM(pi.quantidade) AS qtd_vendida,
+                        pi.preco_unitario,
+                        SUM(pi.quantidade * pi.preco_unitario) AS subtotal
+                    FROM pedido_itens pi
+                    INNER JOIN pedidos pe ON pi.id_pedido = pe.id
+                    INNER JOIN produtos pr ON pi.id_produto = pr.id
+                    WHERE pe.status = 'entregue'
+                    AND pe.data BETWEEN ? AND ?` + filtroCategoriaSQL + `
+                    GROUP BY pr.id, pr.nome, pi.preco_unitario
+                    ORDER BY qtd_vendida DESC`;
+
+                const [produtosDetalhadosRows] = await db.query(queryProdutosDetalhados, queryParams);
+
+                const listaProdutos = produtosDetalhadosRows.map(item => ({
+                    nome: item.nome,
+                    qtd_vendida: item.qtd_vendida,
+                    preco_unitario: parseFloat(item.preco_unitario).toFixed(2),
+                    subtotal: parseFloat(item.subtotal).toFixed(2)
+                }));
                 
                 relatorioFaturamento = {
-                    total: (parseFloat(fatResult.total_bruto) || 0).toFixed(2),
-                    itensVendidos: parseInt(fatResult.total_itens) || 0
+                    total: (parseFloat(dadosFat.total_bruto) || 0).toFixed(2),
+                    itensVendidos: parseInt(dadosFat.total_itens) || 0,
+                    produtos: listaProdutos // <-- Envia a lista detalhada para a View
                 };
             }
 
-            // CARD 2: Filtro de Total de Pedidos Entregues por período
+            // CARD 2: Filtro de Total de Pedidos Entregues + Lista de Pedidos c/ Produtos
             if (tipoRelatorio === 'pedidos' && data_inicio && data_fim) {
+                const paramsPedidos = [`${data_inicio} 00:00:00`, `${data_fim} 23:59:59`];
+
+                // 2.1 Busca o resumo de entregas
                 const [pedResult] = await db.query(
-                    `SELECT COUNT(id) AS total_entregas, SUM(total_pedido + taxa_entrega) AS total_faturado
+                    `SELECT 
+                        COUNT(id) AS total_entregas, 
+                        COALESCE(SUM(total_pedido + taxa_entrega), 0) AS total_faturado
                      FROM pedidos
                      WHERE status = 'entregue'
                      AND data BETWEEN ? AND ?`,
-                    [`${data_inicio} 00:00:00`, `${data_fim} 23:59:59`]
+                    paramsPedidos
                 );
 
-                const totalEntregas = parseInt(pedResult.total_entregas) || 0;
-                const totalDinheiro = parseFloat(pedResult.total_faturado) || 0;
+                const dadosPed = pedResult[0] || { total_entregas: 0, total_faturado: 0 };
+                const totalEntregas = parseInt(dadosPed.total_entregas) || 0;
+                const totalDinheiro = parseFloat(dadosPed.total_faturado) || 0;
                 const ticketMedio = totalEntregas > 0 ? (totalDinheiro / totalEntregas) : 0;
+
+                // 2.2 Busca cada pedido entregue e concatena os produtos daquele pedido
+                const [listaPedidosRows] = await db.query(
+                    `SELECT 
+                        pe.codigo,
+                        pe.data,
+                        pe.forma_pagamento,
+                        (pe.total_pedido + pe.taxa_entrega) AS total_geral,
+                        GROUP_CONCAT(CONCAT(pi.quantidade, 'x ', pr.nome) SEPARATOR ', ') AS resumo_itens
+                     FROM pedidos pe
+                     INNER JOIN pedido_itens pi ON pe.id = pi.id_pedido
+                     INNER JOIN produtos pr ON pi.id_produto = pr.id
+                     WHERE pe.status = 'entregue'
+                     AND pe.data BETWEEN ? AND ?
+                     GROUP BY pe.id
+                     ORDER BY pe.data DESC`,
+                    paramsPedidos
+                );
+
+                const listaPedidos = listaPedidosRows.map(p => ({
+                    codigo: p.codigo,
+                    data_formatada: new Date(p.data).toLocaleString('pt-BR'),
+                    forma_pagamento: p.forma_pagamento,
+                    total_geral: parseFloat(p.total_geral).toFixed(2),
+                    resumo_itens: p.resumo_itens
+                }));
 
                 relatorioPedidos = {
                     total: totalEntregas,
-                    ticketMedio: ticketMedio.toFixed(2)
+                    ticketMedio: ticketMedio.toFixed(2),
+                    pedidosLista: listaPedidos // <-- Envia os pedidos detalhados para a View
                 };
             }
 
             res.render('admin/dashboard', {
                 cssPage: 'admin',
                 pedidos: pedidos,
-                categorias: categorias,
+                categorias: categoriasModificadas,
                 todosProdutos: produtosRows,
                 todosIngredientes: ingredientesRows,
+                relatorioFaturamento: relatorioFaturamento,
+                relatorioPedidos: relatorioPedidos,
+                filtrosSalvos: filtrosSalvos,
                 usuarioLogado: req.session.usuarioLogado || false,
                 usuarioNome: req.session.usuarioNome || null,
                 userAdmin: req.session.userAdmin || false
             });
-
         } catch (error) {
             console.error('Erro ao carregar Dashboard:', error);
             res.status(500).send('Erro interno do servidor.');
@@ -102,13 +166,13 @@ const adminController = {
     },
 
     addProduct: async (req, res) => {
-        const { nome, preco, id_categoria, ingredientes } = req.body; // descricao removida
+        const { nome, preco, id_categoria, ingredientes } = req.body;
         
         try {
             if (!req.file) return res.status(400).send('Envie uma foto.');
             const nomeImagem = req.file.filename;
 
-            // INSERT sem a coluna descricao
+            
             const [result] = await db.query(
                 `INSERT INTO produtos (nome, preco, id_categoria, imagem) VALUES (?, ?, ?, ?)`,
                 [nome, preco, id_categoria, nomeImagem]
@@ -132,10 +196,10 @@ const adminController = {
 
     updateProduct: async (req, res) => {
         const { id } = req.params;
-        const { nome, preco, id_categoria, ingredientes } = req.body; // descricao removida
+        const { nome, preco, id_categoria, ingredientes } = req.body; 
 
         try {
-            // UPDATE sem a coluna descricao
+            
             if (req.file) {
                 const novaImagem = req.file.filename;
                 await db.query(

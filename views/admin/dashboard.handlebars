@@ -12,7 +12,8 @@
                 class="fa-solid fa-layer-group"></i> Estoque</button>
         <button type="button" class="admin-tab-btn" onclick="mudarPainel(5)" id="btn-tab-5"><i
                 class="fa-solid fa-tags"></i> Categorias</button>
-        <button type="button" class="admin-tab-btn" onclick="mudarPainel(6)" id="btn-tab-6" style="border-color: #007BFF;"><i class="fa-solid fa-chart-line"></i> Relatórios Gerenciais
+        <button type="button" class="admin-tab-btn" onclick="mudarPainel(6)" id="btn-tab-6"
+            style="border-color: #007BFF;"><i class="fa-solid fa-chart-line"></i> Relatórios Gerenciais
         </button>
     </nav>
 
@@ -58,7 +59,7 @@
         </div>
     </section>
 
-    <!-- PAINEL 2: CADASTRO COM CHECKBOXES -->
+    <!-- PAINEL 2: CADASTRO-->
     <section id="painel-admin-2" class="admin-section-card admin-panel-box" style="display: none;">
         <h2 class="admin-section-title"><i class="fa-solid fa-circle-plus"></i> Inserir Novo Item no Cardápio</h2>
         <form action="/admin/products/add" method="POST" enctype="multipart/form-data" class="admin-product-form">
@@ -79,7 +80,7 @@
             <div class="admin-form-group">
                 <label>Ingredientes Utilizados (Marque as opções):</label>
                 <div
-                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; background: var(--rosa-fundo); padding: 15px; border-radius: 8px; border: 1px solid var(--rosa-destaque); max-height: 200px; overflow-y: auto;">
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; background: var(--branco); padding: 15px; border-radius: 8px; border: 1px solid #ccc; max-height: 200px; overflow-y: auto;">
                     {{#each todosIngredientes}}
                     <label
                         style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
@@ -194,36 +195,43 @@
         </div>
     </section>
 
-        <!-- ==========================================
+    <!-- ==========================================
          PAINEL 6: RELATÓRIOS GERENCIAIS
          ========================================== -->
     <section id="painel-admin-6" class="admin-section-card admin-panel-box" style="display: none;">
-        <h2 class="admin-section-title"><i class="fa-solid fa-square-poll-vertical"></i> Relatórios Gerenciais Avançados</h2>
-        <p style="font-size: 13px; color: var(--texto-mutado); margin-bottom: 30px; text-align: left; font-weight: 500;">
-            Gere relatórios detalhados de desempenho financeiro e logística da cozinha. Os dados são computados de forma consolidada e computam apenas pedidos que já foram marcados com o status de <strong>entregue</strong>.
+        <h2 class="admin-section-title"><i class="fa-solid fa-square-poll-vertical"></i> Relatórios Gerenciais Avançados
+        </h2>
+        <p
+            style="font-size: 13px; color: var(--texto-mutado); margin-bottom: 30px; text-align: left; font-weight: 500;">
+            Os dados são computados de forma consolidada e computam apenas pedidos que já foram marcados com o status de
+            <strong>entregue</strong>.
         </p>
 
         <div class="admin-layout-grid" style="grid-template-columns: 1fr 1fr; gap: 30px;">
-            
+
             <!-- CARD 1: RELATÓRIO DE FATURAMENTO -->
-            <div style="background: #fff; padding: 25px; border-radius: 12px; border: 1px solid var(--rosa-destaque); box-shadow: 0 4px 12px rgba(0,0,0,0.01);">
-                <h3 style="font-size: 15px; font-weight: 700; color: #1B5E20; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+            <div
+                style="background: #fff; padding: 25px; border-radius: 12px; border: 1px solid var(--rosa-destaque); box-shadow: 0 4px 12px rgba(0,0,0,0.01);">
+                <h3
+                    style="font-size: 15px; font-weight: 700; color: #1B5E20; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                     <i class="fa-solid fa-hand-holding-dollar"></i> Relatório de Faturamento
                 </h3>
-                
+
                 <!-- Formulário com filtros que envia os dados via GET para a mesma página -->
                 <form action="/admin/dashboard" method="GET" class="admin-product-form" style="gap: 15px;">
                     <input type="hidden" name="tabActive" value="6">
                     <input type="hidden" name="tipoRelatorio" value="faturamento">
-                    
+
                     <div class="admin-form-group-row" style="grid-template-columns: 1fr 1fr; gap: 10px;">
                         <div class="admin-form-group">
                             <label style="font-size: 11px;">Data Inicial:</label>
-                            <input type="date" name="data_inicio" value="{{filtrosSalvos.data_inicio}}" required style="padding: 8px;">
+                            <input type="date" name="data_inicio" value="{{filtrosSalvos.data_inicio}}" required
+                                style="padding: 8px;">
                         </div>
                         <div class="admin-form-group">
                             <label style="font-size: 11px;">Data Final:</label>
-                            <input type="date" name="data_fim" value="{{filtrosSalvos.data_fim}}" required style="padding: 8px;">
+                            <input type="date" name="data_fim" value="{{filtrosSalvos.data_fim}}" required
+                                style="padding: 8px;">
                         </div>
                     </div>
 
@@ -232,24 +240,34 @@
                         <select name="id_categoria" style="padding: 8px;">
                             <option value="todas">-- Todas as Categorias --</option>
                             {{#each categorias}}
-                                <option value="{{this.id}}" {{#if this.selectedRelatorio}}selected{{/if}}>{{this.nome}}</option>
+                            <option value="{{this.id}}" {{#if this.selectedRelatorio}}selected{{/if}}>{{this.nome}}
+                            </option>
                             {{/each}}
                         </select>
                     </div>
 
-                    <button type="submit" class="btn-admin-save-product" style="background-color: #28A745; padding: 10px 0; font-size: 12px;">Filtrar Faturamento</button>
+                    <button type="submit" class="btn-admin-save-product"
+                        style="background-color: #28A745; padding: 10px 0; font-size: 12px;">Filtrar
+                        Faturamento</button>
                 </form>
 
                 <!-- Resultado do Card 1 -->
                 {{#if relatorioFaturamento}}
-                <div style="margin-top: 25px; background: #E8F5E9; border: 1px solid #C8E6C9; padding: 20px; border-radius: 8px; text-align: left;">
-                    <span style="font-size: 11px; font-weight: 700; color: #2E7D32; text-transform: uppercase;">Resultado do Período</span>
-                    <h4 style="font-size: 24px; font-weight: 700; color: #1B5E20; margin: 5px 0 0 0;">R$ {{relatorioFaturamento.total}}</h4>
-                    <p style="font-size: 12px; color: #2E7D32; margin-top: 5px; font-weight: 500;">Unidades vendidas na categoria: {{relatorioFaturamento.itensVendidos}}</p>
-                    
+                <div
+                    style="margin-top: 25px; background: #E8F5E9; border: 1px solid #C8E6C9; padding: 20px; border-radius: 8px; text-align: left;">
+                    <span
+                        style="font-size: 11px; font-weight: 700; color: #2E7D32; text-transform: uppercase;">Resultado
+                        do Período</span>
+                    <h4 style="font-size: 24px; font-weight: 700; color: #1B5E20; margin: 5px 0 0 0;">R$
+                        {{relatorioFaturamento.total}}</h4>
+                    <p style="font-size: 12px; color: #2E7D32; margin-top: 5px; font-weight: 500;">Unidades vendidas na
+                        categoria: {{relatorioFaturamento.itensVendidos}}</p>
+
                     {{#if relatorioFaturamento.produtos.length}}
                     <div style="margin-top: 15px; border-top: 1px solid #C8E6C9; padding-top: 12px;">
-                        <h5 style="font-size: 12px; font-weight: 700; color: #1B5E20; margin-bottom: 8px; text-transform: uppercase;">Detalhamento por Produto:</h5>
+                        <h5
+                            style="font-size: 12px; font-weight: 700; color: #1B5E20; margin-bottom: 8px; text-transform: uppercase;">
+                            Detalhamento por Produto:</h5>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12px; color: #1B5E20;">
                             <thead>
                                 <tr style="border-bottom: 1px solid #A5D6A7; text-align: left;">
@@ -263,18 +281,21 @@
                                 <tr style="border-bottom: 1px solid #C8E6C9;">
                                     <td style="padding: 6px 4px; font-weight: 600;">{{this.nome}}</td>
                                     <td style="padding: 6px 4px; text-align: center;">{{this.qtd_vendida}}x</td>
-                                    <td style="padding: 6px 4px; text-align: right; font-weight: 700;">R$ {{this.subtotal}}</td>
+                                    <td style="padding: 6px 4px; text-align: right; font-weight: 700;">R$
+                                        {{this.subtotal}}</td>
                                 </tr>
                                 {{/each}}
                             </tbody>
                         </table>
                     </div>
                     {{else}}
-                    <p style="font-size: 12px; color: #2E7D32; margin-top: 10px; font-style: italic;">Nenhum produto vendido neste período.</p>
+                    <p style="font-size: 12px; color: #2E7D32; margin-top: 10px; font-style: italic;">Nenhum produto
+                        vendido neste período.</p>
                     {{/if}}
 
                     <!-- BOTÃO PARA GERAR PDF OU IMPRIMIR -->
-                    <button type="button" onclick="window.print()" style="margin-top: 15px; background: #2E7D32; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase;">
+                    <button type="button" onclick="window.print()"
+                        style="margin-top: 15px; background: #2E7D32; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase;">
                         <i class="fa-solid fa-file-pdf"></i> Imprimir / Gerar PDF
                     </button>
                 </div>
@@ -283,11 +304,13 @@
             </div>
 
             <!-- CARD 2: RELATÓRIO DE PEDIDOS ENTREGUES -->
-            <div style="background: #fff; padding: 25px; border-radius: 12px; border: 1px solid var(--rosa-destaque); box-shadow: 0 4px 12px rgba(0,0,0,0.01);">
-                <h3 style="font-size: 15px; font-weight: 700; color: #0D47A1; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+            <div
+                style="background: #fff; padding: 25px; border-radius: 12px; border: 1px solid var(--rosa-destaque); box-shadow: 0 4px 12px rgba(0,0,0,0.01);">
+                <h3
+                    style="font-size: 15px; font-weight: 700; color: #0D47A1; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                     <i class="fa-solid fa-truck-ramp-box"></i> Pedidos Entregues
                 </h3>
-                
+
                 <form action="/admin/dashboard" method="GET" class="admin-product-form" style="gap: 15px;">
                     <input type="hidden" name="tabActive" value="6">
                     <input type="hidden" name="tipoRelatorio" value="pedidos">
@@ -295,44 +318,60 @@
                     <div class="admin-form-group-row" style="grid-template-columns: 1fr 1fr; gap: 10px;">
                         <div class="admin-form-group">
                             <label style="font-size: 11px;">Data Inicial:</label>
-                            <input type="date" name="data_inicio" value="{{filtrosSalvos.data_inicio}}" required style="padding: 8px;">
+                            <input type="date" name="data_inicio" value="{{filtrosSalvos.data_inicio}}" required
+                                style="padding: 8px;">
                         </div>
                         <div class="admin-form-group">
                             <label style="font-size: 11px;">Data Final:</label>
-                            <input type="date" name="data_fim" value="{{filtrosSalvos.data_fim}}" required style="padding: 8px;">
+                            <input type="date" name="data_fim" value="{{filtrosSalvos.data_fim}}" required
+                                style="padding: 8px;">
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-admin-save-product" style="background-color: #007BFF; padding: 10px 0; font-size: 12px;">Filtrar Pedidos</button>
+                    <button type="submit" class="btn-admin-save-product"
+                        style="background-color: #007BFF; padding: 10px 0; font-size: 12px;">Filtrar Pedidos</button>
                 </form>
 
                 <!-- Resultado do Card 2 -->
                 {{#if relatorioPedidos}}
-                <div style="margin-top: 25px; background: #E3F2FD; border: 1px solid #BBDEFB; padding: 20px; border-radius: 8px; text-align: left;">
-                    <span style="font-size: 11px; font-weight: 700; color: #1565C0; text-transform: uppercase;">Volume de Entregas</span>
-                    <h4 style="font-size: 24px; font-weight: 700; color: #0D47A1; margin: 5px 0 0 0;">{{relatorioPedidos.total}} Pedidos</h4>
-                    <p style="font-size: 12px; color: #1565C0; margin-top: 5px; font-weight: 500;">Média de faturamento por entrega: R$ {{relatorioPedidos.ticketMedio}}</p>
-                    
+                <div
+                    style="margin-top: 25px; background: #E3F2FD; border: 1px solid #BBDEFB; padding: 20px; border-radius: 8px; text-align: left;">
+                    <span style="font-size: 11px; font-weight: 700; color: #1565C0; text-transform: uppercase;">Volume
+                        de Entregas</span>
+                    <h4 style="font-size: 24px; font-weight: 700; color: #0D47A1; margin: 5px 0 0 0;">
+                        {{relatorioPedidos.total}} Pedidos</h4>
+                    <p style="font-size: 12px; color: #1565C0; margin-top: 5px; font-weight: 500;">Média de faturamento
+                        por entrega: R$ {{relatorioPedidos.ticketMedio}}</p>
+
                     {{#if relatorioPedidos.pedidosLista.length}}
-                    <div style="margin-top: 15px; border-top: 1px solid #BBDEFB; padding-top: 12px; display: flex; flex-direction: column; gap: 10px;">
-                        <h5 style="font-size: 12px; font-weight: 700; color: #0D47A1; margin: 0; text-transform: uppercase;">Pedidos Realizados no Período:</h5>
+                    <div
+                        style="margin-top: 15px; border-top: 1px solid #BBDEFB; padding-top: 12px; display: flex; flex-direction: column; gap: 10px;">
+                        <h5
+                            style="font-size: 12px; font-weight: 700; color: #0D47A1; margin: 0; text-transform: uppercase;">
+                            Pedidos Realizados no Período:</h5>
                         {{#each relatorioPedidos.pedidosLista}}
-                        <div style="background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #BBDEFB; font-size: 12px;">
-                            <div style="display: flex; justify-content: space-between; font-weight: 700; color: #0D47A1; margin-bottom: 4px;">
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #BBDEFB; font-size: 12px;">
+                            <div
+                                style="display: flex; justify-content: space-between; font-weight: 700; color: #0D47A1; margin-bottom: 4px;">
                                 <span>{{this.codigo}} ({{this.data_formatada}})</span>
                                 <span>R$ {{this.total_geral}}</span>
                             </div>
-                            <p style="margin: 0; color: #333; font-size: 11px;"><strong>Itens:</strong> {{this.resumo_itens}}</p>
-                            <p style="margin: 2px 0 0 0; color: #666; font-size: 11px;"><strong>Pagamento:</strong> {{this.forma_pagamento}}</p>
+                            <p style="margin: 0; color: #333; font-size: 11px;"><strong>Itens:</strong>
+                                {{this.resumo_itens}}</p>
+                            <p style="margin: 2px 0 0 0; color: #666; font-size: 11px;"><strong>Pagamento:</strong>
+                                {{this.forma_pagamento}}</p>
                         </div>
                         {{/each}}
                     </div>
                     {{else}}
-                    <p style="font-size: 12px; color: #1565C0; margin-top: 10px; font-style: italic;">Nenhum pedido entregue neste período.</p>
+                    <p style="font-size: 12px; color: #1565C0; margin-top: 10px; font-style: italic;">Nenhum pedido
+                        entregue neste período.</p>
                     {{/if}}
 
                     <!-- BOTÃO PARA GERAR PDF OU IMPRIMIR -->
-                    <button type="button" onclick="window.print()" style="margin-top: 15px; background: #1565C0; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase;">
+                    <button type="button" onclick="window.print()"
+                        style="margin-top: 15px; background: #1565C0; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase;">
                         <i class="fa-solid fa-file-pdf"></i> Imprimir / Gerar PDF
                     </button>
                 </div>
@@ -413,27 +452,27 @@
 <script>
 
     function mudarPainel(numeroPainel) {
-    // Mudamos o limite de 5 para 6 para incluir sua nova aba de relatórios!
-    for (let i = 1; i <= 6; i++) {
-        const painel = document.getElementById(`painel-admin-${i}`);
-        const botao = document.getElementById(`btn-tab-${i}`);
-        if (painel) painel.style.display = 'none';
-        if (botao) botao.classList.remove('active');
-    }
-    
-    // Exibe e ativa apenas o painel clicado
-    const painelAlvo = document.getElementById(`painel-admin-${numeroPainel}`);
-    const botaoAlvo = document.getElementById(`btn-tab-${numeroPainel}`);
-    
-    if (painelAlvo) painelAlvo.style.display = 'block';
-    if (botaoAlvo) botaoAlvo.classList.add('active');
+        // Mudamos o limite de 5 para 6 para incluir sua nova aba de relatórios!
+        for (let i = 1; i <= 6; i++) {
+            const painel = document.getElementById(`painel-admin-${i}`);
+            const botao = document.getElementById(`btn-tab-${i}`);
+            if (painel) painel.style.display = 'none';
+            if (botao) botao.classList.remove('active');
+        }
+
+        // Exibe e ativa apenas o painel clicado
+        const painelAlvo = document.getElementById(`painel-admin-${numeroPainel}`);
+        const botaoAlvo = document.getElementById(`btn-tab-${numeroPainel}`);
+
+        if (painelAlvo) painelAlvo.style.display = 'block';
+        if (botaoAlvo) botaoAlvo.classList.add('active');
     }
 
     // LÓGICA DE PERSISTÊNCIA: Mantém a Aba 6 aberta ao recarregar a página após filtrar
     window.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const tabActive = urlParams.get('tabActive');
-        
+
         if (tabActive) {
             mudarPainel(parseInt(tabActive));
         }

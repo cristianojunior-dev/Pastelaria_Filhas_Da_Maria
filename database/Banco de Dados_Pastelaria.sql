@@ -201,3 +201,117 @@ INSERT INTO `produto_ingredientes` (`id_produto`, `id_ingrediente`) VALUES
 (25, 38),
 (26, 36),
 (27, 39);
+
+
+-- =========================================================================
+-- 4. INSERÇÃO DE 30 PEDIDOS DE TESTE PARA RELATÓRIOS (SEED DE PEDIDOS)
+-- =========================================================================
+
+-- Inserindo 30 pedidos com status 'entregue' e datas espalhadas nos últimos 30 dias
+INSERT INTO `pedidos` (`id`, `id_usuario`, `codigo`, `status`, `total_pedido`, `taxa_entrega`, `forma_pagamento`, `cep`, `data`) VALUES
+(1, 1, 'PFM-20261001-1001', 'entregue', 18.00, 5.00, 'PIX', 'Rua das Flores, N 123 - Centro (CEP: 13880-000)', DATE_SUB(NOW(), INTERVAL 30 DAY)),
+(2, 1, 'PFM-20261002-1002', 'entregue', 20.00, 5.00, 'Cartão de Crédito', 'Av. Principal, N 45 - Bairro Alto (CEP: 13880-111)', DATE_SUB(NOW(), INTERVAL 29 DAY)),
+(3, 1, 'PFM-20261003-1003', 'entregue', 40.00, 5.00, 'Dinheiro (Troco para R$ 50,00)', 'Rua Sete, N 77 - Vila Nova (CEP: 13880-222)', DATE_SUB(NOW(), INTERVAL 28 DAY)),
+(4, 1, 'PFM-20261004-1004', 'entregue', 28.00, 5.00, 'PIX', 'Rua das Flores, N 123 - Centro (CEP: 13880-000)', DATE_SUB(NOW(), INTERVAL 27 DAY)),
+(5, 1, 'PFM-20261005-1005', 'entregue', 15.00, 5.00, 'Cartão de Débito', 'Av. Principal, N 45 - Bairro Alto (CEP: 13880-111)', DATE_SUB(NOW(), INTERVAL 26 DAY)),
+(6, 1, 'PFM-20261006-1006', 'entregue', 54.00, 5.00, 'PIX', 'Rua São João, N 90 - Centro (CEP: 13880-333)', DATE_SUB(NOW(), INTERVAL 25 DAY)),
+(7, 1, 'PFM-20261007-1007', 'entregue', 22.00, 5.00, 'Cartão de Crédito', 'Rua Sete, N 77 - Vila Nova (CEP: 13880-222)', DATE_SUB(NOW(), INTERVAL 24 DAY)),
+(8, 1, 'PFM-20261008-1008', 'entregue', 38.00, 5.00, 'PIX', 'Rua das Flores, N 123 - Centro (CEP: 13880-000)', DATE_SUB(NOW(), INTERVAL 23 DAY)),
+(9, 1, 'PFM-20261009-1009', 'entregue', 48.00, 5.00, 'Dinheiro', 'Av. Brasil, N 1500 - Jd. Europa (CEP: 13880-444)', DATE_SUB(NOW(), INTERVAL 22 DAY)),
+(10, 1, 'PFM-20261010-1010', 'entregue', 27.00, 5.00, 'PIX', 'Rua São João, N 90 - Centro (CEP: 13880-333)', DATE_SUB(NOW(), INTERVAL 21 DAY)),
+(11, 1, 'PFM-20261011-1011', 'entregue', 32.00, 5.00, 'Cartão de Débito', 'Av. Principal, N 45 - Bairro Alto (CEP: 13880-111)', DATE_SUB(NOW(), INTERVAL 20 DAY)),
+(12, 1, 'PFM-20261012-1012', 'entregue', 18.00, 5.00, 'PIX', 'Rua das Flores, N 123 - Centro (CEP: 13880-000)', DATE_SUB(NOW(), INTERVAL 19 DAY)),
+(13, 1, 'PFM-20261013-1013', 'entregue', 45.00, 5.00, 'Cartão de Crédito', 'Av. Brasil, N 1500 - Jd. Europa (CEP: 13880-444)', DATE_SUB(NOW(), INTERVAL 18 DAY)),
+(14, 1, 'PFM-20261014-1014', 'entregue', 60.00, 5.00, 'PIX', 'Rua Sete, N 77 - Vila Nova (CEP: 13880-222)', DATE_SUB(NOW(), INTERVAL 17 DAY)),
+(15, 1, 'PFM-20261015-1015', 'entregue', 26.00, 5.00, 'Dinheiro (Troco para R$ 50,00)', 'Rua São João, N 90 - Centro (CEP: 13880-333)', DATE_SUB(NOW(), INTERVAL 16 DAY)),
+(16, 1, 'PFM-20261016-1016', 'entregue', 20.00, 5.00, 'PIX', 'Rua das Acácias, N 10 - Bela Vista (CEP: 13880-555)', DATE_SUB(NOW(), INTERVAL 15 DAY)),
+(17, 1, 'PFM-20261017-1017', 'entregue', 28.00, 5.00, 'Cartão de Crédito', 'Av. Independência, N 900 - Centro (CEP: 13880-000)', DATE_SUB(NOW(), INTERVAL 14 DAY)),
+(18, 1, 'PFM-20261018-1018', 'entregue', 21.00, 5.00, 'Dinheiro', 'Rua Sete, N 77 - Vila Nova (CEP: 13880-222)', DATE_SUB(NOW(), INTERVAL 13 DAY)),
+(19, 1, 'PFM-20261019-1019', 'entregue', 37.00, 5.00, 'PIX', 'Rua do Comércio, N 20 - Centro (CEP: 13880-000)', DATE_SUB(NOW(), INTERVAL 12 DAY)),
+(20, 1, 'PFM-20261020-1020', 'entregue', 47.00, 5.00, 'Cartão de Débito', 'Av. Brasil, N 1500 - Jd. Europa (CEP: 13880-444)', DATE_SUB(NOW(), INTERVAL 11 DAY)),
+(21, 1, 'PFM-20261021-1021', 'entregue', 36.00, 5.00, 'PIX', 'Rua São João, N 90 - Centro (CEP: 13880-333)', DATE_SUB(NOW(), INTERVAL 10 DAY)),
+(22, 1, 'PFM-20261022-1022', 'entregue', 22.00, 5.00, 'PIX', 'Av. Principal, N 45 - Bairro Alto (CEP: 13880-111)', DATE_SUB(NOW(), INTERVAL 9 DAY)),
+(23, 1, 'PFM-20261023-1023', 'entregue', 18.00, 5.00, 'Cartão de Crédito', 'Rua das Flores, N 123 - Centro (CEP: 13880-000)', DATE_SUB(NOW(), INTERVAL 8 DAY)),
+(24, 1, 'PFM-20261024-1024', 'entregue', 76.00, 5.00, 'Dinheiro (Troco para R$ 100,00)', 'Rua Sete, N 77 - Vila Nova (CEP: 13880-222)', DATE_SUB(NOW(), INTERVAL 7 DAY)),
+(25, 1, 'PFM-20261025-1025', 'entregue', 30.00, 5.00, 'PIX', 'Rua do Comércio, N 20 - Centro (CEP: 13880-000)', DATE_SUB(NOW(), INTERVAL 6 DAY)),
+(26, 1, 'PFM-20261026-1026', 'entregue', 20.00, 5.00, 'Cartão de Crédito', 'Rua São João, N 90 - Centro (CEP: 13880-333)', DATE_SUB(NOW(), INTERVAL 5 DAY)),
+(27, 1, 'PFM-20261027-1027', 'entregue', 42.00, 5.00, 'PIX', 'Av. Independência, N 900 - Centro (CEP: 13880-000)', DATE_SUB(NOW(), INTERVAL 4 DAY)),
+(28, 1, 'PFM-20261028-1028', 'entregue', 27.00, 5.00, 'Cartão de Débito', 'Rua das Acácias, N 10 - Bela Vista (CEP: 13880-555)', DATE_SUB(NOW(), INTERVAL 3 DAY)),
+(29, 1, 'PFM-20261029-1029', 'entregue', 44.00, 5.00, 'PIX', 'Av. Brasil, N 1500 - Jd. Europa (CEP: 13880-444)', DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(30, 1, 'PFM-20261030-1030', 'entregue', 60.00, 5.00, 'PIX', 'Rua das Flores, N 123 - Centro (CEP: 13880-000)', DATE_SUB(NOW(), INTERVAL 1 DAY));
+
+-- Inserindo os itens correspondentes a cada um dos 30 pedidos
+INSERT INTO `pedido_itens` (`id_pedido`, `id_produto`, `quantidade`, `preco_unitario`) VALUES
+-- Pedido 1: 2x Pastel de Carne (9.00) = 18.00
+(1, 1, 2, 9.00),
+-- Pedido 2: 1x Panqueca de Frango (20.00) = 20.00
+(2, 12, 1, 20.00),
+-- Pedido 3: 1x Batata Frita (28.00) + 2x Refri (6.00) = 40.00
+(3, 16, 1, 28.00),
+(3, 27, 2, 6.00),
+-- Pedido 4: 1x Batata Frita (28.00) = 28.00
+(4, 16, 1, 28.00),
+-- Pedido 5: 1x Pastel de Chocolate (10.00) + 1x Cerveja Itaipava (5.00) = 15.00
+(5, 5, 1, 10.00),
+(5, 25, 1, 5.00),
+-- Pedido 6: 2x Suco Laranja (27.00) = 54.00
+(6, 26, 2, 27.00),
+-- Pedido 7: 1x Panqueca Queijo Canastra (22.00) = 22.00
+(7, 14, 1, 22.00),
+-- Pedido 8: 2x Pastel Queijo (9.00) + 1x Panqueca Frango (20.00) = 38.00
+(8, 2, 2, 9.00),
+(8, 12, 1, 20.00),
+-- Pedido 9: 1x Torresmo (48.00) = 48.00
+(9, 18, 1, 48.00),
+-- Pedido 10: 3x Pastel de Carne (9.00) = 27.00
+(10, 1, 3, 9.00),
+-- Pedido 11: 1x Batata Frita c/ Queijo e Bacon (32.00) = 32.00
+(11, 17, 1, 32.00),
+-- Pedido 12: 3x Coxinha (6.00) = 18.00
+(12, 8, 3, 6.00),
+-- Pedido 13: 1x Panqueca de Bacalhau (25.00) + 2x Pastel Chocolate (10.00) = 45.00
+(13, 15, 1, 25.00),
+(13, 5, 2, 10.00),
+-- Pedido 14: 1x Torresmo (48.00) + 2x Refri (6.00) = 60.00
+(14, 18, 1, 48.00),
+(14, 27, 2, 6.00),
+-- Pedido 15: 1x Panqueca de Carne (20.00) + 1x H2O (6.00) = 26.00
+(15, 13, 1, 20.00),
+(15, 24, 1, 6.00),
+-- Pedido 16: 2x Pastel de Banana c/ Canela (10.00) = 20.00
+(16, 6, 2, 10.00),
+-- Pedido 17: 1x Caldo de Canja (22.00) + 1x Refrigerante Lata (6.00) = 28.00
+(17, 20, 1, 22.00),
+(17, 27, 1, 6.00),
+-- Pedido 18: 3x Empada (7.00) = 21.00
+(18, 11, 3, 7.00),
+-- Pedido 19: 1x Mandioca Frita (27.00) + 2x Cerveja Itaipava (5.00) = 37.00
+(19, 19, 1, 27.00),
+(19, 25, 2, 5.00),
+-- Pedido 20: 1x Panqueca Frango c/ Catupiry (20.00) + 1x Suco Laranja (27.00) = 47.00
+(20, 12, 1, 20.00),
+(20, 26, 1, 27.00),
+-- Pedido 21: 4x Pastel Frango c/ Catupiry (9.00) = 36.00
+(21, 3, 4, 9.00),
+-- Pedido 22: 1x Caldo de Feijão c/ Bacon (22.00) = 22.00
+(22, 22, 1, 22.00),
+-- Pedido 23: 2x Hambúrguer Assado (6.00) + 1x H2O (6.00) = 18.00
+(23, 9, 2, 6.00),
+(23, 24, 1, 6.00),
+-- Pedido 24: 1x Torresmo (48.00) + 1x Batata Frita (28.00) = 76.00
+(24, 18, 1, 48.00),
+(24, 16, 1, 28.00),
+-- Pedido 25: 5x Kibe (6.00) = 30.00
+(25, 10, 5, 6.00),
+-- Pedido 26: 2x Pastel Romeu e Julieta (10.00) = 20.00
+(26, 7, 2, 10.00),
+-- Pedido 27: 1x Panqueca de Carne (20.00) + 1x Caldo de Mandioca c/ Bacon (22.00) = 42.00
+(27, 13, 1, 20.00),
+(27, 21, 1, 22.00),
+-- Pedido 28: 3x Pastel de Brócolis c/ Queijo (9.00) = 27.00
+(28, 4, 3, 9.00),
+-- Pedido 29: 1x Batata Frita c/ Queijo e Bacon (32.00) + 2x Refrigerante (6.00) = 44.00
+(29, 17, 1, 32.00),
+(29, 27, 2, 6.00),
+-- Pedido 30: 10x Coxinha (6.00) = 60.00
+(30, 8, 10, 6.00);

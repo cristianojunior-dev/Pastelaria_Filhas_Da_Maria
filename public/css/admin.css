@@ -263,3 +263,15 @@
         opacity: 1;
     }
 }
+
+/* Quando a janela de impressão/PDF for aberta, esconde os elementos desnecessários */
+@media print {
+    header, footer, nav, button, form, .admin-main-title {
+        display: none !important;
+    }
+    .admin-section-card {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+}

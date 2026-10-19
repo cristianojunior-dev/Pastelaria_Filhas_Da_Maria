@@ -22,6 +22,68 @@ const adminController = {
             const [produtosRows] = await db.query('SELECT * FROM produtos ORDER BY nome ASC');
             const [ingredientesRows] = await db.query('SELECT * FROM ingredientes ORDER BY nome ASC');
 
+                      
+            // LÓGICA DOS RELATÓRIOS GERENCIAIS COM FILTROS AVANÇADOS (ABA 6)
+
+            const { tipoRelatorio, data_inicio, data_fim, id_categoria } = req.query;
+
+            let relatorioFaturamento = null;
+            let relatorioPedidos = null;
+            
+            // Mantém as datas preenchidas nos inputs após clicar em filtrar
+            const filtrosSalvos = { data_inicio, data_fim };
+
+            // Mapeia as categorias criadas pelo operador para o select do relatório
+            const categoriasModificadas = categorias.map(cat => ({
+                ...cat,
+                selectedRelatorio: cat.id == id_categoria
+            }));
+
+            // CARD 1: Filtro de Faturamento Bruto por período e categoria
+            if (tipoRelatorio === 'faturamento' && data_inicio && data_fim) {
+                let queryFaturamento = `
+                    SELECT SUM(pi.quantidade * pi.preco_unitario) AS total_bruto, SUM(pi.quantidade) AS total_itens
+                    FROM pedido_itens pi
+                    INNER JOIN pedidos pe ON pi.id_pedido = pe.id
+                    INNER JOIN produtos pr ON pi.id_produto = pr.id
+                    WHERE pe.status = 'entregue' 
+                    AND pe.data BETWEEN ? AND ?`;
+                
+                let queryParams = [`${data_inicio} 00:00:00`, `${data_fim} 23:59:59`];
+
+                if (id_categoria && id_categoria !== 'todas') {
+                    queryFaturamento += ` AND pr.id_categoria = ?`;
+                    queryParams.push(id_categoria);
+                }
+
+                const [fatResult] = await db.query(queryFaturamento, queryParams);
+                
+                relatorioFaturamento = {
+                    total: (parseFloat(fatResult.total_bruto) || 0).toFixed(2),
+                    itensVendidos: parseInt(fatResult.total_itens) || 0
+                };
+            }
+
+            // CARD 2: Filtro de Total de Pedidos Entregues por período
+            if (tipoRelatorio === 'pedidos' && data_inicio && data_fim) {
+                const [pedResult] = await db.query(
+                    `SELECT COUNT(id) AS total_entregas, SUM(total_pedido + taxa_entrega) AS total_faturado
+                     FROM pedidos
+                     WHERE status = 'entregue'
+                     AND data BETWEEN ? AND ?`,
+                    [`${data_inicio} 00:00:00`, `${data_fim} 23:59:59`]
+                );
+
+                const totalEntregas = parseInt(pedResult.total_entregas) || 0;
+                const totalDinheiro = parseFloat(pedResult.total_faturado) || 0;
+                const ticketMedio = totalEntregas > 0 ? (totalDinheiro / totalEntregas) : 0;
+
+                relatorioPedidos = {
+                    total: totalEntregas,
+                    ticketMedio: ticketMedio.toFixed(2)
+                };
+            }
+
             res.render('admin/dashboard', {
                 cssPage: 'admin',
                 pedidos: pedidos,

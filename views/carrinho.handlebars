@@ -13,9 +13,9 @@
                         <div class="item-details-box">
                             <div class="item-header-row">
                                 <h3 class="item-title-name">{{this.nome}}</h3>
-                                <span class="item-price-tag">R$dece {{this.preco}}</span>
+                                
                             </div>
-                            <p class="item-ingredients-text">{{this.descricao}}</p>
+                                <span class="item-price-tag">R$ {{this.preco}}</span>
                             
                             <div class="item-actions-row">
                                 <div class="quantity-control-block">
@@ -37,7 +37,7 @@
                 
                 <div class="carrinho-general-actions">
                     <form action="/cart/clear" method="POST">
-                        <button type="submit" class="btn-clear-all-cart">remover todos os itens do carrinho</button>
+                        <button type="submit" class="btn-clear-all-cart">Limpar todos os itens do carrinho</button>
                     </form>
                 </div>
             {{else}}

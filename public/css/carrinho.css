@@ -145,11 +145,10 @@
 }
 
 .btn-clear-all-cart {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--texto-mutado);
     text-decoration: underline;
-    text-transform: lowercase;
 }
 
 .btn-clear-all-cart:hover {

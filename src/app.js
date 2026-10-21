@@ -4,6 +4,9 @@ const exphbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
+const MySQLStore = require('express-mysql-session')(session); // 1. Adicione isto
+
+
 // Importação Cirúrgica das Rotas do Sistema
 const indexRoutes = require('./routes/index.routes');
 const authRoutes = require('./routes/auth.routes');
@@ -13,6 +16,14 @@ const checkoutRoutes = require('./routes/checkout.routes');
 const favoritesRoutes = require('./routes/favorites.routes');
 const adminRoutes = require('./routes/admin.routes');
 const ordersRoutes = require('./routes/orders.routes');
+
+// 2. Configure a ligação com o seu banco do Aiven
+const sessionStore = new MySQLStore({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
+});
 
 const app = express();
 
@@ -30,8 +41,11 @@ app.use(express.json());
 
 // Middlewares para Controle de Cookies e Sessão do Usuário
 app.use(cookieParser());
+
+// 3. Atualize o app.use(session(...)) que já existe no seu código para incluir o 'store'
 app.use(session({
     secret: process.env.SESSION_SECRET || 'segredo_pastelaria_filhas_maria',
+    store: sessionStore, // <- Esta linha faz a mágica de guardar no Aiven!
     resave: false,
     saveUninitialized: false,
     cookie: {

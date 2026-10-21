@@ -79,8 +79,8 @@ const productsController = {
         try {
             // Busca produtos pelo nome ou descrição contendo o termo pesquisado
             const [produtosRows] = await db.query(
-                "SELECT * FROM produtos WHERE nome LIKE ? OR descricao LIKE ?",
-                [`%${queryBusca}%`, `%${queryBusca}%`]
+                "SELECT * FROM produtos WHERE nome LIKE ?",
+                [`%${queryBusca}%`]
             );
 
             const produtosResultados = [];

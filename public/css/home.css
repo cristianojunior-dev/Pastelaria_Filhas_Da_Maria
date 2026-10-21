@@ -237,6 +237,53 @@
         grid-template-columns: 1fr;
     }
     .destaque-img-area img {
+        height: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Mantém o card de destaque numa só coluna[cite: 2] */
+    .destaque-card {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Aumenta ligeiramente a imagem do destaque (100px era demasiado pequeno)[cite: 2] */
+    .destaque-img-area img {
         height: 200px;
+    }
+    
+    /* Reduz o padding de 30px que empurrava o texto para fora do ecrã[cite: 2] */
+    .destaque-info-area {
+        padding: 15px;
+    }
+    
+    /* Reduz o tamanho da fonte do título para evitar quebra de palavras[cite: 2] */
+    .destaque-produto-titulo {
+        font-size: 18px;
+    }
+
+    /* Controla a grelha de produtos para forçar 2 colunas exatas e reduzir o espaço entre elas (gap de 25px para 10px)[cite: 2] */
+    .produtos-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    /* Reduz o padding interno do cartão de produto[cite: 2] */
+    .product-body {
+        padding: 10px;
+    }
+    
+    /* Ajusta o tamanho da fonte do nome do produto para encaixar melhor em ecrãs pequenos[cite: 2] */
+    .product-name {
+        font-size: 12px;
+        min-height: 35px;
+    }
+
+    /* Ajusta a imagem e o texto do banner principal[cite: 2] */
+    .banner-img {
+        height: 180px;
+    }
+    .banner-text-card {
+        padding: 15px;
     }
 }

@@ -275,3 +275,35 @@
         padding: 0 !important;
     }
 }
+
+@media (max-width: 768px) {
+    /* Permite que as abas de navegação quebrem de linha em vez de esticarem */
+    .admin-nav-tabs {
+        flex-wrap: wrap; 
+        border-bottom: none;
+    }
+    
+    /* Ajusta os botões das abas para não saírem da margem[cite: 2] */
+    .admin-tab-btn {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 5px;
+    }
+
+    /* Força os formulários de duas colunas (1fr 1fr) a ficarem numa só coluna (1fr)[cite: 2] */
+    .admin-form-group-row {
+        grid-template-columns: 1fr; 
+    }
+
+    /* Reduz o espaçamento interno gigante dos cartões que causa cortes na lateral[cite: 2] */
+    .admin-section-card {
+        padding: 15px; 
+    }
+
+    /* Ajusta o modal flutuante para não ultrapassar a largura do telemóvel[cite: 2] */
+    .modal-admin-card {
+        padding: 20px;
+        margin: 15px;
+        max-width: calc(100% - 30px);
+    }
+}

@@ -474,3 +474,61 @@ button {
         gap: 35px;
     }
 }
+
+/* =======================================================
+   CORREÇÃO DEFINITIVA MOBILE (FORÇA A ANULAÇÃO DO HTML)
+   ======================================================= */
+html, body {
+    overflow-x: hidden !important;
+    width: 100%;
+    position: relative;
+}
+
+.content-wrapper {
+    overflow-x: hidden !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    /* 1. Anula as grelhas inline do Admin que forçam larguras de 280px */
+    div[style*="minmax(280px"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    /* 2. Anula o grid inline dos destaques da Home (que forçava 2 colunas) */
+    .destaque-card, .destaque-card[style] {
+        display: flex !important;
+        flex-direction: column !important;
+        min-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    .destaque-info-area, .destaque-info-area[style] {
+        padding: 15px !important;
+    }
+
+    /* 3. Reduz os paddings dos contentores principais que empurram a tela */
+    .admin-dashboard-container, 
+    .home-container {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .admin-section-card {
+        padding: 15px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 4. Garante que nenhum input ou botão seja maior que a tela */
+    input, select, textarea, button {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}

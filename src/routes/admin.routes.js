@@ -23,8 +23,12 @@ router.get('/products/ingredients/:id', adminController.getProductIngredients);
 // Rota de Pedidos
 router.post('/orders/update-status/:id', adminController.updateOrderStatus);
 
-// Rota de Ingredientes (Estoque)
+
+// Rota de Ingredientes
+router.post('/ingredients/add', adminController.addIngredient);
+router.post('/ingredients/edit/:id', adminController.updateIngredient);
 router.post('/ingredients/toggle/:id', adminController.toggleIngredientStatus);
+router.post('/ingredients/delete/:id', adminController.deleteIngredient);
 
 // Rotas de Gerenciamento de Categorias
 router.post('/categories/add', adminController.addCategory);

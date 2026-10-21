@@ -74,6 +74,15 @@ const indexController = {
             console.error('Erro ao carregar a Home:', error);
             res.status(500).send('Erro interno ao carregar o cardápio.');
         }
+    },
+
+    renderSobre: (req, res) => {
+        res.render('sobre', {
+            cssPage: 'sobre',
+            usuarioLogado: req.session.usuarioLogado || false,
+            usuarioNome: req.session.usuarioNome || null,
+            userAdmin: req.session.userAdmin || false
+        });
     }
 };
 

@@ -280,6 +280,57 @@ const adminController = {
         }
     },
 
+    addIngredient: async (req, res) => {
+        const { nome } = req.body;
+        if (nome && nome.trim()) {
+            try {
+                // Insere o novo ingrediente e define-o como disponível (em_estoque = 1)
+                await db.query('INSERT INTO ingredientes (nome, em_estoque) VALUES (?, 1)', [nome.trim()]);
+            } catch (error) {
+                console.error('Erro ao adicionar ingrediente:', error);
+            }
+        }
+        res.redirect('/admin/dashboard');
+    },
+
+    updateIngredient: async (req, res) => {
+        const { id } = req.params;
+        const { nome } = req.body;
+        
+        if (nome && nome.trim()) {
+            try {
+                await db.query('UPDATE ingredientes SET nome = ? WHERE id = ?', [nome.trim(), id]);
+            } catch (error) {
+                console.error('Erro ao editar ingrediente:', error);
+            }
+        }
+        res.redirect('/admin/dashboard');
+    },
+
+    toggleIngredientStatus: async (req, res) => {
+        const { id } = req.params;
+        try {
+            const [rows] = await db.query('SELECT em_estoque FROM ingredientes WHERE id = ?', [id]);
+            if (rows.length > 0) {
+                await db.query('UPDATE ingredientes SET em_estoque = ? WHERE id = ?', [rows[0].em_estoque === 1 ? 0 : 1, id]);
+            }
+            res.redirect('/admin/dashboard');
+        } catch (error) {
+            res.status(500).send('Erro.');
+        }
+    },
+
+    deleteIngredient: async (req, res) => {
+        const { id } = req.params;
+        try {
+            await db.query('DELETE FROM ingredientes WHERE id = ?', [id]);
+            res.redirect('/admin/dashboard');
+        } catch (error) {
+            console.error('Erro ao excluir ingrediente:', error);
+            res.redirect('/admin/dashboard');
+        }
+    },
+
     addCategory: async (req, res) => {
         const { nome } = req.body;
         if (nome && nome.trim()) {

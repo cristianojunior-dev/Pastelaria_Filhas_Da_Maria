@@ -134,26 +134,65 @@
 
     <!-- PAINEL 4: ESTOQUE INGREDIENTES -->
     <section id="painel-admin-4" class="admin-section-card admin-panel-box" style="display: none;">
-        <h2 class="admin-section-title"><i class="fa-solid fa-layer-group"></i> Ativar / Desativar Ingredientes</h2>
+        <h2 class="admin-section-title"><i class="fa-solid fa-layer-group"></i> Gerenciar Ingredientes</h2>
+
+        <!-- Formulário para adicionar ingrediente -->
+        <form action="/admin/ingredients/add" method="POST" class="admin-product-form"
+            style="margin-bottom: 25px; border-bottom: 2px solid var(--rosa-fundo); padding-bottom: 25px;">
+            <div style="display: flex; gap: 15px; align-items: flex-end;">
+                <div class="admin-form-group" style="flex: 1;">
+                    <label>Nome do Novo Ingrediente:</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <button type="submit" class="btn-admin-save-product" style="width: auto; padding: 13px 30px;">
+                    <i class="fa-solid fa-plus"></i> Adicionar
+                </button>
+            </div>
+        </form>
+
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
             {{#each todosIngredientes}}
             <div
-                style="display: flex; align-items: center; justify-content: space-between; background: var(--branco); padding: 15px; border-radius: 10px; border: 2px solid var(--rosa-destaque);">
+                style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px; background: var(--rosa-fundo); padding: 15px; border-radius: 8px; border: 1px solid var(--rosa-destaque);">
+                
                 <div style="text-align: left;">
                     <h4 style="font-size: 14px; font-weight: 700; color: var(--texto-escuro); margin: 0;">{{this.nome}}
                     </h4>
                     <p style="margin: 4px 0 0 0; font-size: 11px; font-weight: 700;">
-                        {{#if this.em_estoque}}<span
-                            style="color: #155724; background: #D4EDDA; padding: 2px 8px; border-radius: 10px;">DISPONÍVEL</span>{{else}}<span
-                            style="color: #721C24; background: #F8D7DA; padding: 2px 8px; border-radius: 10px;">ESGOTADO</span>{{/if}}
+                        {{#if this.em_estoque}}
+                        <span
+                            style="color: #155724; background: #D4EDDA; padding: 2px 8px; border-radius: 10px;">DISPONÍVEL</span>
+                        {{else}}
+                        <span
+                            style="color: #721C24; background: #F8D7DA; padding: 2px 8px; border-radius: 10px;">ESGOTADO</span>
+                        {{/if}}
                     </p>
                 </div>
-                <form action="/admin/ingredients/toggle/{{this.id}}" method="POST">
-                    {{#if this.em_estoque}}<button type="submit" class="select-status-admin"
-                        style="background: #F8D7DA; color: #721C24; border-color: #F5C6CB; font-weight: 700; padding: 6px 12px;">DESATIVAR</button>{{else}}<button
-                        type="submit" class="select-status-admin"
-                        style="background: #D4EDDA; color: #155724; border-color: #C3E6CB; font-weight: 700; padding: 6px 12px;">ATIVAR</button>{{/if}}
-                </form>
+
+                <!-- Nova fileira de botões idêntica à de Categorias -->
+                <div
+                    style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--rosa-destaque); padding-top: 10px;">
+
+                    <button type="button" class="select-status-admin"
+                        style="background: var(--branco); padding: 6px 14px; font-weight: 700;"
+                        onclick="abrirModalIngrediente('{{this.id}}', '{{this.nome}}')">EDITAR</button>
+
+                    <form action="/admin/ingredients/toggle/{{this.id}}" method="POST" style="margin: 0;">
+                        {{#if this.em_estoque}}
+                        <button type="submit" class="select-status-admin"
+                            style="background: #FFF3CD; color: #856404; border-color: #FFEEBA; font-weight: 700; padding: 6px 12px;">DESATIVAR</button>
+                        {{else}}
+                        <button type="submit" class="select-status-admin"
+                            style="background: #D4EDDA; color: #155724; border-color: #C3E6CB; font-weight: 700; padding: 6px 12px;">ATIVAR</button>
+                        {{/if}}
+                    </form>
+
+                    <form action="/admin/ingredients/delete/{{this.id}}" method="POST" style="margin: 0;"
+                        onsubmit="return confirm('Excluir este ingrediente definitivamente?')">
+                        <button type="submit" class="select-status-admin"
+                            style="background: #F8D7DA; color: #721C24; border-color: #F5C6CB; padding: 6px 14px; font-weight: 700;">EXCLUIR</button>
+                    </form>
+                </div>
             </div>
             {{/each}}
         </div>
@@ -446,6 +485,23 @@
     </div>
 </div>
 
+<!-- MODAL DE EDIÇÃO DE INGREDIENTE -->
+<div id="modalEditarIngrediente" class="modal-admin-overlay" style="display: none;">
+    <div class="modal-admin-card" style="max-width: 420px;">
+        <div class="modal-admin-header">
+            <h3><i class="fa-solid fa-pen"></i> Editar Ingrediente</h3>
+            <button type="button" class="btn-close-modal" onclick="fecharModalIngrediente()">&times;</button>
+        </div>
+        <form id="formEditarIngrediente" action="" method="POST" class="admin-product-form" style="margin-top: 25px;">
+            <div class="admin-form-group">
+                <label for="edit_nome_ingrediente">Nome do Ingrediente:</label>
+                <input type="text" name="nome" id="edit_nome_ingrediente" required>
+            </div>
+            <button type="submit" class="btn-admin-save-product">Salvar Alterações</button>
+        </form>
+    </div>
+</div>
+
 <script>
 
     function mudarPainel(numeroPainel) {
@@ -505,8 +561,18 @@
     }
     function fecharModalCategoria() { document.getElementById('modalEditarCategoria').style.display = 'none'; }
 
+    function abrirModalIngrediente(id, nome) {
+        document.getElementById('formEditarIngrediente').action = `/admin/ingredients/edit/${id}`;
+        document.getElementById('edit_nome_ingrediente').value = nome;
+        document.getElementById('modalEditarIngrediente').style.display = 'flex';
+    }
+    
+    function fecharModalIngrediente() { 
+        document.getElementById('modalEditarIngrediente').style.display = 'none'; 
+    }
     window.onclick = function (event) {
         if (event.target === document.getElementById('modalEditar')) fecharModalEdicao();
         if (event.target === document.getElementById('modalEditarCategoria')) fecharModalCategoria();
+        if (event.target === document.getElementById('modalEditarIngrediente')) fecharModalIngrediente(); // Nova linha
     }
 </script>

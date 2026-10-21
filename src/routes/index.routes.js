@@ -8,4 +8,6 @@ router.get('/', indexController.renderHome);
 // Atalho caso o usuário digite explicitamente /home
 router.get('/home', indexController.renderHome);
 
+router.get('/about', indexController.renderSobre);
+
 module.exports = router;

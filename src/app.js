@@ -16,6 +16,8 @@ const ordersRoutes = require('./routes/orders.routes');
 
 const app = express();
 
+app.set('trust proxy', 1); 
+
 // Middleware de debug: Logger de requisições no console do terminal
 app.use((req, res, next) => {
     console.log(`[REQ] ${new Date().toISOString()} -> ${req.method} ${req.url}`);

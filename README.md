@@ -1,9 +1,8 @@
-```markdown
+
 # 🥟 Pastelaria Filhas da Maria - Sistema de Delivery e Gestão
 
 Sistema web completo de delivery e gestão de pedidos desenvolvido exclusivamente para a **Pastelaria Filhas da Maria**. Construído com Node.js, Express, Handlebars e MySQL, o projeto moderniza o atendimento ao cliente e centraliza a operação da cozinha e administração financeira.
 
----
 
 ## 🚀 Funcionalidades Principais
 
@@ -30,7 +29,7 @@ Sistema web completo de delivery e gestão de pedidos desenvolvido exclusivament
   * Relatório de Volume de Entregas e Ticket Médio.
   * Opção de exportação/impressão para PDF.
 
----
+--- 
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -49,7 +48,6 @@ Sistema web completo de delivery e gestão de pedidos desenvolvido exclusivament
 * [jQuery](https://jquery.com/) - Utilizado especificamente para a máscara e requisição da API do ViaCEP.
 * [FontAwesome](https://fontawesome.com/) - Ícones da interface.
 
-```
 
 ## 💻 Como Instalar e Executar o Projeto
 
@@ -59,7 +57,6 @@ Certifique-se de ter instalado na sua máquina:
 * **MySQL Server** (ou pacotes como XAMPP / WampServer)
 * **Git**
 
-```
 
 ### 1. Clonar o repositório
 ```bash
@@ -110,7 +107,7 @@ EMAIL_PASS=iqxchdgdoznuifzk
 
 Modo de desenvolvimento (com reinicialização automática se usar nodemon) ou produção:
 
-```bash
+```
 npm start
 
 ```

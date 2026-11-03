@@ -1,97 +1,133 @@
 <div class="pedidos-container">
 
+    <!-- Filtro por Período em largura total no topo -->
+    <div class="filtro-pedidos-row">
+        <form action="/pedidos" method="GET" class="filtro-pedidos-form">
+            <div class="input-group">
+                <label for="data_inicio">De:</label>
+                <input type="date" id="data_inicio" name="data_inicio" value="{{filtros.data_inicio}}">
+            </div>
+            <div class="input-group">
+                <label for="data_fim">Até:</label>
+                <input type="date" id="data_fim" name="data_fim" value="{{filtros.data_fim}}">
+            </div>
+            <button type="submit" class="btn-filtrar">Filtrar</button>
+            <a href="/pedidos" class="btn-limpar">Limpar</a>
+        </form>
+    </div>
+
     <h1>Meus Pedidos</h1>
 
-    <!-- Painel de Filtro por Período (Envia via GET para o nosso Controller) -->
-    <form action="/pedidos" method="GET" class="filtro-pedidos-form" style="margin-bottom: 30px; display: flex; gap: 15px; align-items: flex-end; background: var(--branco, #fff); padding: 20px; border-radius: 8px; border: 1px solid var(--rosa-destaque, #FFE1E5);">
-        <div style="display: flex; flex-direction: column; gap: 5px;">
-            <label for="data_inicio" style="font-size: 12px; font-weight: 700; color: var(--texto-escuro, #2D2D2D); text-transform: uppercase;">De:</label>
-            <input type="date" id="data_inicio" name="data_inicio" value="{{filtros.data_inicio}}" style="padding: 10px; border: 2px solid var(--laranja-principal, #FF8838); border-radius: 6px; outline: none; font-family: 'Montserrat', sans-serif;">
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 5px;">
-            <label for="data_fim" style="font-size: 12px; font-weight: 700; color: var(--texto-escuro, #2D2D2D); text-transform: uppercase;">Até:</label>
-            <input type="date" id="data_fim" name="data_fim" value="{{filtros.data_fim}}" style="padding: 10px; border: 2px solid var(--laranja-principal, #FF8838); border-radius: 6px; outline: none; font-family: 'Montserrat', sans-serif;">
-        </div>
-        <button type="submit" style="background-color: var(--laranja-principal, #FF8838); color: white; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-size: 13px; text-transform: uppercase; transition: background 0.2s; cursor: pointer; height: 43px;">
-            Filtrar
-        </button>
-        <a href="/pedidos" style="background-color: #f0f0f0; color: #555; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-size: 13px; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; justify-content: center; height: 43px;">
-            Limpar
-        </a>
-    </form>
-
-    <!-- Listagem dos Pedidos Cadastrados -->
     {{#if pedidos.length}}
-
+        <!-- ITERAÇÃO DOS PEDIDOS -->
         {{#each pedidos}}
-            <div class="pedido-card">
+            
+            <!-- SE FOR O PRIMEIRO ITEM (O mais recente): Renderiza isolado com estilo Full Width -->
+            {{#if @first}}
+                <div class="pedido-card card-mais-recente">
+                    <div class="pedido-header">
+                        <div class="badge-recente">Pedido Mais Recente</div>
+                        <h3>Pedido #{{id}}</h3>
+                        <p>Status: <strong>{{status}}</strong></p>
+                        <p>Data: {{data}}</p>
+                        <p>Endereço: {{endereco}}</p>
+                    </div>
 
-                <div class="pedido-header">
-                    <h3>Pedido #{{id}}</h3>
-                    <p>Status: <strong>{{status}}</strong></p>
-                    <p>Data: {{data}}</p>
-                    <p>Endereço: {{endereco}}</p>
-                </div>
-
-                <div class="pedido-itens" id="lista-itens-{{id}}">
-                    {{#each itens}}
-                        <!-- O Handlebars possui um contador nativo chamado @index (começa em 0) -->
-                        <div class="pedido-item {{#if (gt @index 2)}}item-oculto{{/if}}" {{#if (gt @index 2)}}style="display: none;"{{/if}}>
-                            <img src="/images/{{imagem}}" alt="{{nome}}">
-                            <div>
-                                <h4>{{nome}}</h4>
-                                <p>Quantidade: {{quantidade}}</p>
-                                <p>Preço: R$ {{preco}}</p>
+                    <div class="pedido-itens" id="lista-itens-{{id}}">
+                        {{#each itens}}
+                            <div class="pedido-item {{#if (gt @index 2)}}item-oculto{{/if}}" {{#if (gt @index 2)}}style="display: none;"{{/if}}>
+                                <img src="/images/{{imagem}}" alt="{{nome}}">
+                                <div>
+                                    <h4>{{nome}}</h4>
+                                    <p>Quantidade: {{quantidade}}</p>
+                                    <p>Preço: R$ {{preco}}</p>
+                                </div>
                             </div>
+                        {{/each}}
+                    </div>
+
+                    {{#if (gt itens.length 3)}}
+                        <div class="ver-mais-wrapper">
+                            <button class="btn-ver-mais" onclick="toggleItens('{{id}}', this)">
+                                <i class="fa-solid fa-chevron-down"></i> Ver mais ({{math itens.length "-" 3}} itens)
+                            </button>
                         </div>
-                    {{/each}}
+                    {{/if}}
+
+                    <div class="pedido-total">
+                        <h3>Total: R$ {{total}}</h3>
+                    </div>
                 </div>
 
-                <!-- O botão só aparece se o pedido tiver mais de 3 itens -->
-                {{#if (gt itens.length 3)}}
-                    <div style="text-align: center; margin: 10px 0;">
-                        <button class="btn-ver-mais" onclick="toggleItens('{{id}}', this)" style="color: var(--laranja-principal, #FF8838); font-weight: 700; font-size: 13px; text-transform: uppercase; cursor: pointer; gap: 5px; display: inline-flex; align-items: center;">
-                            <i class="fa-solid fa-chevron-down"></i> Ver mais ({{math itens.length "-" 3}} itens)
-                        </button>
+                <!-- ABRE A DIV DO GRID PARA OS PRÓXIMOS ITENS SE HOUVER MAIS DE UM PEDIDO -->
+                {{#if (gt ../pedidos.length 1)}}
+                    <div class="pedidos-grid">
+                {{/if}}
+
+            {{else}}
+                <!-- DEMAIS PEDIDOS (Mais antigos): Renderizam dentro do grid de 3 colunas -->
+                <div class="pedido-card">
+                    <div class="pedido-header">
+                        <h3>Pedido #{{id}}</h3>
+                        <p>Status: <strong>{{status}}</strong></p>
+                        <p>Data: {{data}}</p>
+                        <p>Endereço: {{endereco}}</p>
+                    </div>
+
+                    <div class="pedido-itens" id="lista-itens-{{id}}">
+                        {{#each itens}}
+                            <div class="pedido-item {{#if (gt @index 2)}}item-oculto{{/if}}" {{#if (gt @index 2)}}style="display: none;"{{/if}}>
+                                <img src="/images/{{imagem}}" alt="{{nome}}">
+                                <div>
+                                    <h4>{{nome}}</h4>
+                                    <p>Quantidade: {{quantidade}}</p>
+                                    <p>Preço: R$ {{preco}}</p>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+
+                    {{#if (gt itens.length 3)}}
+                        <div class="ver-mais-wrapper">
+                            <button class="btn-ver-mais" onclick="toggleItens('{{id}}', this)">
+                                <i class="fa-solid fa-chevron-down"></i> Ver mais ({{math itens.length "-" 3}} itens)
+                            </button>
+                        </div>
+                    {{/if}}
+
+                    <div class="pedido-total">
+                        <h3>Total: R$ {{total}}</h3>
+                    </div>
+                </div>
+
+                <!-- SE FOR O ÚLTIMO ITEM DO LOOP GERAL: Fecha a div do grid -->
+                {{#if @last}}
                     </div>
                 {{/if}}
 
-
-                <div class="pedido-total">
-                    <h3>Total: R$ {{total}}</h3>
-                </div>
-
-            </div>
+            {{/if}}
         {{/each}}
 
     {{else}}
-        <p class="sem-pedidos" style="text-align: center; color: var(--texto-mutado, #777); padding: 40px 0; font-size: 16px; font-weight: 500;">
-            Você ainda não possui pedidos cadastrados neste período.
-        </p>
+        <p class="sem-pedidos">Você ainda não possui pedidos cadastrados neste período.</p>
     {{/if}}
 
 </div>
 
 <script>
 function toggleItens(pedidoId, botao) {
-    // Seleciona todos os itens ocultos especificamente deste card de pedido
     const container = document.getElementById(`lista-itens-${pedidoId}`);
     const itensOcultos = container.querySelectorAll('.item-oculto');
-    
-    // Verifica se os itens já estão visíveis ou escondidos
     const estaoOcultos = itensOcultos[0].style.display === 'none';
 
     itensOcultos.forEach(item => {
         item.style.display = estaoOcultos ? 'flex' : 'none';
     });
 
-    // Atualiza o texto do botão e a setinha do FontAwesome dinamicamente
     if (estaoOcultos) {
         botao.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Mostrar menos';
     } else {
-        const totalItensOcultos = itensOcultos.length;
-        botao.innerHTML = `<i class="fa-solid fa-chevron-down"></i> Ver mais (${totalItensOcultos} itens)`;
+        botao.innerHTML = `<i class="fa-solid fa-chevron-down"></i> Ver mais (${itensOcultos.length} itens)`;
     }
 }
 </script>
-

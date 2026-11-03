@@ -1,11 +1,12 @@
+/* ==========================================================================
+   CONTAINER E LAYOUT GERAL DA PÁGINA
+   ========================================================================== */
 .pedidos-container {
     max-width: 1200px;
     margin: 40px auto;
     padding: 0 20px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
-    justify-content: flex-start; 
+    flex-direction: column;
 }
 
 .pedidos-container h1 {
@@ -15,7 +16,115 @@
     color: var(--texto-escuro);
     border-bottom: 3px solid var(--laranja-principal);
     padding-bottom: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+/* ==========================================================================
+   BLOCO DO FILTRO POR PERÍODO (TELA TODA NO TOPO)
+   ========================================================================== */
+.filtro-pedidos-row {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.filtro-pedidos-form {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    background-color: var(--branco);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--rosa-destaque);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.filtro-pedidos-form .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filtro-pedidos-form label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--texto-escuro);
+}
+
+.filtro-pedidos-form input[type="date"] {
+    padding: 10px;
+    border: 2px solid var(--laranja-principal);
+    border-radius: 6px;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.btn-filtrar {
+    background-color: var(--laranja-principal);
+    color: var(--branco);
+    padding: 11px 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: background 0.2s;
+    height: 41px;
+    cursor: pointer;
+}
+
+.btn-filtrar:hover {
+    background-color: var(--laranja-hover);
+}
+
+.btn-limpar {
+    background-color: #f0f0f0;
+    color: #555;
+    padding: 0 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 41px;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   CARD MAIS RECENTE (DESTAQUE FULL WIDTH LOGO ABAIXO DO FILTRO)
+   ========================================================================== */
+.card-mais-recente {
+    width: 100% !important;
+    margin-bottom: 35px;
+    border: 2px solid var(--laranja-principal) !important;
+    position: relative;
+}
+
+.badge-recente {
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background-color: var(--laranja-principal);
+    color: var(--branco);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* ==========================================================================
+   GRID DE PEDIDOS HISTÓRICOS (MAIS ANTIGOS)
+   ========================================================================== */
+.pedidos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Organiza de 3 em 3 na mesma linha */
+    gap: 25px;
+    width: 100%;
 }
 
 .pedido-card {
@@ -26,11 +135,11 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     display: flex;
     flex-direction: column;
-    flex: 1 1 calc(33.333% - 25px); 
-    min-width: 350px;
-    max-width: 600px;
+    justify-content: space-between;
+    width: 100%;
 }
 
+/* Elementos Internos dos Cards */
 .pedido-header {
     border-bottom: 2px solid var(--rosa-fundo);
     padding-bottom: 15px;
@@ -55,6 +164,7 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-bottom: 15px;
 }
 
 .pedido-item {
@@ -88,8 +198,13 @@
     font-weight: 600;
 }
 
+.ver-mais-wrapper {
+    text-align: center;
+    margin: 5px 0 15px 0;
+}
+
 .pedido-total {
-    margin-top: 20px;
+    margin-top: auto;
     padding-top: 20px;
     border-top: 2px solid var(--rosa-fundo);
     text-align: right;
@@ -101,35 +216,44 @@
     font-weight: 700;
 }
 
-/* Garante que o card do pedido se ajuste no mobile */
-.pedido-card {
-    background: var(--branco);
-    border: 1px solid var(--rosa-destaque);
-    border-radius: 8px;
-    margin-bottom: 20px;
-    padding: 20px;
-    width: 100%;
+/* ==========================================================================
+   RESPONSIVIDADE GERAL
+   ========================================================================== */
+@media (max-width: 992px) {
+    .pedidos-grid {
+        grid-template-columns: repeat(2, 1fr); /* Reduz para 2 em tablets */
+    }
 }
 
-/* Os pastéis listados ficam em linha no PC, mas empilham no celular */
-.pedido-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px 0;
-    border-bottom: 1px solid var(--rosa-fundo);
+@media (max-width: 768px) {
+    .pedidos-grid {
+        grid-template-columns: 1fr; /* 1 coluna no celular */
+    }
+
+    .filtro-pedidos-form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .filtro-pedidos-form .input-group,
+    .filtro-pedidos-form input,
+    .btn-filtrar,
+    .btn-limpar {
+        width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
     .pedido-item {
-        flex-direction: column; /* Faz a imagem ficar acima do texto no celular */
+        flex-direction: column;
         text-align: center;
         align-items: center;
+        padding: 15px;
     }
 
     .pedido-item img {
-        width: 80px;        /* Reduz um pouco o tamanho da imagem do pastel no celular */
+        width: 80px; 
         height: 80px;
-        object-fit: cover;
     }
 }

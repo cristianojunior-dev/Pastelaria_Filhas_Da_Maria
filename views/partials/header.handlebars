@@ -22,22 +22,39 @@
         <!-- Menu de Ícones Direita -->
         <nav class="header-nav">
             {{#if usuarioLogado}}
-                {{#if userAdmin}}
-                    <a href="/admin/dashboard" class="nav-link-item" title="Painel Admin">
-                        <i class="fa-solid fa-user-gear"></i>
-                        <span>Admin</span>
-                    </a>
-                {{else}}
-                    <a href="/orders" class="nav-link-item" title="Meus Pedidos">
+                <!-- Dropdown da Conta do Usuário -->
+                <div class="nav-dropdown-wrapper">
+                    <button class="nav-dropdown-toggle" title="Minha Conta">
                         <i class="fa-solid fa-user"></i>
-                        <span>Meus Pedidos</span>
-                    </a>
-                {{/if}}
-                <a href="/auth/logout" class="nav-link-item" title="Sair">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Sair</span>
-                </a>
+                        <span>Olá, {{usuarioNome}} <i class="fa-solid fa-caret-down dropdown-arrow"></i></span>
+                    </button>
+                    
+                    <ul class="nav-dropdown-menu">
+                        {{#if userAdmin}}
+                            <li>
+                                <a href="/admin/dashboard" class="dropdown-link-item">
+                                    <i class="fa-solid fa-user-gear"></i> Painel Admin
+                                </a>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                        {{/if}}
+                        
+                        <li>
+                            <a href="/pedidos" class="dropdown-link-item">
+                                <i class="fa-solid fa-clock-rotate-left"></i> Meus Pedidos
+                            </a>
+                        </li>
+                        
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <a href="/auth/logout" class="dropdown-link-item logout-accent">
+                                <i class="fa-solid fa-right-from-bracket"></i> Sair
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             {{else}}
+                <!-- Botão de Login quando não autenticado -->
                 <a href="/auth/login" class="nav-link-item">
                     <i class="fa-solid fa-user-plus"></i>
                     <span>Login</span>

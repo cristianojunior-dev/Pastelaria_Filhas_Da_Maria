@@ -4,8 +4,7 @@ const exphbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
-const MySQLStore = require('express-mysql-session')(session); // 1. Adicione isto
-
+const MySQLStore = require('express-mysql-session')(session);
 
 // Importação Cirúrgica das Rotas do Sistema
 const indexRoutes = require('./routes/index.routes');
@@ -17,7 +16,7 @@ const favoritesRoutes = require('./routes/favorites.routes');
 const adminRoutes = require('./routes/admin.routes');
 const ordersRoutes = require('./routes/orders.routes');
 
-// 2. Configure a ligação com o seu banco do Aiven
+// Configure a ligação com o seu banco do Aiven
 const sessionStore = new MySQLStore({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -25,7 +24,7 @@ const sessionStore = new MySQLStore({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     ssl: {
-        rejectUnauthorized: false // <-- Adicionado
+        rejectUnauthorized: false
     }
 });
 
@@ -46,7 +45,7 @@ app.use(express.json());
 // Middlewares para Controle de Cookies e Sessão do Usuário
 app.use(cookieParser());
 
-// 3. Atualize o app.use(session(...)) que já existe no seu código para incluir o 'store'
+// Atualize o app.use(session(...)) que já existe no seu código para incluir o 'store'
 app.use(session({
     secret: process.env.SESSION_SECRET || 'segredo_pastelaria_filhas_maria',
     store: sessionStore, // <- Esta linha faz a mágica de guardar no Aiven!
@@ -57,10 +56,17 @@ app.use(session({
     }
 }));
 
+// Middleware Global de Sessão para o Handlebars (Compartilha o estado logado com o header.handlebars)
+app.use((req, res, next) => {
+    res.locals.usuarioLogado = req.session.usuarioLogado || false;
+    res.locals.usuarioNome = req.session.usuarioNome || null;
+    res.locals.userAdmin = req.session.userAdmin || false;
+    next();
+});
+
 // Definição das Pastas de Arquivos Estáticos (CSS, Imagens e Uploads)
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-app.use('/orders', ordersRoutes);
 
 // Configuração e Conexão da Template Engine (Handlebars)
 app.engine('handlebars', exphbs.engine({
@@ -73,6 +79,7 @@ app.set('views', path.join(__dirname, '..', 'views'));
 
 // Ativação das Rotas com seus Respectivos Prefixos Globais
 app.use('/', indexRoutes);
+app.use('/', ordersRoutes); // Injetado na raiz para validar a rota '/pedidos' que o cabeçalho chama
 app.use('/auth', authRoutes);
 app.use('/products', productsRoutes);
 app.use('/cart', cartRoutes);
@@ -84,10 +91,7 @@ app.use('/admin', adminRoutes);
 app.use((req, res) => {
     res.status(404).render('home', {
         cssPage: 'home',
-        error: 'A página que você tentou acessar não existe.',
-        usuarioLogado: req.session.usuarioLogado || false,
-        usuarioNome: req.session.usuarioNome || null,
-        userAdmin: req.session.userAdmin || false
+        error: 'A página que você tentou acessar não existe.'
     });
 });
 

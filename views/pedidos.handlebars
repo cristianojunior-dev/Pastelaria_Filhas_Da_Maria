@@ -2,6 +2,25 @@
 
     <h1>Meus Pedidos</h1>
 
+    <!-- Painel de Filtro por Período (Envia via GET para o nosso Controller) -->
+    <form action="/pedidos" method="GET" class="filtro-pedidos-form" style="margin-bottom: 30px; display: flex; gap: 15px; align-items: flex-end; background: var(--branco, #fff); padding: 20px; border-radius: 8px; border: 1px solid var(--rosa-destaque, #FFE1E5);">
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="data_inicio" style="font-size: 12px; font-weight: 700; color: var(--texto-escuro, #2D2D2D); text-transform: uppercase;">De:</label>
+            <input type="date" id="data_inicio" name="data_inicio" value="{{filtros.data_inicio}}" style="padding: 10px; border: 2px solid var(--laranja-principal, #FF8838); border-radius: 6px; outline: none; font-family: 'Montserrat', sans-serif;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="data_fim" style="font-size: 12px; font-weight: 700; color: var(--texto-escuro, #2D2D2D); text-transform: uppercase;">Até:</label>
+            <input type="date" id="data_fim" name="data_fim" value="{{filtros.data_fim}}" style="padding: 10px; border: 2px solid var(--laranja-principal, #FF8838); border-radius: 6px; outline: none; font-family: 'Montserrat', sans-serif;">
+        </div>
+        <button type="submit" style="background-color: var(--laranja-principal, #FF8838); color: white; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-size: 13px; text-transform: uppercase; transition: background 0.2s; cursor: pointer; height: 43px;">
+            Filtrar
+        </button>
+        <a href="/pedidos" style="background-color: #f0f0f0; color: #555; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-size: 13px; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; justify-content: center; height: 43px;">
+            Limpar
+        </a>
+    </form>
+
+    <!-- Listagem dos Pedidos Cadastrados -->
     {{#if pedidos.length}}
 
         {{#each pedidos}}
@@ -35,7 +54,9 @@
         {{/each}}
 
     {{else}}
-        <p>Você ainda não possui pedidos.</p>
+        <p class="sem-pedidos" style="text-align: center; color: var(--texto-mutado, #777); padding: 40px 0; font-size: 16px; font-weight: 500;">
+            Você ainda não possui pedidos cadastrados neste período.
+        </p>
     {{/if}}
 
 </div>

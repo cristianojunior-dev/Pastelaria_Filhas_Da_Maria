@@ -3,7 +3,7 @@ const router = express.Router();
 const ordersController = require('../controllers/orders.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 
-// Rota protegida: obriga o utilizador a estar ligado para ver os pedidos
-router.get('/', authMiddleware, ordersController.getMeusPedidos);
+// Rota protegida: garante que o usuário esteja logado antes de carregar o histórico de pedidos
+router.get('/pedidos', authMiddleware, ordersController.getMeusPedidos);
 
 module.exports = router;

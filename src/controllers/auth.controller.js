@@ -63,8 +63,15 @@ const authController = {
 
     // Exibe a tela de login
     renderLogin: (req, res) => {
-        res.render('login', { cssPage: 'login' });
-    },
+        // Captura o erro vindo do middleware (se houver) e limpa a sessão em seguida
+        const errorMessage = req.session.loginError || null;
+        delete req.session.loginError;
+
+        res.render('login', { 
+            cssPage: 'login', 
+            error: errorMessage // Repassa o aviso para exibir na tela do Handlebars
+        });
+    },  
 
     // Processa os dados de login enviados pelo formulário
     login: async (req, res) => {

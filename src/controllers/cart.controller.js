@@ -64,8 +64,13 @@ const cartController = {
                 });
             }
 
-            // Redireciona o usuário para visualizar o carrinho
-            res.redirect('/cart');
+            // Garante o salvamento da sessão antes de redirecionar
+            req.session.save((err) => {
+                if (err) {
+                    console.error('Erro ao salvar sessão no addItem:', err);
+                }
+                res.redirect('/cart');
+            });
 
         } catch (error) {
             console.error('Erro ao adicionar item ao carrinho:', error);
@@ -97,7 +102,13 @@ const cartController = {
             }
         }
 
-        res.redirect('/cart');
+        // Garante o salvamento da sessão antes de redirecionar
+        req.session.save((err) => {
+            if (err) {
+                console.error('Erro ao salvar sessão no updateItem:', err);
+            }
+            res.redirect('/cart');
+        });
     },
 
     // Remove um produto específico clicando no botão REMOVER
@@ -108,13 +119,26 @@ const cartController = {
             req.session.cart = req.session.cart.filter(item => item.id !== parseInt(id));
         }
 
-        res.redirect('/cart');
+        // Garante o salvamento da sessão antes de redirecionar
+        req.session.save((err) => {
+            if (err) {
+                console.error('Erro ao salvar sessão no removeItem:', err);
+            }
+            res.redirect('/cart');
+        });
     },
 
     // Limpa o carrinho por inteiro clicando em "limpar carrinho"
     clearCart: (req, res) => {
         req.session.cart = [];
-        res.redirect('/cart');
+        
+        // Garante o salvamento da sessão antes de redirecionar
+        req.session.save((err) => {
+            if (err) {
+                console.error('Erro ao salvar sessão no clearCart:', err);
+            }
+            res.redirect('/cart');
+        });
     }
 };
 

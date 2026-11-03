@@ -72,7 +72,17 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 app.engine('handlebars', exphbs.engine({
     defaultLayout: 'main',
     layoutsDir: path.join(__dirname, '..', 'views', 'layouts'),
-    partialsDir: path.join(__dirname, '..', 'views', 'partials')
+    partialsDir: path.join(__dirname, '..', 'views', 'partials'),
+    helpers: {
+        gt: (v1, v2) => v1 > v2,
+        math: (lvalue, operator, rvalue) => {
+            lvalue = parseFloat(lvalue);
+            rvalue = parseFloat(rvalue);
+            return {
+                "-": lvalue - rvalue
+            }[operator];
+        }
+    }
 }));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, '..', 'views'));

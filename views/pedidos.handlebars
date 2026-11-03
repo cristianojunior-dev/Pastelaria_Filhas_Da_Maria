@@ -33,9 +33,10 @@
                     <p>Endereço: {{endereco}}</p>
                 </div>
 
-                <div class="pedido-itens">
+                <div class="pedido-itens" id="lista-itens-{{id}}">
                     {{#each itens}}
-                        <div class="pedido-item">
+                        <!-- O Handlebars possui um contador nativo chamado @index (começa em 0) -->
+                        <div class="pedido-item {{#if (gt @index 2)}}item-oculto{{/if}}" {{#if (gt @index 2)}}style="display: none;"{{/if}}>
                             <img src="/images/{{imagem}}" alt="{{nome}}">
                             <div>
                                 <h4>{{nome}}</h4>
@@ -45,6 +46,16 @@
                         </div>
                     {{/each}}
                 </div>
+
+                <!-- O botão só aparece se o pedido tiver mais de 3 itens -->
+                {{#if (gt itens.length 3)}}
+                    <div style="text-align: center; margin: 10px 0;">
+                        <button class="btn-ver-mais" onclick="toggleItens('{{id}}', this)" style="color: var(--laranja-principal, #FF8838); font-weight: 700; font-size: 13px; text-transform: uppercase; cursor: pointer; gap: 5px; display: inline-flex; align-items: center;">
+                            <i class="fa-solid fa-chevron-down"></i> Ver mais ({{math itens.length "-" 3}} itens)
+                        </button>
+                    </div>
+                {{/if}}
+
 
                 <div class="pedido-total">
                     <h3>Total: R$ {{total}}</h3>
@@ -60,3 +71,27 @@
     {{/if}}
 
 </div>
+
+<script>
+function toggleItens(pedidoId, botao) {
+    // Seleciona todos os itens ocultos especificamente deste card de pedido
+    const container = document.getElementById(`lista-itens-${pedidoId}`);
+    const itensOcultos = container.querySelectorAll('.item-oculto');
+    
+    // Verifica se os itens já estão visíveis ou escondidos
+    const estaoOcultos = itensOcultos[0].style.display === 'none';
+
+    itensOcultos.forEach(item => {
+        item.style.display = estaoOcultos ? 'flex' : 'none';
+    });
+
+    // Atualiza o texto do botão e a setinha do FontAwesome dinamicamente
+    if (estaoOcultos) {
+        botao.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Mostrar menos';
+    } else {
+        const totalItensOcultos = itensOcultos.length;
+        botao.innerHTML = `<i class="fa-solid fa-chevron-down"></i> Ver mais (${totalItensOcultos} itens)`;
+    }
+}
+</script>
+

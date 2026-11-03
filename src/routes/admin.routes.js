@@ -22,6 +22,7 @@ router.get('/products/ingredients/:id', adminController.getProductIngredients);
 
 // Rota de Pedidos
 router.post('/orders/update-status/:id', adminController.updateOrderStatus);
+router.get('/orders/details/:id', adminController.getPedidoDetalhes);
 
 
 // Rota de Ingredientes

@@ -307,3 +307,51 @@
         max-width: calc(100% - 30px);
     }
 }
+
+/* ==========================================================================
+   ESTILO DA COMANDA DE COZINHA E REGRAS DE IMPRESSÃO (ABA 1)
+   ========================================================================== */
+.modal-admin-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+.modal-admin-card {
+    background-color: var(--branco);
+    width: 100%;
+    max-width: 520px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--rosa-destaque);
+    box-sizing: border-box;
+}
+
+/* REGRAS EXCLUSIVAS PARA IMPRESSÃO EM PAPEL/PDF */
+@media print {
+    header, footer, nav, button, form, .admin-main-title, .admin-section-card, .no-print {
+        display: none !important;
+    }
+    .modal-admin-overlay {
+        background-color: transparent !important;
+        position: relative !important;
+        display: block !important;
+        padding: 0 !important;
+    }
+    .modal-admin-card.comanda-print-area {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}

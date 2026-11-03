@@ -35,7 +35,7 @@
                 <tbody>
                     {{#each pedidos}}
                     <tr>
-                        <td class="order-code-td">{{this.codigo}}</td>
+                        <td class="order-code-td"><a href="javascript:void(0)" class="order-link-click" style="color: var(--laranja-principal); font-weight: 700; text-decoration: underline;" onclick="abrirModalComanda('{{this.id}}', '{{this.codigo}}', '{{this.total_geral}}', '{{this.forma_pagamento}}', '{{this.data_formatada}}')">{{this.codigo}}</a></td>
                         <td>{{this.data_formatada}}</td>
                         <td>R$ {{this.total_geral}}</td>
                         <td>{{this.forma_pagamento}}</td>
@@ -421,6 +421,50 @@
         </div>
     </section>
 
+        <!-- MODAL DE VISUALIZAÇÃO DA COMANDA (COZINHA E ENTREGA) -->
+    <div id="modalComanda" class="modal-admin-overlay" style="display: none;">
+        <div class="modal-admin-card comanda-print-area" style="max-width: 450px; font-family: 'Courier New', Courier, monospace; color: #000;">
+            
+            <div style="text-align: center; border-bottom: 2px dashed #000; padding-bottom: 10px; margin-bottom: 15px;">
+                <h3 style="font-size: 18px; font-weight: 700; margin: 0; text-transform: uppercase;">Pastelaria Filhas da Maria</h3>
+                <p style="font-size: 12px; margin: 4px 0 0 0;">Fone: (19) 99999-8888</p>
+                <p style="font-size: 11px; margin: 2px 0 0 0;" id="print_data">Data: --/--/---- --:--:--</p>
+            </div>
+
+            <div style="font-size: 13px; margin-bottom: 15px; border-bottom: 1px dashed #000; padding-bottom: 10px; text-align: left;">
+                <p style="margin: 3px 0;"><strong>PEDIDO:</strong> <span id="print_codigo" style="font-size: 15px;">#XXXX</span></p>
+                <p style="margin: 3px 0;"><strong>CLIENTE:</strong> <span id="print_cliente" style="font-weight: 700;">---</span></p>
+                <p style="margin: 3px 0;"><strong>PAGAMENTO:</strong> <span id="print_pagamento">---</span></p>
+            </div>
+
+            <div style="margin-bottom: 15px; border-bottom: 1px dashed #000; padding-bottom: 10px; text-align: left;">
+                <p style="font-size: 12px; font-weight: 700; margin-bottom: 5px; text-transform: uppercase;">--- ITENS DA COZINHA ---</p>
+                <div style="font-size: 13px; line-height: 1.5;" id="print_itens_corpo">
+                    <!-- Preenchido dinamicamente via JS -->
+                </div>
+            </div>
+
+            <div style="font-size: 13px; text-align: left; margin-bottom: 20px;">
+                <p style="font-size: 12px; font-weight: 700; margin-bottom: 5px; text-transform: uppercase;">--- ENDEREÇO DE ENTREGA ---</p>
+                <p style="margin: 3px 0; font-weight: 600;" id="print_endereco">Carregando...</p>
+            </div>
+
+            <div style="text-align: center; font-size: 13px; border-top: 2px dashed #000; padding-top: 10px;">
+                <h4 style="margin: 0; font-size: 15px;">TOTAL: R$ <span id="print_total">0.00</span></h4>
+                <p style="font-size: 11px; margin-top: 8px; font-style: italic;">Filhas da Maria - Feito com Amor! ❤️</p>
+            </div>
+
+            <div class="no-print" style="margin-top: 30px; display: flex; gap: 10px;">
+                <button type="button" onclick="window.print()" style="flex: 1; padding: 12px; background-color: #28A745; color: #fff; font-weight: 700; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-size: 12px;">
+                    <i class="fa-solid fa-print"></i> Imprimir Comanda
+                </button>
+                <button type="button" onclick="fecharModalComanda()" style="padding: 12px 20px; background-color: #6C757D; color: #fff; font-weight: 700; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-size: 12px;">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <!-- MODAL DE EDIÇÃO DO PRODUTO (COM CHECKBOXES) -->
@@ -530,6 +574,49 @@
             mudarPainel(parseInt(tabActive));
         }
     });
+
+    // Função Avançada do Modal da Comanda com Busca Dinâmica por AJAX/Fetch
+    function abrirModalComanda(id, codigo, total, pagamento, data) {
+        document.getElementById('print_codigo').innerText = codigo;
+        document.getElementById('print_total').innerText = total;
+        document.getElementById('print_pagamento').innerText = pagamento.toUpperCase();
+        document.getElementById('print_data').innerText = `Data: ${data}`;
+        
+        const corpoItens = document.getElementById('print_itens_corpo');
+        const campoEndereco = document.getElementById('print_endereco');
+        const campoCliente = document.getElementById('print_cliente'); // <-- NOVO
+        
+        corpoItens.innerHTML = '<em>Carregando produtos...</em>';
+        campoEndereco.innerText = 'Carregando endereço...';
+        campoCliente.innerText = 'Carregando...'; // <-- NOVO
+
+        fetch(`/admin/orders/details/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                corpoItens.innerHTML = '';
+                if (data.itens.length === 0) {
+                    corpoItens.innerHTML = '<p>Nenhum item encontrado.</p>';
+                } else {
+                    data.itens.forEach(item => {
+                        corpoItens.innerHTML += `<p style="margin: 2px 0;">${item.quantidade}x ${item.nome}</p>`;
+                    });
+                }
+                campoEndereco.innerText = data.endereco;
+                campoCliente.innerText = data.cliente.toUpperCase(); // <-- NOVO: Preenche o nome em maiúsculo
+            })
+            .catch(err => {
+                console.error(err);
+                corpoItens.innerHTML = '<p style="color:red;">Erro ao carregar itens da cozinha.</p>';
+                campoEndereco.innerText = 'Erro ao carregar endereço de entrega.';
+                campoCliente.innerText = 'Erro ao carregar nome.';
+            });
+        
+        document.getElementById('modalComanda').style.display = 'flex';
+    }
+
+    function fecharModalComanda() {
+        document.getElementById('modalComanda').style.display = 'none';
+    }
 
     async function abrirModalEdicao(id, nome, preco, idCategoria, imagem) {
         document.getElementById('formEditarProduto').action = `/admin/products/edit/${id}`;

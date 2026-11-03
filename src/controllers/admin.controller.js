@@ -353,7 +353,52 @@ const adminController = {
         await db.query('UPDATE produtos SET id_categoria = NULL WHERE id_categoria = ?', [id]);
         await db.query('DELETE FROM categorias WHERE id = ?', [id]);
         res.redirect('/admin/dashboard');
+    },
+
+    // GET: Retorna os produtos, endereço e nome do cliente para a comanda (Aba 1)
+    getPedidoDetalhes: async (req, res) => {
+        const { id } = req.params;
+        try {
+            // 1. Busca os produtos e quantidades vinculados ao pedido
+            const [itens] = await db.query(
+                `SELECT pr.nome, pi.quantidade 
+                 FROM pedido_itens pi
+                 INNER JOIN produtos pr ON pi.id_produto = pr.id
+                 WHERE pi.id_pedido = ?`,
+                [id]
+            );
+
+            // 2. Busca o endereço completo e o nome do cliente cruzando as tabelas
+            const [pedidoInfoRows] = await db.query(
+                `SELECT u.nome AS cliente_nome, e.rua, e.numero, e.bairro, e.cidade 
+                 FROM pedidos p
+                 INNER JOIN usuario u ON p.id_usuario = u.id
+                 LEFT JOIN enderecos e ON u.id = e.id_usuario
+                 WHERE p.id = ?
+                 LIMIT 1`,
+                [id]
+            );
+
+            let nomeCliente = 'Cliente Não Identificado';
+            let enderecoFormatado = 'Retirar no Local / Não cadastrado';
+
+            if (pedidoInfoRows.length > 0) {
+                const info = pedidoInfoRows[0];
+                nomeCliente = info.cliente_nome;
+                
+                if (info.rua) {
+                    enderecoFormatado = `${info.rua}, Nº ${info.numero} - Bairro: ${info.bairro}, ${info.cidade}`;
+                }
+            }
+
+            // Devolve os dados em formato JSON (Agora incluindo o nome do cliente)
+            res.json({ itens, endereco: enderecoFormatado, cliente: nomeCliente });
+        } catch (error) {
+            console.error('Erro ao buscar detalhes do pedido para a comanda:', error);
+            res.status(500).json({ itens: [], endereco: 'Erro ao carregar', cliente: 'Erro' });
+        }
     }
+
 };
 
 module.exports = adminController;

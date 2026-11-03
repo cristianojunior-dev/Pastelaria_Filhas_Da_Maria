@@ -104,8 +104,23 @@ const authController = {
             req.session.userAdmin = usuario.tipo_usuario === 'admin';
             req.session.usuarioNome = usuario.nome;
 
-            // Redireciona o usuário para a página principal (Home)
-            return res.redirect('/');
+            // FORÇA o salvamento completo da sessão antes de redirecionar o usuário
+            req.session.save((err) => {
+                if (err) {
+                    console.error('Erro ao salvar sessão no login:', err);
+                    return res.render('login', { 
+                        cssPage: 'login', 
+                        error: 'Erro interno ao processar o login. Tente novamente.' 
+                    });
+                }
+
+                // Se for administrador, podemos redirecionar direto para o dashboard, senhas comuns vão para a home
+                if (req.session.userAdmin) {
+                    return res.redirect('/admin/dashboard'); 
+                } else {
+                    return res.redirect('/');
+                }
+            });
 
         } catch (error) {
             console.error('Erro no login:', error);
@@ -122,6 +137,7 @@ const authController = {
             if (err) {
                 console.error('Erro ao sair:', err);
             }
+            // O redirecionamento só ocorre de fato após a sessão deixar de existir na memória
             res.redirect('/');
         });
     }

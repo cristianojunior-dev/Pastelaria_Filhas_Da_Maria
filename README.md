@@ -1,58 +1,69 @@
 ```markdown
-# 🥟 Pastelaria Filhas da Maria
+# 🥟 Pastelaria Filhas da Maria - Sistema de Delivery e Gestão
 
-Sistema web completo de delivery e gestão para a **Pastelaria Filhas da Maria**,
-desenvolvido com Node.js, Express, Handlebars e MySQL. O projeto conta com cardápio dinâmico, controle de estoque de ingredientes por receita,
-carrinho de compras, múltiplos endereços com busca automática de CEP (ViaCEP), painel administrativo e notificações por e-mail (Nodemailer)
+Sistema web completo de delivery e gestão de pedidos desenvolvido exclusivamente para a **Pastelaria Filhas da Maria**. Construído com Node.js, Express, Handlebars e MySQL, o projeto moderniza o atendimento ao cliente e centraliza a operação da cozinha e administração financeira.
 
 ---
 
-## 🚀 Funcionalidades do Sistema
+## 🚀 Funcionalidades Principais
 
-### 👤 Para o Cliente:
-* **Catálogo Completo e Interativo:** Visualização de pastéis salgados, doces, panquecas, salgados, porções, caldos e bebidas
-* **Controle de Estoque Inteligente:** Se um ingrediente essencial de um pastel esgotar na cozinha, o produto fica automaticamente com o selo
-*"Indisponível no momento"*.
-* **Busca de Produtos:** Barra de pesquisa em tempo real.
-* **Favoritos:** Adicione e remova pastéis e bebidas favoritas.
-* **Carrinho de Compras:** Gestão completa de quantidades e itens.
-* **Checkout Avançado com ViaCEP:** 
-  * Busca automática de endereço pelo CEP integrado à API dos Correios (ViaCEP).
-  * Opção de escolher entre endereços já salvos na conta ou cadastrar um novo endereço que fica guardado automaticamente.
-  * Possibilidade de remover endereços antigos diretamente na finalização.
-* **Acompanhamento de Pedidos:** Histórico completo de pedidos realizados na aba "Meus Pedidos".
+### 📱 Para o Cliente (Interface Pública)
+* **Catálogo Dinâmico:** Navegação intuitiva separada por categorias (Pastéis Salgados, Doces, Panquecas, Salgados, Porções, Caldos e Bebidas).
+* **Controle de Estoque Inteligente:** Produtos ficam indisponíveis automaticamente caso algum ingrediente da sua receita seja marcado como esgotado no painel admin.
+* **Busca de Produtos:** Barra de pesquisa rápida integrada ao cabeçalho.
+* **Sistema de Favoritos:** Os clientes podem favoritar seus pastéis e bebidas preferidos para compras futuras.
+* **Carrinho de Compras:** Gestão de quantidades, cálculo automático de subtotais e taxa de entrega.
+* **Checkout Avançado (Integração ViaCEP):** 
+  * Busca automática de endereço pelo CEP.
+  * Armazenamento de múltiplos endereços na conta do usuário para seleções rápidas.
+  * Opções de pagamento na entrega (PIX, Cartões, Dinheiro com cálculo de troco).
+* **Meus Pedidos:** Histórico completo de compras com acompanhamento de status em tempo real.
 
-### ⚙️ Para o Administrador (Painel Admin):
-* **Fila de Pedidos em Tempo Real:** Monitoramento de novos pedidos recebidos, com alteração de status
-(`recebido` -> `em preparação` -> `enviado` -> `entregue`).
-* **Notificações por E-mail:** Envio automático de atualizações da entrega para o cliente via Nodemailer.
-* **Gestão de Cardápio:** Cadastro de novos produtos com upload de fotos (Multer)[cite: 1], edição via Modal e exclusão de itens.
-* **Controle de Estoque Manual:** Ativação e desativação rápida de ingredientes (ex: esgotou o queijo ou a goiabada).
+### ⚙️ Para o Administrador (Painel Admin)
+* **Gestão de Fila de Pedidos:** Acompanhamento e alteração de status (`recebido` -> `em preparação` -> `enviado` -> `entregue`).
+* **Notificações por E-mail (Nodemailer):** O cliente recebe um e-mail com layout personalizado sempre que o status do pedido avança.
+* **Impressão de Comandas:** Geração de via de impressão formatada para a cozinha e entregador (com dados do cliente, itens e endereço).
+* **Gestão do Cardápio:** Adição, edição e remoção de produtos, categorias e upload de fotos (Multer).
+* **Controle de Estoque (Ingredientes):** O administrador cadastra os ingredientes e os vincula aos produtos. Se a "Carne" for desativada, todos os pastéis que usam carne ficam indisponíveis no site.
+* **Relatórios Gerenciais Financeiros:** 
+  * Relatório de Faturamento por período e filtro de categoria.
+  * Relatório de Volume de Entregas e Ticket Médio.
+  * Opção de exportação/impressão para PDF.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Backend:** Node.js, Express
-* **Sessões e Segurança:** Express-session, Cookie-parser, Bcrypt (Criptografia de senhas)
-* **Banco de Dados:** MySQL (MySQL2 com Pool de Conexões)
-* **Template Engine:** Handlebars (`express-handlebars`)
-* **Upload de Imagens:** Multer
-* **Envio de E-mails:** Nodemailer
-* **Frontend & Estilização:** HTML5, CSS3 (Responsivo), JavaScript Vanilla, jQuery (para a API de CEP), Font Awesome
+**Backend:**
+* [Node.js](https://nodejs.org/) & [Express](https://expressjs.com/) - Servidor e roteamento.
+* [Express-Handlebars](https://www.npmjs.com/package/express-handlebars) - Template engine para renderização das telas.
+* [MySQL2](https://www.npmjs.com/package/mysql2) - Conexão e queries ao banco de dados com Pool de conexões.
+* [Bcrypt](https://www.npmjs.com/package/bcrypt) - Criptografia de senhas de usuários.
+* [Express-Session](https://www.npmjs.com/package/express-session) & [Express-MySQL-Session](https://www.npmjs.com/package/express-mysql-session) - Gerenciamento de sessões com persistência no banco.
+* [Multer](https://www.npmjs.com/package/multer) - Upload e armazenamento de imagens dos produtos.
+* [Nodemailer](https://nodemailer.com/) - Envio de e-mails transacionais (SMTP).
 
----
+**Frontend:**
+* HTML5 & CSS3 (Responsivo com Flexbox e CSS Grid).
+* JavaScript Vanilla (Manipulação da DOM e chamadas assíncronas).
+* [jQuery](https://jquery.com/) - Utilizado especificamente para a máscara e requisição da API do ViaCEP.
+* [FontAwesome](https://fontawesome.com/) - Ícones da interface.
 
-## 📦 Como Instalar e Executar o Projeto
+```
+
+## 💻 Como Instalar e Executar o Projeto
 
 ### Pré-requisitos
-Certifique-se de ter instalado em sua máquina:
+Certifique-se de ter instalado na sua máquina:
 * **Node.js** (versão 18+ recomendada)
-* **MySQL Server** (ou XAMPP / WampServer)
+* **MySQL Server** (ou pacotes como XAMPP / WampServer)
+* **Git**
+
+```
 
 ### 1. Clonar o repositório
 ```bash
-git clone https://github.com/cristianojunior-dev/Pastelaria_Filhas_Da_Maria.git
+git clone [https://github.com/cristianojunior-dev/Pastelaria_Filhas_Da_Maria.git](https://github.com/cristianojunior-dev/Pastelaria_Filhas_Da_Maria.git)
 cd pastelaria-filhas-da-maria
 
 ```
@@ -67,13 +78,13 @@ npm install
 ### 3. Configurar o Banco de Dados
 
 1. Abra o seu gerenciador MySQL (como o MySQL Workbench).
-2. Execute o script contido no arquivo `database/Banco de Dados_Pastelaria.sql` para criar a base de dados, tabelas e dados iniciais.
+2. Execute o script contido no arquivo `database/Banco de Dados_Pastelaria.sql` para criar o banco de dados (pastelaria_filhas_maria), as tabelas necessárias e os dados iniciais de teste (produtos, categorias e ingredientes).
 
 
 
 ### 4. Configurar as Variáveis de Ambiente (.env)
 
-No arquivo `.env` na raiz do projeto coloque sua senha do seu MySQL:
+Crie um arquivo chamado `.env` na raiz do projeto (mesmo nível do `server.js`) copie as chaves abaixo e insira a senha do seu MySQL local:
 
 ```env
 PORT=3000
@@ -81,7 +92,7 @@ PORT=3000
 # Configurações do Banco de Dados
 DB_HOST=localhost
 DB_USER=root
-DB_PASS=sua_senha_aqui
+DB_PASS=Sua_Senha_MySQL
 DB_NAME=pastelaria_filhas_maria
 
 # Configurações do Session Secret

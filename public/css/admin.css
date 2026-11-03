@@ -1,4 +1,6 @@
-/* PAINEL ADMIN E ESTRUTURA DE ABAS */
+/* ==========================================================================
+   PAINEL ADMIN E ESTRUTURA DE ABAS
+   ========================================================================== */
 .admin-dashboard-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -52,7 +54,9 @@
     color: var(--branco);
 }
 
-/* CARDS E FORMULÁRIOS */
+/* ==========================================================================
+   CARDS E FORMULÁRIOS
+   ========================================================================== */
 .admin-section-card {
     background-color: var(--branco);
     border: 1px solid var(--rosa-destaque);
@@ -139,7 +143,9 @@
     background-color: var(--laranja-hover);
 }
 
-/* TABELA DE PEDIDOS */
+/* ==========================================================================
+   TABELA DE PEDIDOS
+   ========================================================================== */
 .table-wrapper {
     overflow-x: auto;
 }
@@ -196,7 +202,7 @@
 .status-entregue { background-color: #E2E3E5; color: #383D41; }
 
 /* ==========================================================================
-   O ERRO ESTAVA AQUI - CORREÇÃO DO MODAL (PADRÃO SISTEMA DE JOGOS)
+   ESTILO DA COMANDA DE COZINHA E REGRAS DO MODAL
    ========================================================================== */
 .modal-admin-overlay {
     position: fixed; /* Trava em relação à janela do navegador */
@@ -264,7 +270,9 @@
     }
 }
 
-/* Quando a janela de impressão/PDF for aberta, esconde os elementos desnecessários */
+/* ==========================================================================
+   REGRAS DE IMPRESSÃO (ABA 1)
+   ========================================================================== */
 @media print {
     header, footer, nav, button, form, .admin-main-title {
         display: none !important;
@@ -276,62 +284,73 @@
     }
 }
 
+/* ==========================================================================
+   MEDIA QUERIES - RESPONSIVIDADE COMPLETA PARA CELULARES
+   ========================================================================== */
 @media (max-width: 768px) {
     /* Permite que as abas de navegação quebrem de linha em vez de esticarem */
     .admin-nav-tabs {
         flex-wrap: wrap; 
         border-bottom: none;
+        gap: 8px;
     }
     
-    /* Ajusta os botões das abas para não saírem da margem[cite: 2] */
+    /* Ajusta os botões das abas para não saírem da margem */
     .admin-tab-btn {
         width: 100%;
         border-radius: 8px;
         margin-bottom: 5px;
+        text-align: center;
+        padding: 14px;
     }
 
-    /* Força os formulários de duas colunas (1fr 1fr) a ficarem numa só coluna (1fr)[cite: 2] */
+    /* Força os formulários de duas colunas (1fr 1fr) a ficarem numa só coluna (1fr) */
     .admin-form-group-row {
         grid-template-columns: 1fr; 
+        gap: 15px;
     }
 
-    /* Reduz o espaçamento interno gigante dos cartões que causa cortes na lateral[cite: 2] */
+    /* Reduz o espaçamento interno gigante dos cartões que causa cortes na lateral */
     .admin-section-card {
         padding: 15px; 
     }
 
-    /* Ajusta o modal flutuante para não ultrapassar a largura do telemóvel[cite: 2] */
+    /* Ajusta o modal flutuante para não ultrapassar a largura do telemóvel */
     .modal-admin-card {
         padding: 20px;
         margin: 15px;
         max-width: calc(100% - 30px);
     }
-}
 
-/* ==========================================================================
-   ESTILO DA COMANDA DE COZINHA E REGRAS DE IMPRESSÃO (ABA 1)
-   ========================================================================== */
-.modal-admin-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
-}
+    /* CONTAINER GERAL DO CORPO ADMIN DO DASHBOARD */
+    .admin-dashboard-container {
+        padding: 15px;
+        margin: 0 auto;
+        gap: 20px;
+    }
 
-.modal-admin-card {
-    background-color: var(--branco);
-    width: 100%;
-    max-width: 520px;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--rosa-destaque);
-    box-sizing: border-box;
-}
+    /* CONTROLE DE ROLAGEM EXCLUSIVO DA TABELA DE MONITORAMENTO */
+    /* Cria uma barra de rolagem interna se a tabela ultrapassar a largura da tela do celular */
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid var(--rosa-destaque);
+        border-radius: 8px;
+        background-color: var(--branco);
+        margin-top: 10px;
+    }
 
+    /* Impede que o texto de data, código ou valores fique amassado nas colunas */
+    .orders-admin-table {
+        min-width: 650px; 
+        width: 100%;
+    }
+
+    /* Ajusta as margens e tamanhos de fonte de th/td para telas menores */
+    .orders-admin-table th, 
+    .orders-admin-table td {
+        padding: 10px 8px !important;
+        font-size: 12px !important;
+    }
+}

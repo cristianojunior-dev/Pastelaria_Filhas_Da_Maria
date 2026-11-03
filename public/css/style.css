@@ -431,3 +431,70 @@ button {
         transform: translateX(-50%);
     }
 }
+
+/* ==========================================================================
+   RESPONSIVIDADE ESTRUTURAL DO CORPO DA PÁGINA (BODY/MAIN)
+   ========================================================================== */
+
+/* Todos os containers centrais de páginas herdam essa regra de segurança */
+.pedidos-container, 
+.carrinho-container, 
+.checkout-container, 
+.favoritos-container, 
+.home-container,
+.produto-container {
+    max-width: 1200px;      /* Largura máxima idêntica ao seu header/footer */
+    margin: 40px auto;      /* Centraliza na tela e dá um espaçamento respirável do topo */
+    padding: 0 20px;        /* Garante que o texto nunca cole nas bordas da tela do celular */
+    width: 100%;            /* Ocupa a tela de forma fluida */
+    transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES - AJUSTES PARA DISPOSITIVOS MÓVEIS (TABLETS E CELULARES)
+   ========================================================================== */
+@media (max-width: 768px) {
+    
+    /* Reduz as margens do corpo em telas pequenas para aproveitar espaço */
+    .pedidos-container, 
+    .carrinho-container, 
+    .checkout-container, 
+    .favoritos-container, 
+    .home-container,
+    .produto-container {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    /* Ajuste de Tipografia para Celulares */
+    h1 {
+        font-size: 24px !important;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-size: 20px !important;
+    }
+
+    /* Se o formulário de filtros de pedidos estiver inline, ele quebra em vertical */
+    .filtro-pedidos-form {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+    }
+
+    .filtro-pedidos-form div {
+        width: 100%;
+    }
+
+    .filtro-pedidos-form input {
+        width: 100%;
+    }
+
+    .filtro-pedidos-form button,
+    .filtro-pedidos-form a {
+        width: 100%;
+    }
+}
+

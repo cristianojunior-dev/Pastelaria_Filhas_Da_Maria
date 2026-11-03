@@ -100,3 +100,36 @@
     font-size: 20px;
     font-weight: 700;
 }
+
+/* Garante que o card do pedido se ajuste no mobile */
+.pedido-card {
+    background: var(--branco);
+    border: 1px solid var(--rosa-destaque);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 100%;
+}
+
+/* Os pastéis listados ficam em linha no PC, mas empilham no celular */
+.pedido-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--rosa-fundo);
+}
+
+@media (max-width: 480px) {
+    .pedido-item {
+        flex-direction: column; /* Faz a imagem ficar acima do texto no celular */
+        text-align: center;
+        align-items: center;
+    }
+
+    .pedido-item img {
+        width: 80px;        /* Reduz um pouco o tamanho da imagem do pastel no celular */
+        height: 80px;
+        object-fit: cover;
+    }
+}

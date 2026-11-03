@@ -6,7 +6,7 @@ const session = require('express-session');
 
 const MySQLStore = require('express-mysql-session')(session);
 
-// Importação Cirúrgica das Rotas do Sistema
+// Importação das Rotas do Sistema
 const indexRoutes = require('./routes/index.routes');
 const authRoutes = require('./routes/auth.routes');
 const productsRoutes = require('./routes/products.routes');
@@ -16,7 +16,7 @@ const favoritesRoutes = require('./routes/favorites.routes');
 const adminRoutes = require('./routes/admin.routes');
 const ordersRoutes = require('./routes/orders.routes');
 
-// Configure a ligação com o seu banco do Aiven
+// Configuração da ligação com o banco do env
 const sessionStore = new MySQLStore({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -52,7 +52,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 // Sessão ativa por 24 horas
+        maxAge: 1000 * 60 * 15 // Sessão ativa por 15 minutos
     }
 }));
 

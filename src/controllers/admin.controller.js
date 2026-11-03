@@ -142,7 +142,7 @@ const adminController = {
                 relatorioPedidos = {
                     total: totalEntregas,
                     ticketMedio: ticketMedio.toFixed(2),
-                    pedidosLista: listaPedidos // <-- Envia os pedidos detalhados para a View
+                    pedidosLista: listaPedidos
                 };
             }
 
@@ -251,21 +251,83 @@ const adminController = {
         }
     },
 
-    updateOrderStatus: async (req, res) => {
+        updateOrderStatus: async (req, res) => {
         const { id } = req.params;
         const { status } = req.body;
+
         try {
             await db.query('UPDATE pedidos SET status = ? WHERE id = ?', [status, id]);
-            const [pedidoRows] = await db.query(`SELECT p.codigo, u.nome, u.email FROM pedidos p INNER JOIN usuario u ON p.id_usuario = u.id WHERE p.id = ?`, [id]);
+
+            const [pedidoRows] = await db.query(
+                `SELECT p.codigo, u.nome, u.email 
+                 FROM pedidos p 
+                 INNER JOIN usuario u ON p.id_usuario = u.id 
+                 WHERE p.id = ?`, 
+                [id]
+            );
+
             if (pedidoRows.length > 0 && pedidoRows[0].email) {
-                let txt = `Olá, ${pedidoRows[0].nome}!\nSeu pedido ${pedidoRows[0].codigo} mudou para: ${status.toUpperCase()}`;
-                await notificacaoService.enviarEmail(pedidoRows[0].email, `Atualização: ${pedidoRows[0].codigo}`, txt);
+                const clienteNome = pedidoRows[0].nome;
+                const pedidoCodigo = pedidoRows[0].codigo;
+                const statusFormatado = status.toUpperCase();
+
+                let txt = `Olá, ${clienteNome}!\nSeu pedido ${pedidoCodigo} mudou para: ${statusFormatado}`;
+
+                const logoUrl = 'https://raw.githubusercontent.com/cristianojunior-dev/Pastelaria_Filhas_Da_Maria/main/public/images/LOGO.transparente.png';
+
+                let html = `
+                <div style="font-family: 'Montserrat', Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #FFE1E5; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background-color: #FFFFFF;">
+                    
+                    <!-- Cabeçalho com a Logo -->
+                    <div style="background-color: #FFF0F2; padding: 25px 20px; text-align: center; border-bottom: 3px solid #FF8838;">
+                        <img src="${logoUrl}" alt="Pastelaria Filhas da Maria" style="max-height: 80px; width: auto; object-fit: contain;">
+                    </div>
+                    
+                    <!-- Corpo do E-mail -->
+                    <div style="padding: 40px 30px; text-align: center; color: #2D2D2D;">
+                        <h2 style="color: #FF8838; margin-top: 0; font-size: 24px;">Atualização do seu pedido!</h2>
+                        
+                        <p style="font-size: 16px; line-height: 1.6; color: #777777;">Olá, <strong style="color: #2D2D2D;">${clienteNome}</strong>!</p>
+                        
+                        <p style="font-size: 16px; line-height: 1.6; color: #777777;">
+                            Passando para avisar que o status do seu pedido <strong style="color: #FF8838;">${pedidoCodigo}</strong> acabou de ser atualizado para:
+                        </p>
+                        
+                        <!-- Badge de Status -->
+                        <div style="display: inline-block; background-color: #FFD2B2; color: #E06E1F; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 18px; margin: 25px 0; text-transform: uppercase; border: 1px solid #FF8838;">
+                            ${statusFormatado}
+                        </div>
+                        
+                        <p style="font-size: 15px; color: #777777; line-height: 1.6; margin-top: 10px;">
+                            Prepare-se para saborear o melhor pastel da região. Feito com amor! ❤️
+                        </p>
+                    </div>
+                    
+                    <!-- Rodapé do E-mail -->
+                    <div style="background-color: #0E1630; color: #FFFFFF; text-align: center; padding: 25px 20px; font-size: 13px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 16px; color: #FF8838;">Pastelaria Filhas da Maria</h4>
+                        <p style="margin: 5px 0 0 0; color: #CDD3CE;">Avenida Walter Tatoni, nº 623 - Vila Santana</p>
+                        <p style="margin: 5px 0 0 0; color: #CDD3CE;">De quarta a sexta-feira, das 17h00 às 22h00</p>
+                    </div>
+                </div>
+                `;
+
+                await notificacaoService.enviarEmail(
+                    pedidoRows[0].email, 
+                    `Atualização do Pedido: ${pedidoCodigo}`, 
+                    txt, 
+                    html
+                );
             }
+
             res.redirect('/admin/dashboard');
+
         } catch (error) {
+            console.error(error);
             res.redirect('/admin/dashboard');
         }
     },
+
 
     toggleIngredientStatus: async (req, res) => {
         const { id } = req.params;
@@ -355,7 +417,7 @@ const adminController = {
         res.redirect('/admin/dashboard');
     },
 
-    // GET: Retorna os produtos, endereço e nome do cliente para a comanda (Aba 1)
+    // GET: Retorna os produtos, endereço e nome do cliente para a comanda
     getPedidoDetalhes: async (req, res) => {
         const { id } = req.params;
         try {
@@ -391,7 +453,7 @@ const adminController = {
                 }
             }
 
-            // Devolve os dados em formato JSON (Agora incluindo o nome do cliente)
+            
             res.json({ itens, endereco: enderecoFormatado, cliente: nomeCliente });
         } catch (error) {
             console.error('Erro ao buscar detalhes do pedido para a comanda:', error);

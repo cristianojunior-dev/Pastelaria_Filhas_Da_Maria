@@ -13,7 +13,6 @@
     color: var(--texto-escuro);
 }
 
-/* LAYOUT GRID DUAS COLUNAS */
 .checkout-layout-grid {
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
@@ -21,7 +20,6 @@
     align-items: flex-start;
 }
 
-/* CARD ESQUERDO: RESUMO */
 .checkout-summary-card {
     background-color: var(--branco);
     border: 1px solid var(--rosa-destaque);
@@ -81,7 +79,6 @@
     color: var(--texto-escuro);
 }
 
-/* CARD DIREITO: FORMULÁRIO */
 .checkout-form-card {
     background-color: var(--branco);
     border: 1px solid var(--rosa-destaque);
@@ -134,7 +131,6 @@
     font-weight: 500;
 }
 
-/* CUSTOM SELECT ARROW */
 .select-wrapper {
     position: relative;
 }
@@ -157,7 +153,6 @@
     pointer-events: none;
 }
 
-/* NOTA INFORMATIVA */
 .checkout-info-payment-notice {
     background-color: #FFFDF9;
     border: 1px solid var(--laranja-suave);
@@ -180,7 +175,6 @@
     line-height: 1.4;
 }
 
-/* BOTÃO FINALIZAR */
 .btn-finalize-order {
     width: 100%;
     padding: 16px 0;

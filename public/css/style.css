@@ -52,7 +52,7 @@ button {
 }
 
 /* ==========================================================================
-   ESTILIZAÇÃO DO HEADER FIXO (Páginas 3 e 4 do PDF)
+   ESTILIZAÇÃO DO HEADER FIXO
    ========================================================================== */
 .main-header {
     background-color: var(--rosa-fundo);
@@ -207,7 +207,7 @@ button {
 .nav-dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%; /* Começa exatamente onde o botão termina */
+    top: 100%;
     right: 0;
     background-color: var(--branco);
     min-width: 190px;
@@ -215,14 +215,13 @@ button {
     border-radius: 8px;
     padding: 6px 0;
     list-style: none;
-    /* margin-top: 12px; <- REMOVIDO PARA ELIMINAR O BURACO */
     z-index: 1001;
     border: 1px solid var(--rosa-destaque);
 }
 
 .nav-dropdown-wrapper {
-    padding-bottom: 10px; /* Cria uma área de contato invisível abaixo do botão */
-    margin-bottom: -10px; /* Compensa o padding para não empurrar outros elementos */
+    padding-bottom: 10px; 
+    margin-bottom: -10px;
 }
 
 .nav-dropdown-menu::before {
@@ -284,10 +283,10 @@ button {
 }
 
 /* ==========================================================================
-   ESTILIZAÇÃO DO RODAPÉ FIXO (Páginas 3 e 4 do PDF)
+   ESTILIZAÇÃO DO RODAPÉ FIXO 
    ========================================================================== */
 .main-footer {
-    background-color: #0E1630; /* Azul escuro idêntico ao rodapé do Figma */
+    background-color: #0E1630;
     color: var(--branco);
     padding: 45px 20px;
     margin-top: auto;
@@ -400,7 +399,7 @@ button {
 }
 
 /* ==========================================================================
-   RESPONSIVIDADE (MEDIA QUERIES)
+   RESPONSIVIDADE
    ========================================================================== */
 @media (max-width: 768px) {
     .footer-container {
@@ -435,27 +434,24 @@ button {
 /* ==========================================================================
    RESPONSIVIDADE ESTRUTURAL DO CORPO DA PÁGINA (BODY/MAIN)
    ========================================================================== */
-
-/* Todos os containers centrais de páginas herdam essa regra de segurança */
 .pedidos-container, 
 .carrinho-container, 
 .checkout-container, 
 .favoritos-container, 
 .home-container,
 .produto-container {
-    max-width: 1200px;      /* Largura máxima idêntica ao seu header/footer */
-    margin: 40px auto;      /* Centraliza na tela e dá um espaçamento respirável do topo */
-    padding: 0 20px;        /* Garante que o texto nunca cole nas bordas da tela do celular */
-    width: 100%;            /* Ocupa a tela de forma fluida */
+    max-width: 1200px;      
+    margin: 40px auto;  
+    padding: 0 20px;
+    width: 100%;
     transition: all 0.3s ease;
 }
 
 /* ==========================================================================
-   MEDIA QUERIES - AJUSTES PARA DISPOSITIVOS MÓVEIS (TABLETS E CELULARES)
+   AJUSTES PARA DISPOSITIVOS MÓVEIS
    ========================================================================== */
 @media (max-width: 768px) {
     
-    /* Reduz as margens do corpo em telas pequenas para aproveitar espaço */
     .pedidos-container, 
     .carrinho-container, 
     .checkout-container, 
@@ -466,7 +462,6 @@ button {
         padding: 0 15px;
     }
 
-    /* Ajuste de Tipografia para Celulares */
     h1 {
         font-size: 24px !important;
         text-align: center;
@@ -477,7 +472,6 @@ button {
         font-size: 20px !important;
     }
 
-    /* Se o formulário de filtros de pedidos estiver inline, ele quebra em vertical */
     .filtro-pedidos-form {
         flex-direction: column !important;
         align-items: stretch !important;

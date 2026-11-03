@@ -4,7 +4,7 @@
     align-items: center;
     padding: 60px 20px;
     background-color: var(--rosa-fundo);
-    min-height: calc(100vh - 90px - 250px); /* Ajusta altura descontando cabeçalho e rodapé */
+    min-height: calc(100vh - 90px - 250px);
 }
 
 .register-container {

@@ -7,7 +7,7 @@ const db = mysql.createPool({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     ssl: {
-        rejectUnauthorized: false // <-- 2. Adicionado para permitir o SSL obrigatório do Aiven
+        rejectUnauthorized: false
     },
     waitForConnections: true,
     connectionLimit: 10,

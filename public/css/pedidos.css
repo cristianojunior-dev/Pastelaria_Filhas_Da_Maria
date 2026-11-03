@@ -139,7 +139,6 @@
     width: 100%;
 }
 
-/* Elementos Internos dos Cards */
 .pedido-header {
     border-bottom: 2px solid var(--rosa-fundo);
     padding-bottom: 15px;
@@ -221,13 +220,13 @@
    ========================================================================== */
 @media (max-width: 992px) {
     .pedidos-grid {
-        grid-template-columns: repeat(2, 1fr); /* Reduz para 2 em tablets */
+        grid-template-columns: repeat(2, 1fr); 
     }
 }
 
 @media (max-width: 768px) {
     .pedidos-grid {
-        grid-template-columns: 1fr; /* 1 coluna no celular */
+        grid-template-columns: 1fr;
     }
 
     .filtro-pedidos-form {

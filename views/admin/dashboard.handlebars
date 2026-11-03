@@ -169,7 +169,6 @@
                     </p>
                 </div>
 
-                <!-- Nova fileira de botões idêntica à de Categorias -->
                 <div
                     style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--rosa-destaque); padding-top: 10px;">
 
@@ -234,9 +233,7 @@
         </div>
     </section>
 
-    <!-- ==========================================
-         PAINEL 6: RELATÓRIOS GERENCIAIS
-         ========================================== -->
+    <!-- PAINEL 6: RELATÓRIOS GERENCIAIS -->
     <section id="painel-admin-6" class="admin-section-card admin-panel-box" style="display: none;">
         <h2 class="admin-section-title"><i class="fa-solid fa-square-poll-vertical"></i> Relatórios Gerenciais Avançados
         </h2>
@@ -549,7 +546,6 @@
 <script>
 
     function mudarPainel(numeroPainel) {
-        // Mudamos o limite de 5 para 6 para incluir sua nova aba de relatórios!
         for (let i = 1; i <= 6; i++) {
             const painel = document.getElementById(`painel-admin-${i}`);
             const botao = document.getElementById(`btn-tab-${i}`);
@@ -565,7 +561,7 @@
         if (botaoAlvo) botaoAlvo.classList.add('active');
     }
 
-    // LÓGICA DE PERSISTÊNCIA: Mantém a Aba 6 aberta ao recarregar a página após filtrar
+    // LÓGICA DE PERSISTÊNCIA: Mantém a Aba aberta ao recarregar a página após filtrar
     window.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const tabActive = urlParams.get('tabActive');
@@ -584,11 +580,11 @@
         
         const corpoItens = document.getElementById('print_itens_corpo');
         const campoEndereco = document.getElementById('print_endereco');
-        const campoCliente = document.getElementById('print_cliente'); // <-- NOVO
+        const campoCliente = document.getElementById('print_cliente');
         
         corpoItens.innerHTML = '<em>Carregando produtos...</em>';
         campoEndereco.innerText = 'Carregando endereço...';
-        campoCliente.innerText = 'Carregando...'; // <-- NOVO
+        campoCliente.innerText = 'Carregando...';
 
         fetch(`/admin/orders/details/${id}`)
             .then(response => response.json())
@@ -602,7 +598,7 @@
                     });
                 }
                 campoEndereco.innerText = data.endereco;
-                campoCliente.innerText = data.cliente.toUpperCase(); // <-- NOVO: Preenche o nome em maiúsculo
+                campoCliente.innerText = data.cliente.toUpperCase();
             })
             .catch(err => {
                 console.error(err);
@@ -660,6 +656,6 @@
     window.onclick = function (event) {
         if (event.target === document.getElementById('modalEditar')) fecharModalEdicao();
         if (event.target === document.getElementById('modalEditarCategoria')) fecharModalCategoria();
-        if (event.target === document.getElementById('modalEditarIngrediente')) fecharModalIngrediente(); // Nova linha
+        if (event.target === document.getElementById('modalEditarIngrediente')) fecharModalIngrediente();
     }
 </script>

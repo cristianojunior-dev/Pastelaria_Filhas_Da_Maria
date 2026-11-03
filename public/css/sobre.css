@@ -76,7 +76,7 @@
     text-align: justify;
 }
 
-/* Responsividade para telemóveis */
+/* Responsividade */
 @media (max-width: 850px) {
     .sobre-content-grid {
         grid-template-columns: 1fr;

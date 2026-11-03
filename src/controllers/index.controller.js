@@ -3,10 +3,10 @@ const db = require('../config/db');
 const indexController = {
     renderHome: async (req, res) => {
         try {
-            // 1. Busca todas as categorias cadastradas no banco
+            // Busca todas as categorias cadastradas no banco
             const [categorias] = await db.query('SELECT * FROM categorias');
 
-            // 2. Cria uma estrutura para agrupar produtos por categoria
+            // Cria uma estrutura para agrupar produtos por categoria
             const cardapio = [];
 
             for (const categoria of categorias) {
@@ -29,7 +29,7 @@ const indexController = {
                     );
 
                     // Se algum ingrediente tiver 'em_estoque = 0', o produto fica indisponível
-                    // Se não tiver nenhum ingrediente cadastrado, por padrão fica disponível (true)
+                    // Se não tiver nenhum ingrediente cadastrado, por padrão fica disponível
                     const disponivel = ingredientes.every(ing => ing.em_estoque === 1);
 
                     produtosProcessados.push({
@@ -48,7 +48,7 @@ const indexController = {
                 }
             }
 
-            // 3. Busca os produtos de destaque para o Carrossel (Mais Pedidos)
+            // Busca os produtos de destaque para o Carrossel
             // Traz até 4 itens cadastrados no cardápio para rodar nos slides
             const [produtosDestaqueRows] = await db.query(
                 `SELECT p.*, GROUP_CONCAT(i.nome SEPARATOR ', ') AS descricao 
@@ -60,11 +60,11 @@ const indexController = {
             );
             const maisPedidos = produtosDestaqueRows.length > 0 ? produtosDestaqueRows : null;
 
-            // 4. Renderiza a página Home injetando a nova variável de lista
+            // Renderiza a página Home injetando a nova variável de lista
             res.render('home', {
                 cssPage: 'home',
                 cardapio: cardapio,
-                maisPedidos: maisPedidos, // Envia a lista para o loop {{#each}} do carrossel
+                maisPedidos: maisPedidos,
                 usuarioLogado: req.session.usuarioLogado || false,
                 usuarioNome: req.session.usuarioNome || null,
                 userAdmin: req.session.userAdmin || false

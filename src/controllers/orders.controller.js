@@ -45,9 +45,9 @@ const ordersController = {
                 );
 
                 pedidos.push({
-                    id: p.codigo, // Exibe o código amigável no lugar do ID sequencial
+                    id: p.codigo, 
                     status: p.status,
-                    data: dataObj.toLocaleString('pt-BR'), // Ajustado para o padrão brasileiro
+                    data: dataObj.toLocaleString('pt-BR'), 
                     endereco: p.cep, 
                     total: (parseFloat(p.total_pedido) + parseFloat(p.taxa_entrega)).toFixed(2),
                     itens: itensRows
@@ -57,7 +57,7 @@ const ordersController = {
             res.render('pedidos', {
                 cssPage: 'pedidos',
                 pedidos: pedidos,
-                filtros: { data_inicio, data_fim }, // Retorna as datas para manter os inputs preenchidos
+                filtros: { data_inicio, data_fim },
                 usuarioLogado: req.session.usuarioLogado || false,
                 usuarioNome: req.session.usuarioNome || null,
                 userAdmin: req.session.userAdmin || false

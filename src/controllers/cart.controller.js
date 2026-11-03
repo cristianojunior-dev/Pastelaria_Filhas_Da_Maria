@@ -1,16 +1,14 @@
 const db = require('../config/db');
 
 const cartController = {
-    // Exibe a página do carrinho (Páginas 5 e 14 do Figma)
+    // Exibe a página do carrinho
     renderCart: (req, res) => {
-        // Inicializa o carrinho na sessão se não existir
         if (!req.session.cart) {
             req.session.cart = [];
         }
 
         const itens = req.session.cart;
 
-        // Calcula o total unificado somando o subtotal de cada pastel/bebida
         let total = 0;
         itens.forEach(item => {
             total += parseFloat(item.subtotal);
@@ -26,7 +24,7 @@ const cartController = {
         });
     },
 
-    // Adiciona um item ao carrinho (Vindo da Home ou Detalhes do Produto)
+    // Adiciona um item ao carrinho
     addItem: async (req, res) => {
         const { id } = req.params;
         const quantidade = parseInt(req.body.quantidade) || 1;
@@ -81,7 +79,7 @@ const cartController = {
     // Atualiza a quantidade via botões + e - da tela do carrinho
     updateItem: (req, res) => {
         const { id } = req.params;
-        const { action } = req.query; // 'plus' ou 'minus'
+        const { action } = req.query;
 
         if (!req.session.cart) return res.redirect('/cart');
 

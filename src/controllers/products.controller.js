@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 const productsController = {
-    // Exibe os detalhes de um produto específico (Páginas 3 e 13 do Figma)
+    // Exibe os detalhes de um produto específico
     getProductDetail: async (req, res) => {
         const { id } = req.params;
 
@@ -68,7 +68,7 @@ const productsController = {
         }
     },
 
-    // NOVA FUNÇÃO: Processa a busca digitada na barra de pesquisa
+    // Processa a busca digitada na barra de pesquisa
     searchProducts: async (req, res) => {
         const queryBusca = req.query.q; // Pega o termo digitado (ex: ?q=carne)
 
@@ -77,7 +77,7 @@ const productsController = {
         }
 
         try {
-            // Busca produtos pelo nome ou descrição contendo o termo pesquisado
+            // Busca produtos pelo nome do termo pesquisado
             const [produtosRows] = await db.query(
                 "SELECT * FROM produtos WHERE nome LIKE ?",
                 [`%${queryBusca}%`]

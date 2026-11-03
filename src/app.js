@@ -32,23 +32,22 @@ const app = express();
 
 app.set('trust proxy', 1); 
 
-// Middleware de debug: Logger de requisições no console do terminal
 app.use((req, res, next) => {
     console.log(`[REQ] ${new Date().toISOString()} -> ${req.method} ${req.url}`);
     next();
 });
 
-// Middlewares para leitura e processamento de dados de formulários (POST)
+// Middlewares para leitura e processamento de dados de formulários
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Middlewares para Controle de Cookies e Sessão do Usuário
 app.use(cookieParser());
 
-// Atualize o app.use(session(...)) que já existe no seu código para incluir o 'store'
+
 app.use(session({
     secret: process.env.SESSION_SECRET || 'segredo_pastelaria_filhas_maria',
-    store: sessionStore, // <- Esta linha faz a mágica de guardar no Aiven!
+    store: sessionStore,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -56,7 +55,7 @@ app.use(session({
     }
 }));
 
-// Middleware Global de Sessão para o Handlebars (Compartilha o estado logado com o header.handlebars)
+// Middleware Global de Sessão para o Handlebars
 app.use((req, res, next) => {
     res.locals.usuarioLogado = req.session.usuarioLogado || false;
     res.locals.usuarioNome = req.session.usuarioNome || null;
@@ -64,11 +63,11 @@ app.use((req, res, next) => {
     next();
 });
 
-// Definição das Pastas de Arquivos Estáticos (CSS, Imagens e Uploads)
+// Definição das Pastas de Arquivos Estáticos
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
-// Configuração e Conexão da Template Engine (Handlebars)
+// Configuração e Conexão da Template Engine
 app.engine('handlebars', exphbs.engine({
     defaultLayout: 'main',
     layoutsDir: path.join(__dirname, '..', 'views', 'layouts'),
@@ -89,7 +88,7 @@ app.set('views', path.join(__dirname, '..', 'views'));
 
 // Ativação das Rotas com seus Respectivos Prefixos Globais
 app.use('/', indexRoutes);
-app.use('/', ordersRoutes); // Injetado na raiz para validar a rota '/pedidos' que o cabeçalho chama
+app.use('/', ordersRoutes);
 app.use('/auth', authRoutes);
 app.use('/products', productsRoutes);
 app.use('/cart', cartRoutes);

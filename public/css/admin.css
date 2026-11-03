@@ -23,7 +23,6 @@
     color: var(--laranja-principal);
 }
 
-/* MENU DE NAVEGAÇÃO ENTRE OS TRÊS PAINÉIS */
 .admin-nav-tabs {
     display: flex;
     gap: 10px;
@@ -205,28 +204,28 @@
    ESTILO DA COMANDA DE COZINHA E REGRAS DO MODAL
    ========================================================================== */
 .modal-admin-overlay {
-    position: fixed; /* Trava em relação à janela do navegador */
+    position: fixed; 
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6); /* Escurece o fundo atrás */
-    display: none; /* Controlado via JS ('flex' quando ativo) */
-    align-items: center; /* Centraliza verticalmente */
-    justify-content: center; /* Centraliza horizontalmente */
-    z-index: 99999; /* Força ficar por cima de qualquer elemento fixo */
+    background-color: rgba(0, 0, 0, 0.6); 
+    display: none; 
+    align-items: center;
+    justify-content: center; 
+    z-index: 99999;
 }
 
 .modal-admin-card {
     background-color: var(--branco);
     width: 100%;
-    max-width: 520px; /* Largura idêntica à do cadastro de jogos */
+    max-width: 520px;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     border: 1px solid var(--rosa-destaque);
     box-sizing: border-box;
-    animation: surgimentoSuave 0.2s ease-out; /* Efeito de entrada */
+    animation: surgimentoSuave 0.2s ease-out;
 }
 
 .modal-admin-header {
@@ -258,7 +257,6 @@
     color: var(--laranja-principal);
 }
 
-/* Animação suave para surgir flutuando */
 @keyframes surgimentoSuave {
     from {
         transform: scale(0.95);
@@ -285,17 +283,15 @@
 }
 
 /* ==========================================================================
-   MEDIA QUERIES - RESPONSIVIDADE COMPLETA PARA CELULARES
+   RESPONSIVIDADE PARA CELULARES
    ========================================================================== */
 @media (max-width: 768px) {
-    /* Permite que as abas de navegação quebrem de linha em vez de esticarem */
     .admin-nav-tabs {
         flex-wrap: wrap; 
         border-bottom: none;
         gap: 8px;
     }
     
-    /* Ajusta os botões das abas para não saírem da margem */
     .admin-tab-btn {
         width: 100%;
         border-radius: 8px;
@@ -304,53 +300,50 @@
         padding: 14px;
     }
 
-    /* Força os formulários de duas colunas (1fr 1fr) a ficarem numa só coluna (1fr) */
+    
     .admin-form-group-row {
         grid-template-columns: 1fr; 
         gap: 15px;
     }
 
-    /* Reduz o espaçamento interno gigante dos cartões que causa cortes na lateral */
-    .admin-section-card {
-        padding: 15px; 
-    }
-
-    /* Ajusta o modal flutuante para não ultrapassar a largura do telemóvel */
-    .modal-admin-card {
-        padding: 20px;
-        margin: 15px;
-        max-width: calc(100% - 30px);
-    }
-
-    /* CONTAINER GERAL DO CORPO ADMIN DO DASHBOARD */
     .admin-dashboard-container {
         padding: 15px;
         margin: 0 auto;
         gap: 20px;
+        max-width: 100vw;
+        overflow-x: hidden;
+        box-sizing: border-box;
     }
 
-    /* CONTROLE DE ROLAGEM EXCLUSIVO DA TABELA DE MONITORAMENTO */
-    /* Cria uma barra de rolagem interna se a tabela ultrapassar a largura da tela do celular */
+    .admin-section-card {
+        padding: 15px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0; 
+        box-sizing: border-box;
+    }
+
     .table-wrapper {
         width: 100%;
-        overflow-x: auto; 
+        max-width: 100%;
+        overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         border: 1px solid var(--rosa-destaque);
         border-radius: 8px;
-        background-color: var(--branco);
         margin-top: 10px;
+        box-sizing: border-box;
+        display: block;
     }
 
-    /* Impede que o texto de data, código ou valores fique amassado nas colunas */
     .orders-admin-table {
-        min-width: 650px; 
+        min-width: 750px;
         width: 100%;
     }
 
-    /* Ajusta as margens e tamanhos de fonte de th/td para telas menores */
     .orders-admin-table th, 
     .orders-admin-table td {
-        padding: 10px 8px !important;
+        padding: 12px 10px !important;
         font-size: 12px !important;
+        white-space: nowrap !important;
     }
 }

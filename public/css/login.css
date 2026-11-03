@@ -4,7 +4,7 @@
     align-items: center;
     padding: 60px 20px;
     background-color: var(--rosa-fundo);
-    min-height: calc(100vh - 90px - 250px); /* Ajusta altura descontando cabeçalho e rodapé */
+    min-height: calc(100vh - 90px - 250px);
 }
 
 .login-container {
@@ -90,7 +90,6 @@
     border-color: var(--laranja-hover);
 }
 
-/* INPUT DE SENHA E ESQUECEU A SENHA */
 .password-wrapper {
     position: relative;
     display: flex;
@@ -119,7 +118,6 @@
     align-self: flex-start;
 }
 
-/* BOTÕES */
 .btn {
     width: 100%;
     padding: 14px;
@@ -160,7 +158,6 @@
     border-color: var(--laranja-hover);
 }
 
-/* SEÇÃO DE CADASTRO NA PARTE INFERIOR */
 .register-section {
     margin-top: 35px;
     border-top: 1px solid var(--rosa-destaque);

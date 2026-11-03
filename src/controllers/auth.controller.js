@@ -46,7 +46,7 @@ const authController = {
                 [nome, email, telefone || null, senhaCriptografada, 'cliente']
             );
 
-            // Se tudo deu certo, exibe mensagem de sucesso
+            
             return res.render('register', { 
                 cssPage: 'register', 
                 success: 'Cadastro realizado com sucesso! Você já pode se conectar.' 
@@ -69,7 +69,7 @@ const authController = {
 
         res.render('login', { 
             cssPage: 'login', 
-            error: errorMessage // Repassa o aviso para exibir na tela do Handlebars
+            error: errorMessage
         });
     },  
 
@@ -138,13 +138,12 @@ const authController = {
         }
     },
 
-    // Destrói a sessão ao deslogar
+   
     logout: (req, res) => {
         req.session.destroy((err) => {
             if (err) {
                 console.error('Erro ao sair:', err);
             }
-            // O redirecionamento só ocorre de fato após a sessão deixar de existir na memória
             res.redirect('/');
         });
     }

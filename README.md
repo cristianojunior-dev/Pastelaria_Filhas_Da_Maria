@@ -125,11 +125,11 @@ Para testar o painel administrativo, você pode utilizar as credenciais de seed:
 * **Senha:** `admin`
 
 
-## 👨‍💻 Equipe do Projeto
+## 👥 Equipe do Projeto
 
-Projeto desenvolvido para a entrega acadêmica do sistema da **Pastelaria Filhas da Maria**. Abaixo estão os responsáveis e suas respectivas áreas de atuação no projeto:
+Este sistema foi desenvolvido de forma colaborativa para a **Pastelaria Filhas da Maria**. Abaixo estão os responsáveis e suas respectivas atuações na construção do projeto:
 
-* **Cristiano Viana da Cruz Junior** - Desenvolvimento Frontend
-* **Guilherme Mansara Lopes da Silva** - Desenvolvimento Backend
-* **João Gabriel Fialho Mazzi de Paiva** - Prototipagem (Figma/UI)
-* **Matheus Domingos Paneto** - Modelagem e Banco de Dados
+* **Cristiano Viana da Cruz Junior** — Desenvolvimento Frontend (Interface, Telas e Integração)
+* **Guilherme Mansara Lopes da Silva** — Desenvolvimento Backend (Servidor, Rotas e Lógica de Negócios)
+* **João Gabriel Fialho Mazzi de Paiva** — Prototipagem (Design de Interface e Experiência do Usuário)
+* **Matheus Domingos Paneto** — Banco de Dados (Modelagem, Scripts SQL e Estruturação de Dados)

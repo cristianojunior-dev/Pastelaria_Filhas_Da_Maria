@@ -52,7 +52,12 @@ const checkoutController = {
         try {
             // O "AND id_usuario = ?" garante que um usuário só possa deletar o próprio endereço
             await db.query('DELETE FROM enderecos WHERE id = ? AND id_usuario = ?', [id, usuarioId]);
-            res.redirect('/checkout');
+            
+            // Garante a gravação no banco de sessões antes de atualizar a página do checkout
+            req.session.save((err) => {
+                if (err) console.error('Erro ao salvar sessão no removerEndereco:', err);
+                res.redirect('/checkout');
+            });
         } catch (error) {
             console.error('Erro ao remover endereço:', error);
             res.status(500).send('Erro ao remover endereço.');
@@ -81,6 +86,7 @@ const checkoutController = {
                     return res.status(400).send('Endereço selecionado não encontrado.');
                 }
 
+                // Ajuste cirúrgico: Pega o primeiro índice do array retornado pela query
                 const end = endRows[0];
                 enderecoCompleto = `${end.rua}, Nº ${end.numero} - ${end.bairro}, ${end.cidade}/${end.uf} (CEP: ${end.cep})`;
             } 
@@ -100,7 +106,7 @@ const checkoutController = {
                     await db.query(
                         `INSERT INTO enderecos (id_usuario, cep, rua, numero, bairro, cidade, uf)
                          VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                        [usuarioId, cep, rua, numero, bairro, cidade, uf]
+                        [usuarioId, cep, rua, numero, bairro, city, uf]
                     );
                 }
 
@@ -142,15 +148,22 @@ const checkoutController = {
             // 3. Limpa o carrinho da sessão
             req.session.cart = [];
 
-            // 4. Renderiza a tela de pedido finalizado exibindo o endereço escolhido/cadastrado
-            res.render('pedido_finalizado', {
-                codigoPedido: codigoPedido,
-                totalGeral: (totalPedido + taxaEntrega).toFixed(2),
-                formaPagamento: pagamentoFinal,
-                enderecoEntrega: enderecoCompleto,
-                usuarioLogado: req.session.usuarioLogado || false,
-                usuarioNome: req.session.usuarioNome || null,
-                userAdmin: req.session.userAdmin || false
+            // 4. Força o salvamento definitivo do esvaziamento do carrinho antes de mudar de tela
+            req.session.save((err) => {
+                if (err) {
+                    console.error('Erro ao limpar carrinho da sessão no checkout:', err);
+                }
+                
+                // 5. Agora sim, renderiza a tela de sucesso com o carrinho limpo com total segurança!
+                res.render('pedido_finalizado', {
+                    codigoPedido: codigoPedido,
+                    totalGeral: (totalPedido + taxaEntrega).toFixed(2),
+                    formaPagamento: pagamentoFinal,
+                    enderecoEntrega: enderecoCompleto,
+                    usuarioLogado: req.session.usuarioLogado || false,
+                    usuarioNome: req.session.usuarioNome || null,
+                    userAdmin: req.session.userAdmin || false
+                });
             });
 
         } catch (error) {
@@ -160,4 +173,4 @@ const checkoutController = {
     }
 };
 
-module.exports = checkoutController;  
+module.exports = checkoutController;

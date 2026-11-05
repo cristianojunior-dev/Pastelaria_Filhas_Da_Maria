@@ -424,20 +424,18 @@ const adminController = {
             // 1. Busca os produtos e quantidades vinculados ao pedido
             const [itens] = await db.query(
                 `SELECT pr.nome, pi.quantidade 
-                 FROM pedido_itens pi
-                 INNER JOIN produtos pr ON pi.id_produto = pr.id
-                 WHERE pi.id_pedido = ?`,
+                FROM pedido_itens pi
+                INNER JOIN produtos pr ON pi.id_produto = pr.id
+                WHERE pi.id_pedido = ?`,
                 [id]
             );
 
-            // 2. Busca o endereço completo e o nome do cliente cruzando as tabelas
+            // 2. Busca o nome do cliente e a string de endereço gravada diretamente no pedido (coluna cep)
             const [pedidoInfoRows] = await db.query(
-                `SELECT u.nome AS cliente_nome, e.rua, e.numero, e.bairro, e.cidade 
-                 FROM pedidos p
-                 INNER JOIN usuario u ON p.id_usuario = u.id
-                 LEFT JOIN enderecos e ON u.id = e.id_usuario
-                 WHERE p.id = ?
-                 LIMIT 1`,
+                `SELECT u.nome AS cliente_nome, p.cep AS endereco_pedido
+                FROM pedidos p
+                INNER JOIN usuario u ON p.id_usuario = u.id
+                WHERE p.id = ?`,
                 [id]
             );
 
@@ -448,13 +446,15 @@ const adminController = {
                 const info = pedidoInfoRows[0];
                 nomeCliente = info.cliente_nome;
                 
-                if (info.rua) {
-                    enderecoFormatado = `${info.rua}, Nº ${info.numero} - Bairro: ${info.bairro}, ${info.cidade}`;
+                // Se houver texto na coluna 'cep' do pedido, usa ele diretamente
+                if (info.endereco_pedido) {
+                    enderecoFormatado = info.endereco_pedido;
                 }
             }
 
-            
+            // Retorna o JSON para o modal da comanda ler
             res.json({ itens, endereco: enderecoFormatado, cliente: nomeCliente });
+            
         } catch (error) {
             console.error('Erro ao buscar detalhes do pedido para a comanda:', error);
             res.status(500).json({ itens: [], endereco: 'Erro ao carregar', cliente: 'Erro' });

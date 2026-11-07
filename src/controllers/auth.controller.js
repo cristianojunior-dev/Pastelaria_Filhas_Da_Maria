@@ -26,6 +26,21 @@ const authController = {
             });
         }
 
+        // TRATAMENTO E VALIDAÇÃO DO TELEFONE (CELULAR BRASILEIRO - 11 DÍGITOS)
+        let telefoneTratado = null;
+        if (telefone) {
+            // Remove qualquer caractere que não seja número (parênteses, hifens, espaços)
+            telefoneTratado = telefone.replace(/\D/g, '');
+
+            // Se após a limpeza o telefone não tiver exatamente 11 dígitos, barra o cadastro
+            if (telefoneTratado.length !== 11) {
+                return res.render('register', {
+                    cssPage: 'register',
+                    error: 'Por favor, insira um número de celular válido com DDD (11 dígitos).'
+                });
+            }
+        }
+
         try {
             // Verifica se o e-mail já está cadastrado no sistema
             const [rows] = await db.query('SELECT id FROM usuario WHERE email = ?', [email]);
@@ -40,13 +55,12 @@ const authController = {
             const saltRounds = 10;
             const senhaCriptografada = await bcrypt.hash(senha, saltRounds);
 
-            // Insere o usuário no banco de dados
+            // Insere o usuário no banco de dados com o telefone higienizado
             await db.query(
                 'INSERT INTO usuario (nome, email, telefone, senha, tipo_usuario) VALUES (?, ?, ?, ?, ?)',
-                [nome, email, telefone || null, senhaCriptografada, 'cliente']
+                [nome, email, telefoneTratado, senhaCriptografada, 'cliente']
             );
 
-            
             return res.render('register', { 
                 cssPage: 'register', 
                 success: 'Cadastro realizado com sucesso! Você já pode se conectar.' 
@@ -138,7 +152,7 @@ const authController = {
         }
     },
 
-   
+    // Destrói a sessão ao deslogar
     logout: (req, res) => {
         req.session.destroy((err) => {
             if (err) {

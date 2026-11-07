@@ -86,7 +86,7 @@ const checkoutController = {
                     return res.status(400).send('Endereço selecionado não encontrado.');
                 }
 
-                // Ajuste cirúrgico: Pega o primeiro índice do array retornado pela query
+                // Pega o primeiro índice do array retornado pela query
                 const end = endRows[0];
                 enderecoCompleto = `${end.rua}, Nº ${end.numero} - ${end.bairro}, ${end.cidade}/${end.uf} (CEP: ${end.cep})`;
             } 
@@ -106,7 +106,7 @@ const checkoutController = {
                     await db.query(
                         `INSERT INTO enderecos (id_usuario, cep, rua, numero, bairro, cidade, uf)
                          VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                        [usuarioId, cep, rua, numero, bairro, city, uf]
+                        [usuarioId, cep, rua, numero, bairro, cidade, uf]
                     );
                 }
 
@@ -154,7 +154,7 @@ const checkoutController = {
                     console.error('Erro ao limpar carrinho da sessão no checkout:', err);
                 }
                 
-                // 5. Agora sim, renderiza a tela de sucesso com o carrinho limpo com total segurança!
+                // 5. Renderiza a tela de sucesso com o carrinho limpo com segurança
                 res.render('pedido_finalizado', {
                     codigoPedido: codigoPedido,
                     totalGeral: (totalPedido + taxaEntrega).toFixed(2),
